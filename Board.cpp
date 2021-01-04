@@ -138,25 +138,37 @@ void Board::reset() {
   initializePieces();
 }
 
-MoveResult Board::move(std::string const& src, std::string const& target) {
+MoveResult Board::move(std::string const& src, std::string const& destination) {
   Coordinates sourceCoord;
   Coordinates targetCoord;
   try {
     sourceCoord = stringToCoordinates(src);
-    targetCoord = stringToCoordinates(target);
+    targetCoord = stringToCoordinates(destination);
   } catch (std::exception const& e) {
     throw InvalidMove(e.what(), InvalidMove::ErrorCode::INVALID_COORDINATES);
   }
 
-  auto pieceOptional = getPieceAtCoordinates(sourceCoord);
+  return move(sourceCoord, targetCoord);
+}
+
+MoveResult Board::move(Coordinates const& src, Coordinates const& destination) {
+  auto pieceOptional = getPieceAtCoordinates(src);
+
   if (!pieceOptional) {
+    std::string sourceStr;
+    try {
+      sourceStr = Board::coordinatesToString(src);
+    } catch (std::exception const& e) {
+      throw InvalidMove(e.what(), InvalidMove::ErrorCode::INVALID_COORDINATES);
+    }
+
     std::stringstream ss;
-    ss << "There is no piece at position " << src;
+    ss << "There is no piece at position " << sourceStr;
     throw InvalidMove(ss.str(), InvalidMove::ErrorCode::NO_SOURCE_PIECE);
   }
-  auto& piece = pieceOptional->get();
 
-  return piece.move(targetCoord);
+  auto& piece = pieceOptional->get();
+  return piece.move(destination);
 }
 
 MoveResult Board::move(Pawn& piece, Coordinates const& destination) {
@@ -221,13 +233,21 @@ MoveResult Board::move(Piece& piece, Coordinates const& targetCoord,
   }
 
   if (!piece.isMovePlausible(sourceCoord, targetCoord)) {
+    std::string sourceStr, targetStr;
+    try {
+      sourceStr = coordinatesToString(sourceCoord);
+      targetStr = coordinatesToString(targetCoord);
+    } catch (std::exception const& e) {
+      throw InvalidMove(e.what(), InvalidMove::ErrorCode::INVALID_COORDINATES);
+    }
+
     std::stringstream ss;
-    ss << piece << " cannot move from " << coordinatesToString(sourceCoord)
-                    << " to " << coordinatesToString(targetCoord);
+    ss << piece << " cannot move from " << sourceStr << " to " << targetStr;
     throw InvalidMove(ss.str(), InvalidMove::ErrorCode::PIECE_LOGIC_ERROR);
   }
+
   // may need to restore count if move causes self check
-  auto tmpCount = countSincePawnMoveOrCapture; 
+  auto tmpCount = countSincePawnMoveOrCapture;
   mover(sourceCoord, targetCoord);
 
   if (isKingInCheck(currentPlayer())) {
@@ -309,7 +329,7 @@ MoveResult::GameState Board::checkGameState() {
   } else if (countSincePawnMoveOrCapture >= 150) { // 75 by each player
     m_isGameOver = true;
     return MoveResult::GameState::SEVENTYFIVE_MOVES_DRAW;
-  } else if (boardHashCount.count(zobrist.hash()) && 
+  } else if (boardHashCount.count(zobrist.hash()) &&
                                       boardHashCount.at(zobrist.hash()) >= 5) {
     m_isGameOver = true;
     return MoveResult::GameState::FIVEFOLD_REPETITION_DRAW;

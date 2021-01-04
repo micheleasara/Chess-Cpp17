@@ -78,6 +78,15 @@ namespace Chess {
     */
     MoveResult move(std::string const& src, std::string const& destination);
 
+    /**
+     Performs a move from a source to a destination and alternates between
+     players according to the rules of chess.
+
+     Returns an object containing information regarding the move executed.
+     In case of invalid move, an InvalidMove exception is thrown.
+    */
+    MoveResult move(Coordinates const& src, Coordinates const& dest);
+
     /// Moves the piece to the destination provided.
     MoveResult move(Pawn& piece, Coordinates const& destination);
     //! @copydoc Board::move(Pawn&,Coordinates&)
