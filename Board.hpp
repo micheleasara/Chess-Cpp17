@@ -142,11 +142,11 @@ namespace Chess {
     Coordinates getPieceCoordinates(Piece const& piece) const;
     template <typename Callable>
     MoveResult move(Piece& piece, Coordinates const& targetCoord,
-      Callable&& mover);
+                                                          Callable&& mover);
     void undoLastMove();
     void undoMoveInStackTop();
     std::optional<CastlingType> tryCastling(Coordinates const& source,
-      Coordinates const& target);
+                                            Coordinates const& target);
     bool hasMovesLeft(Piece::Colour colour);
     bool isKingInCheck(Piece::Colour kingColour) const;
     bool isMoveSuicide(Coordinates sourceCoord, Coordinates targetCoord);
@@ -172,7 +172,7 @@ namespace Chess {
     bool threeFoldRepetition = false;
     int countSincePawnMoveOrCapture = 0;
     std::unordered_set<std::reference_wrapper<Piece>,
-      PieceRefHasher> insufficientMaterial;
+                                          PieceRefHasher> insufficientMaterial;
   };
 
 }

@@ -1,6 +1,5 @@
 #include "Utils.hpp"
 #include "Piece.hpp"
-#include <iostream>
 
 namespace Chess {
 
