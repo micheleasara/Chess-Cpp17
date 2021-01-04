@@ -10,7 +10,7 @@ class Rook: public PromotionPiece {
   /// Constructs a rook of the given colour and associated to a board.
   Rook(Piece::Colour colour, Board& board);
 
-  //! @copydoc Board::move(std::string,std::string)
+  //! @copydoc Board::move(Pawn&,Coordinates&)
   virtual MoveResult move(Coordinates const& destination) override;
 
   /// Returns "Rook".
