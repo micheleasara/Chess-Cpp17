@@ -6,7 +6,6 @@ namespace Chess {
 Knight::Knight(Piece::Colour colour, Board& board) :
                                                 PromotionPiece(colour, board){}
 
-// third parameter 'board' is not used by knight: warning should be suppressed
 bool Knight::isMovePlausibleSpecific(Coordinates const& source,
                                Coordinates const& destination) const {
   int rowDiff = abs(source.row - destination.row);
