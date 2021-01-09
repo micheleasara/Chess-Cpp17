@@ -19,7 +19,8 @@ bool Bishop::isMovePlausibleSpecific(Coordinates const& source,
   }
 }
 
-MoveResult Bishop::move(Coordinates const& destination) {
-  return board.move(*this, destination);
+MoveResult Bishop::move(Coordinates const& source, 
+                        Coordinates const& destination) {
+  return board.move(*this, source, destination);
 }
 }

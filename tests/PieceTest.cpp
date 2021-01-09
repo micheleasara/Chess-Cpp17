@@ -8,7 +8,8 @@ class PieceStub : public Chess::Piece {
 public:
   PieceStub(Colour colour, Chess::Board& board): Piece(colour, board) {}
 
-  Chess::MoveResult move(Coordinates const& destination) override {
+  Chess::MoveResult move(Coordinates const& source,
+                         Coordinates const& destination) override {
     return Chess::MoveResult(Chess::MoveResult::GameState::NORMAL);
   }
 

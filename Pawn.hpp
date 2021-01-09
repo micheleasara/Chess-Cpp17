@@ -10,8 +10,9 @@ class Pawn: public Piece {
   // Constructs a pawn of the specified colour and associated to a board.
   Pawn(Piece::Colour colour, Board& board);
 
-  //! @copydoc Board::move(Pawn&,Coordinates&)
-  virtual MoveResult move(Coordinates const& destination) override;
+  //! @copydoc Board::move(Pawn&,Coordinates&,Coordinates&)
+  virtual MoveResult move(Coordinates const& source,
+                          Coordinates const& destination) override;
 
   /// Returns "Pawn".
   std::string getName() const override;

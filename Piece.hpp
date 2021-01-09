@@ -32,8 +32,9 @@ public:
   bool isMovePlausible(Coordinates const& source,
                        Coordinates const& destination) const;
 
-  //! @copydoc Board::move(Pawn&,Coordinates&)
-  virtual MoveResult move(Coordinates const& destination) = 0;
+  //! @copydoc Board::move(Pawn&,Coordinates&,Coordinates&)
+  virtual MoveResult move(Coordinates const& source, 
+                          Coordinates const& destination) = 0;
 
   /// Flags the piece to mean it has moved before.
   void setMovedStatus(bool moved);

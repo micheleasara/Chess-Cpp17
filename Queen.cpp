@@ -26,8 +26,9 @@ bool Queen::isMovePlausibleSpecific(Coordinates const& source,
   }
 }
 
-MoveResult Queen::move(Coordinates const& destination) {
-  return board.move(*this, destination);
+MoveResult Queen::move(Coordinates const& source, 
+                       Coordinates const& destination) {
+  return board.move(*this, source, destination);
 }
 
 }

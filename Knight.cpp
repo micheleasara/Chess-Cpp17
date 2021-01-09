@@ -19,8 +19,9 @@ std::string Knight::getName() const{
   return "Knight";
 }
 
-MoveResult Knight::move(Coordinates const& destination) {
-  return board.move(*this, destination);
+MoveResult Knight::move(Coordinates const& source,
+                        Coordinates const& destination) {
+  return board.move(*this, source, destination);
 }
 
 }

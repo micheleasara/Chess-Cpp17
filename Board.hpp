@@ -87,12 +87,15 @@ namespace Chess {
     */
     MoveResult move(Coordinates const& src, Coordinates const& dest);
 
-    /// Moves the piece to the destination provided.
-    MoveResult move(Pawn& piece, Coordinates const& destination);
-    //! @copydoc Board::move(Pawn&,Coordinates&)
-    MoveResult move(PromotionPiece& piece, Coordinates const& destination);
-    //! @copydoc Board::move(Pawn&,Coordinates&)
-    MoveResult move(King& piece, Coordinates const& destination);
+    /// Moves the piece from the source to the destination provided, if possi.
+    MoveResult move(Pawn& piece, Coordinates const& source,
+                                 Coordinates const& destination);
+    //! @copydoc Board::move(Pawn&,Coordinates&,Coordinates&)
+    MoveResult move(PromotionPiece& piece, Coordinates const& source,
+                                           Coordinates const& destination);
+    //! @copydoc Board::move(Pawn&,Coordinates&,Coordinates&)
+    MoveResult move(King& piece, Coordinates const& source,
+                                 Coordinates const& destination);
 
     /**
      Retrieves the piece corresponding to the coordinates.
@@ -100,8 +103,9 @@ namespace Chess {
     */
     OptionalRef<Piece> getPieceAtCoordinates(Coordinates const& coord) const;
 
-    /// Determines if a pawn can move to a destination while performing en passant.
-    bool isValidEnPassant(Pawn const& pawn, Coordinates const& destination) const;
+    /// Determines if a pawn can do en passant from a source to a destination.
+    bool isValidEnPassant(Pawn const& pawn, Coordinates const& source,
+                                          Coordinates const& destination) const;
 
     /**
      Checks if there are no pieces from the source to the destination.
@@ -150,7 +154,7 @@ namespace Chess {
     void initializePieces();
     Coordinates getPieceCoordinates(Piece const& piece) const;
     template <typename Callable>
-    MoveResult move(Piece& piece, Coordinates const& targetCoord,
+    MoveResult move(Coordinates const& source, Coordinates const& targetCoord,
                                                           Callable&& mover);
     void undoLastMove();
     void undoMoveInStackTop();
@@ -159,7 +163,8 @@ namespace Chess {
     bool hasMovesLeft(Piece::Colour colour);
     bool isKingInCheck(Piece::Colour kingColour) const;
     bool isMoveSuicide(Coordinates sourceCoord, Coordinates targetCoord);
-    void recordAndMove(Coordinates const& source, Coordinates const& destination);
+    void recordAndMove(Coordinates const& source,
+                       Coordinates const& destination);
     void ensureGameNotOver();
     void ensurePlayerCanMovePiece(Piece const& piece);
     MoveResult::GameState checkGameState();
@@ -168,6 +173,9 @@ namespace Chess {
     std::unique_ptr<PromotionPiece> buildPromotionPiece(PromotionOption piece);
     void storeBoardHash(int hash);
     bool isMaterialSufficient() const;
+    bool isPieceAtSource(Piece const& piece, Coordinates const& source) const;
+    void ensurePieceIsAtSource(Piece const& piece,
+                               Coordinates const& source) const;
 
     bool m_isGameOver = false;
     bool isWhiteTurn = true;

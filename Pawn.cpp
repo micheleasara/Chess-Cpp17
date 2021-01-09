@@ -27,7 +27,7 @@ bool Pawn::isMovePlausibleSpecific(Coordinates const& source,
   if (forwardSteps == 1 && horizontalSteps == 1 && piece) {
     return true;
   }
-  if (board.isValidEnPassant(*this, destination)) {
+  if (board.isValidEnPassant(*this, source, destination)) {
     return true;
   }
   if (forwardSteps == 2 && horizontalSteps == 0 && !piece &&
@@ -37,7 +37,8 @@ bool Pawn::isMovePlausibleSpecific(Coordinates const& source,
   return false;
 }
 
-MoveResult Pawn::move(Coordinates const& destination) {
-  return board.move(*this, destination);
+MoveResult Pawn::move(Coordinates const& source,
+                      Coordinates const& destination) {
+  return board.move(*this, source, destination);
 }
 }

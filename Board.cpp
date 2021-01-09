@@ -168,13 +168,34 @@ MoveResult Board::move(Coordinates const& src, Coordinates const& destination) {
   }
 
   auto& piece = pieceOptional->get();
-  return piece.move(destination);
+  return piece.move(src, destination);
 }
 
-MoveResult Board::move(Pawn& piece, Coordinates const& destination) {
-  return move(piece, destination,
+bool Board::isPieceAtSource(Piece const& piece,
+                                  Coordinates const& source) const {
+  if (auto pieceOpt = getPieceAtCoordinates(source)) {
+    auto& pieceAtSrc = pieceOpt->get();
+    if (&piece == &pieceAtSrc) {
+      return true;
+    }
+  }
+  return false;
+}
+
+void Board::ensurePieceIsAtSource(Piece const& piece,
+                                  Coordinates const& source) const {
+  if (!isPieceAtSource(piece, source)) {
+    throw std::logic_error("Piece is not a the specified source coordinates");
+  }
+}
+
+
+MoveResult Board::move(Pawn& piece, Coordinates const& source,
+                                    Coordinates const& destination) {
+  ensurePieceIsAtSource(piece, source);
+  return move(source, destination,
     [this, &piece] (Coordinates const& source, Coordinates const& destination) {
-      if (isValidEnPassant(piece, destination)) {
+      if (isValidEnPassant(piece, source, destination)) {
           auto toEatRow = (destination.row == 2) ? 3 : MAX_ROW_NUM - 3;
           Coordinates toEat(destination.column, toEatRow);
           movesHistory.emplace(source, destination,
@@ -199,17 +220,20 @@ MoveResult Board::move(Pawn& piece, Coordinates const& destination) {
   });
 }
 
-MoveResult Board::move(PromotionPiece& piece,
-                            Coordinates const& destination) {
-  return move(piece, destination,
+MoveResult Board::move(PromotionPiece& piece, Coordinates const& source,
+                                              Coordinates const& destination) {
+  ensurePieceIsAtSource(piece, source);
+  return move(source, destination,
     [this] (Coordinates const& source, Coordinates const& destination) {
       recordAndMove(source, destination);
       countSincePawnMoveOrCapture++;
     });
 }
 
-MoveResult Board::move(King& piece, Coordinates const& destination) {
-  return move(piece, destination,
+MoveResult Board::move(King& piece, Coordinates const& source, 
+                                    Coordinates const& destination) {
+  ensurePieceIsAtSource(piece, source);
+  return move(source, destination,
     [this] (Coordinates const& source, Coordinates const& destination) {
       recordAndMove(source, destination);
       countSincePawnMoveOrCapture++;
@@ -217,26 +241,26 @@ MoveResult Board::move(King& piece, Coordinates const& destination) {
 }
 
 template <typename Callable>
-MoveResult Board::move(Piece& piece, Coordinates const& targetCoord,
-                               Callable&& mover) {
+MoveResult Board::move(Coordinates const& source,
+                       Coordinates const& destination, Callable&& mover) {
   ensureGameNotOver();
   ensureNoPromotionNeeded();
-  auto sourceCoord = getPieceCoordinates(piece);
+  auto& piece = getPieceAtCoordinates(source)->get();
   ensurePlayerCanMovePiece(piece);
   auto gameState = MoveResult::GameState::NORMAL;
 
-  if (auto castlingType = tryCastling(sourceCoord, targetCoord)) {
+  if (auto castlingType = tryCastling(source, destination)) {
     countSincePawnMoveOrCapture++;
     gameState = checkGameState();
     togglePlayer();
     return MoveResult(gameState, *castlingType);
   }
 
-  if (!piece.isMovePlausible(sourceCoord, targetCoord)) {
+  if (!piece.isMovePlausible(source, destination)) {
     std::string sourceStr, targetStr;
     try {
-      sourceStr = coordinatesToString(sourceCoord);
-      targetStr = coordinatesToString(targetCoord);
+      sourceStr = coordinatesToString(source);
+      targetStr = coordinatesToString(destination);
     } catch (std::exception const& e) {
       throw InvalidMove(e.what(), InvalidMove::ErrorCode::INVALID_COORDINATES);
     }
@@ -248,7 +272,7 @@ MoveResult Board::move(Piece& piece, Coordinates const& targetCoord,
 
   // may need to restore count if move causes self check
   auto tmpCount = countSincePawnMoveOrCapture;
-  mover(sourceCoord, targetCoord);
+  mover(source, destination);
 
   if (isKingInCheck(currentPlayer())) {
     std::stringstream ss;
@@ -259,7 +283,7 @@ MoveResult Board::move(Piece& piece, Coordinates const& targetCoord,
     throw InvalidMove(ss.str(), InvalidMove::ErrorCode::CHECK_ERROR);
   }
 
-  zobrist.pieceHasMoved(sourceCoord, targetCoord);
+  zobrist.pieceHasMoved(source, destination);
   std::optional<std::string> capturedPieceName;
   if (movesHistory.top().wasAPieceRemoved()) {
     countSincePawnMoveOrCapture = 0;
@@ -652,16 +676,20 @@ void Board::undoMoveInStackTop() {
   movesHistory.pop();
 }
 
-bool Board::isValidEnPassant(Pawn const& pawn,
-                         Coordinates const& destination) const {
-   if (movesHistory.empty() || movesHistory.top().sourceMovedStatus() ||
+bool Board::isValidEnPassant(Pawn const& pawn, Coordinates const& source,
+                                         Coordinates const& destination) const {
+  if (!isPieceAtSource(pawn, source)) {
+    return false;
+  }
+
+  if (movesHistory.empty() || movesHistory.top().sourceMovedStatus() ||
      pawn.getColour() == movesHistory.top().playerColour()) {
     return false;
   }
-  auto pawnCoords = getPieceCoordinates(pawn);
+
   auto& lastMoveDest = movesHistory.top().destination();
-  if (pawnCoords.row != lastMoveDest.row ||
-      abs(pawnCoords.column - lastMoveDest.column) != 1) {
+  if (source.row != lastMoveDest.row ||
+      abs(source.column - lastMoveDest.column) != 1) {
     return false;
   }
 

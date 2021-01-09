@@ -23,7 +23,8 @@ std::string Rook::getName() const{
   return "Rook";
 }
 
-MoveResult Rook::move(Coordinates const& destination) {
-  return board.move(*this, destination);
+MoveResult Rook::move(Coordinates const& source, 
+                      Coordinates const& destination) {
+  return board.move(*this, source, destination);
 }
 }

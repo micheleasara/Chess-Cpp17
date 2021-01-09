@@ -10,8 +10,9 @@ class King: public Piece {
   /// Constructs a king of the given colour and associated to a board.
   King(Piece::Colour colour, Board& board);
 
-  //! @copydoc Board::move(Pawn&,Coordinates&)
-  virtual MoveResult move(Coordinates const& destination) override;
+  //! @copydoc Board::move(Pawn&,Coordinates&,Coordinates&)
+  virtual MoveResult move(Coordinates const& source, 
+                          Coordinates const& destination) override;
 
   /// Returns "King".
   std::string getName() const override;
