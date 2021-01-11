@@ -1,0 +1,10 @@
+<map id="Chess::Piece" name="Chess::Piece">
+<area shape="rect" id="node1" title="Represents a generic piece." alt="" coords="128,5,232,32"/>
+<area shape="rect" id="node2" href="$classChess_1_1King.html" title="Represents a king." alt="" coords="5,80,104,107"/>
+<area shape="rect" id="node3" href="$classChess_1_1Pawn.html" title="Represents a pawn." alt="" coords="129,80,231,107"/>
+<area shape="rect" id="node4" href="$classChess_1_1PromotionPiece.html" title="Represents a piece that can be used for a promotion." alt="" coords="256,80,427,107"/>
+<area shape="rect" id="node5" href="$classChess_1_1Bishop.html" title="Represents a bishop." alt="" coords="81,155,194,181"/>
+<area shape="rect" id="node6" href="$classChess_1_1Knight.html" title="Represents a knight." alt="" coords="218,155,329,181"/>
+<area shape="rect" id="node7" href="$classChess_1_1Queen.html" title=" " alt="" coords="353,155,463,181"/>
+<area shape="rect" id="node8" href="$classChess_1_1Rook.html" title="Represents a rook." alt="" coords="487,155,590,181"/>
+</map>
