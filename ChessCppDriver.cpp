@@ -11,10 +11,11 @@ using Chess::MoveResult;
 using Chess::CastlingType;
 
 std::optional<PromotionOption> strToPromotionPiece(std::string const& piece);
-void printSpecialStates(MoveResult::GameState state,
+void printIfSpecialState(MoveResult::GameState state,
                         std::string const& opponent);
-void promptToReset(Board& cb);
 void printCastlingMessage(CastlingType type, std::string const& player);
+void promptForDraw(Board& cb);
+void promptToReset(Board& cb);
 
 int main() {
     using namespace std;
@@ -65,7 +66,11 @@ int main() {
           }
         }
 
-        printSpecialStates(result.gameState(), opponent);
+        printIfSpecialState(result.gameState(), opponent);
+
+        if (cb.drawCanBeClaimed()) {
+          promptForDraw(cb);
+        }
 
         if (cb.isGameOver()) {
           promptToReset(cb);
@@ -75,27 +80,6 @@ int main() {
         cout << e.what() << "\n";
       }
     }
-}
-
-void printSpecialStates(MoveResult::GameState state,
-  std::string const& opponent) {
-  using namespace std;
-  switch (state) {
-  case MoveResult::GameState::OPPONENT_IN_CHECK:
-    cout << opponent << " is in check.\n"; break;
-  case MoveResult::GameState::OPPONENT_IN_CHECKMATE:
-    cout << opponent << " is in checkmate.\n"; break;
-  case MoveResult::GameState::INSUFFICIENT_MATERIAL_DRAW:
-    cout << "Game ends as a draw due to insufficient material.\n"; break;
-  case MoveResult::GameState::FIVEFOLD_REPETITION_DRAW:
-    cout << "Game ends as a draw due to five-fold repetition.\n"; break;
-  case MoveResult::GameState::STALEMATE:
-    cout << "Game ends as a draw due to stalemate.\n"; break;
-  case MoveResult::GameState::SEVENTYFIVE_MOVES_DRAW:
-    cout << "Game ends as a draw due to the 75 moves rule.\n"; break;
-  default:
-    break;
-  }
 }
 
 void printCastlingMessage(CastlingType type, std::string const& player) {
@@ -123,6 +107,38 @@ std::optional<PromotionOption> strToPromotionPiece(std::string const& piece) {
     return PromotionOption::Queen;
   }
   return std::nullopt;
+}
+
+void printIfSpecialState(MoveResult::GameState state,
+  std::string const& opponent) {
+  using namespace std;
+  switch (state) {
+  case MoveResult::GameState::OPPONENT_IN_CHECK:
+    cout << opponent << " is in check.\n"; break;
+  case MoveResult::GameState::OPPONENT_IN_CHECKMATE:
+    cout << opponent << " is in checkmate.\n"; break;
+  case MoveResult::GameState::INSUFFICIENT_MATERIAL_DRAW:
+    cout << "Game ends as a draw due to insufficient material.\n"; break;
+  case MoveResult::GameState::FIVEFOLD_REPETITION_DRAW:
+    cout << "Game ends as a draw due to five-fold repetition.\n"; break;
+  case MoveResult::GameState::STALEMATE:
+    cout << "Game ends as a draw due to stalemate.\n"; break;
+  case MoveResult::GameState::SEVENTYFIVE_MOVES_DRAW:
+    cout << "Game ends as a draw due to the 75 moves rule.\n"; break;
+  default:
+    break;
+  }
+}
+
+void promptForDraw(Board& cb) {
+  std::cout << "A draw can be claimed. Enter 'y' to claim, or enter ";
+  std::cout << "anything else to continue with the game:\n";
+  std::string input;
+  std::getline(std::cin, input);
+  if (input == "y") {
+    cb.claimDraw();
+    std::cout << "You claimed a draw.\n";
+  }
 }
 
 void promptToReset(Board& cb) {
