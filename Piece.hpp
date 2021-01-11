@@ -32,7 +32,7 @@ public:
   bool isMovePlausible(Coordinates const& source,
                        Coordinates const& destination) const;
 
-  //! @copydoc Board::move(Pawn&,Coordinates&,Coordinates&)
+  //! @copydoc Board::move(Pawn&,Coordinates const&,Coordinates const&)
   virtual MoveResult move(Coordinates const& source, 
                           Coordinates const& destination) = 0;
 

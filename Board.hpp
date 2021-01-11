@@ -45,7 +45,7 @@ namespace Chess {
     /// Defines the horizontal printing space used for a square of the board.
     static int constexpr H_PRINT_SIZE = 15;
 
-    // Checks if the coordinates are within a chessboard.
+    /// Checks if the coordinates are within a chessboard.
     static bool areWithinLimits(Coordinates const& coord);
     /// Checks if the coordinates are in the same row.
     static bool areInSameRow(Coordinates const& coord1,
@@ -87,13 +87,16 @@ namespace Chess {
     */
     MoveResult move(Coordinates const& src, Coordinates const& dest);
 
-    /// Moves the piece from the source to the destination provided, if possi.
+    /**
+     Moves the piece from the source to the destination provided,
+     if possible.
+    */
     MoveResult move(Pawn& piece, Coordinates const& source,
                                  Coordinates const& destination);
-    //! @copydoc Board::move(Pawn&,Coordinates&,Coordinates&)
+    //! @copydoc Board::move(Pawn&,Coordinates const&,Coordinates const&)
     MoveResult move(PromotionPiece& piece, Coordinates const& source,
                                            Coordinates const& destination);
-    //! @copydoc Board::move(Pawn&,Coordinates&,Coordinates&)
+    //! @copydoc Board::move(Pawn&,Coordinates const&,Coordinates const&)
     MoveResult move(King& piece, Coordinates const& source,
                                  Coordinates const& destination);
 

@@ -10,7 +10,7 @@ class Knight: public PromotionPiece {
   /// Constructs a knight of the given colour and associated to a board.
   Knight(Piece::Colour colour, Board& board);
 
-  //! @copydoc Board::move(Pawn&,Coordinates&,Coordinates&)
+  //! @copydoc Board::move(Pawn&,Coordinates const&,Coordinates const&)
   virtual MoveResult move(Coordinates const& source,
                           Coordinates const& destination) override;
 

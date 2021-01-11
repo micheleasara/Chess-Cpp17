@@ -4,7 +4,7 @@
 namespace Chess {
 King::King(Piece::Colour colour, Board& board) : Piece(colour, board){}
 
-std::string King::getName() const{
+std::string King::getName() const {
   return "King";
 }
 
