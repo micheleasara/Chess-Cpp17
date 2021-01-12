@@ -230,7 +230,7 @@ MoveResult Board::move(PromotionPiece& piece, Coordinates const& source,
     });
 }
 
-MoveResult Board::move(King& piece, Coordinates const& source, 
+MoveResult Board::move(King& piece, Coordinates const& source,
                                     Coordinates const& destination) {
   ensurePieceIsAtSource(piece, source);
   return move(source, destination,
@@ -653,7 +653,8 @@ void Board::undoLastMove() {
   if (movesHistory.size() > 0) {
     auto& source = movesHistory.top().source();
     auto& dest = movesHistory.top().destination();
-    if (getCastlingType(source, dest).has_value()) {
+    auto srcMoved = movesHistory.top().sourceMovedStatus();
+    if (getCastlingType(source, dest).has_value() && !srcMoved) {
       undoMoveInStackTop(); // castling is stored as two moves
     }
     undoMoveInStackTop();
