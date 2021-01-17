@@ -21,12 +21,18 @@ public:
   /// Updates the hash according to the specified move.
   void pieceHasMoved(Coordinates const& source, Coordinates const& destination);
 
+  /**
+   Updates the hash by deleting the piece at the specified coordinates.
+   The hash does not change in case of deletion of an empty square.
+  */
+  void remove(Coordinates const& coordDeletion);
+
   /// Returns the most recent hash.
   int hash();
 
   /**
-  Updates the hash by assuming the source given to be replaced with a promotion
-  piece.
+   Updates the hash by assuming the source given to be replaced with a promotion
+   piece.
   */
   void replacedWithPromotion(Coordinates const& source,
                             PromotionOption prom, Piece::Colour colour);
@@ -62,6 +68,7 @@ private:
   int coord1DEnPassant = EMPTY;
   int whitePlayerHash;
   PieceIndex beforeEnPassant;
+  std::unordered_map<int, PieceIndex> pawnsBeforeEnPassant;
 };
 
 }

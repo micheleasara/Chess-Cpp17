@@ -16,184 +16,184 @@
 #include "Zobrist.hpp"
 
 namespace Chess {
-  class King; class Pawn; class Queen; class Knight; class Rook; class Bishop;
+class King; class Pawn; class Queen; class Knight; class Rook; class Bishop;
+
+/**
+  Represents a chessboard. It is responsible for executing moves while
+  containing the state of the game.
+*/
+class Board {
+public:
+  /// Defines the minimum column.
+  static char constexpr MIN_COLUMN = 'A';
+  /// Defines the minimum row.
+  static char constexpr MIN_ROW = '1';
+  /// Defines the maximum column.
+  static char constexpr MAX_COLUMN = 'H';
+  /// Defines the maximum row.
+  static char constexpr MAX_ROW = '8';
+  /// The maximum row number starting to count from 0.
+  static int constexpr MAX_ROW_NUM = (int)(MAX_ROW - MIN_ROW);
+  /// The maximum column number starting to count from 0.
+  static int constexpr MAX_COL_NUM = (int)(MAX_COLUMN - MIN_COLUMN);
+  /// Defines the starting positions of the white king.
+  static auto constexpr WHITE_KING_INIT = Coordinates(4, 0);
+  /// Defines the starting positions of the black king.
+  static auto constexpr BLACK_KING_INIT = Coordinates(4, 7);
+  /// Defines the number of squares the king travels to castle.
+  static int constexpr CASTLE_DISTANCE = 2;
+  /// Defines the horizontal printing space used for a square of the board.
+  static int constexpr H_PRINT_SIZE = 15;
+
+  /// Checks if the coordinates are within a chessboard.
+  static bool areWithinLimits(Coordinates const& coord);
+  /// Checks if the coordinates are in the same row.
+  static bool areInSameRow(Coordinates const& coord1,
+                            Coordinates const& coord2);
+  /// Checks if the coordinates are in the same column.
+  static bool areInSameColumn(Coordinates const& coord1,
+                              Coordinates const& coord2);
+  /// Checks if the coordinates are in the same diagonal.
+  static bool areInSameDiagonal(Coordinates const& coord1,
+                                Coordinates const& coord2);
+  /// Converts string coordinates into a pair of integers (eg "A2" to 0,1).
+  static Coordinates stringToCoordinates(std::string const& coord);
+  /// Converts numeric coordinates into string coordinates (eg 0,1 to "A2").
+  static std::string coordinatesToString(Coordinates const& coord);
+
+  /// Constructs a chessboard and places all pieces in their starting positions.
+  Board();
+
+  /// Resets the chessboard to its initial status.
+  void reset();
 
   /**
-   Represents a chessboard. It is responsible for executing moves while
-   containing the state of the game.
+    Performs a move from a source to a destination and alternates between
+    players according to the rules of chess. Coordinates are given column first
+    and row second, from MIN_COLUMN to MAX_COLUMN and MIN_ROW to MAX_ROW,
+    respectively. So, for instance, "C2" translates to 3rd column, 2nd row.
+
+    Returns an object containing information regarding the move executed.
+    In case of invalid move, an InvalidMove exception is thrown.
   */
-  class Board {
-  public:
-    /// Defines the minimum column.
-    static char constexpr MIN_COLUMN = 'A';
-    /// Defines the minimum row.
-    static char constexpr MIN_ROW = '1';
-    /// Defines the maximum column.
-    static char constexpr MAX_COLUMN = 'H';
-    /// Defines the maximum row.
-    static char constexpr MAX_ROW = '8';
-    /// The maximum row number starting to count from 0.
-    static int constexpr MAX_ROW_NUM = (int)(MAX_ROW - MIN_ROW);
-    /// The maximum column number starting to count from 0.
-    static int constexpr MAX_COL_NUM = (int)(MAX_COLUMN - MIN_COLUMN);
-    /// Defines the starting positions of the white king.
-    static auto constexpr WHITE_KING_INIT = Coordinates(4, 0);
-    /// Defines the starting positions of the black king.
-    static auto constexpr BLACK_KING_INIT = Coordinates(4, 7);
-    /// Defines the number of squares the king travels to castle.
-    static int constexpr CASTLE_DISTANCE = 2;
-    /// Defines the horizontal printing space used for a square of the board.
-    static int constexpr H_PRINT_SIZE = 15;
+  MoveResult move(std::string const& src, std::string const& destination);
 
-    /// Checks if the coordinates are within a chessboard.
-    static bool areWithinLimits(Coordinates const& coord);
-    /// Checks if the coordinates are in the same row.
-    static bool areInSameRow(Coordinates const& coord1,
-                             Coordinates const& coord2);
-    /// Checks if the coordinates are in the same column.
-    static bool areInSameColumn(Coordinates const& coord1,
-                                Coordinates const& coord2);
-    /// Checks if the coordinates are in the same diagonal.
-    static bool areInSameDiagonal(Coordinates const& coord1,
-                                  Coordinates const& coord2);
-    /// Converts string coordinates into a pair of integers (eg "A2" to 0,1).
-    static Coordinates stringToCoordinates(std::string const& coord);
-    /// Converts numeric coordinates into string coordinates (eg 0,1 to "A2").
-    static std::string coordinatesToString(Coordinates const& coord);
+  /**
+    Performs a move from a source to a destination and alternates between
+    players according to the rules of chess.
 
-    /// Constructs a chessboard and places all pieces in their starting positions.
-    Board();
+    Returns an object containing information regarding the move executed.
+    In case of invalid move, an InvalidMove exception is thrown.
+  */
+  MoveResult move(Coordinates const& src, Coordinates const& dest);
 
-    /// Resets the chessboard to its initial status.
-    void reset();
+  /**
+    Moves the piece from the source to the destination provided,
+    if possible.
+  */
+  MoveResult move(Pawn& piece, Coordinates const& source,
+                                Coordinates const& destination);
+  //! @copydoc Board::move(Pawn&,Coordinates const&,Coordinates const&)
+  MoveResult move(PromotionPiece& piece, Coordinates const& source,
+                                          Coordinates const& destination);
+  //! @copydoc Board::move(Pawn&,Coordinates const&,Coordinates const&)
+  MoveResult move(King& piece, Coordinates const& source,
+                                Coordinates const& destination);
 
-    /**
-     Performs a move from a source to a destination and alternates between
-     players according to the rules of chess. Coordinates are given column first
-     and row second, from MIN_COLUMN to MAX_COLUMN and MIN_ROW to MAX_ROW,
-     respectively. So, for instance, "C2" translates to 3rd column, 2nd row.
+  /**
+    Retrieves the piece corresponding to the coordinates.
+    Returns an empty optional if no piece is found at those coordinates.
+  */
+  OptionalRef<Piece> getPieceAtCoordinates(Coordinates const& coord) const;
 
-     Returns an object containing information regarding the move executed.
-     In case of invalid move, an InvalidMove exception is thrown.
-    */
-    MoveResult move(std::string const& src, std::string const& destination);
+  /// Determines if a pawn can do en passant from a source to a destination.
+  bool isValidEnPassant(Pawn const& pawn, Coordinates const& source,
+                                        Coordinates const& destination) const;
 
-    /**
-     Performs a move from a source to a destination and alternates between
-     players according to the rules of chess.
+  /**
+    Checks if there are no pieces from the source to the destination.
+    The check is not inclusive of the start and end columns.
+  */
+  bool isColumnFree(Coordinates source, int limitRow) const;
 
-     Returns an object containing information regarding the move executed.
-     In case of invalid move, an InvalidMove exception is thrown.
-    */
-    MoveResult move(Coordinates const& src, Coordinates const& dest);
+  /**
+    Checks if there are no pieces from the source to the destination.
+    The check is not inclusive of the start and end rows.
+  */
+  bool isRowFree(Coordinates source, int limitCol) const;
 
-    /**
-     Moves the piece from the source to the destination provided,
-     if possible.
-    */
-    MoveResult move(Pawn& piece, Coordinates const& source,
-                                 Coordinates const& destination);
-    //! @copydoc Board::move(Pawn&,Coordinates const&,Coordinates const&)
-    MoveResult move(PromotionPiece& piece, Coordinates const& source,
-                                           Coordinates const& destination);
-    //! @copydoc Board::move(Pawn&,Coordinates const&,Coordinates const&)
-    MoveResult move(King& piece, Coordinates const& source,
-                                 Coordinates const& destination);
+  /**
+    Checks if there are no pieces from the source to the destination.
+    The check is not inclusive of the start and end positions.
+  */
+  bool isDiagonalFree(Coordinates source, Coordinates const& destination) const;
 
-    /**
-     Retrieves the piece corresponding to the coordinates.
-     Returns an empty optional if no piece is found at those coordinates.
-    */
-    OptionalRef<Piece> getPieceAtCoordinates(Coordinates const& coord) const;
+  /// Returns true is a player needs to promote a piece. False otherwise.
+  bool isPromotionPending() const;
 
-    /// Determines if a pawn can do en passant from a source to a destination.
-    bool isValidEnPassant(Pawn const& pawn, Coordinates const& source,
-                                          Coordinates const& destination) const;
+  /**
+    If a promotion is pending, the piece is replaced with the given promotion
+    piece. Returns an object containing information about the board.
+    Throws if called when no promotion is pending.
+  */
+  MoveResult promote(PromotionOption piece);
 
-    /**
-     Checks if there are no pieces from the source to the destination.
-     The check is not inclusive of the start and end columns.
-    */
-    bool isColumnFree(Coordinates source, int limitRow) const;
+  /// Returns the current player. White always starts.
+  Piece::Colour currentPlayer() const;
 
-    /**
-     Checks if there are no pieces from the source to the destination.
-     The check is not inclusive of the start and end rows.
-    */
-    bool isRowFree(Coordinates source, int limitCol) const;
+  /// Returns true if the game reached its conclusion, false otherwise.
+  bool isGameOver() const;
 
-    /**
-     Checks if there are no pieces from the source to the destination.
-     The check is not inclusive of the start and end positions.
-    */
-    bool isDiagonalFree(Coordinates source, Coordinates const& destination) const;
+  /// Prints the board to the output stream provided.
+  friend std::ostream& operator<<(std::ostream& out, Board const& board);
 
-    /// Returns true is a player needs to promote a piece. False otherwise.
-    bool isPromotionPending() const;
+  /// Returns true if the given player can claim a draw, false otherwise.
+  bool drawCanBeClaimed() const;
 
-    /**
-     If a promotion is pending, the piece is replaced with the given promotion
-     piece. Returns an object containing information about the board.
-     Throws if called when no promotion is pending.
-    */
-    MoveResult promote(PromotionOption piece);
+  /// Ends the game in a draw if it can be claimed, does nothing otherwise.
+  void claimDraw();
 
-    /// Returns the current player. White always starts.
-    Piece::Colour currentPlayer() const;
+private:
+  void initializePieces();
+  Coordinates getPieceCoordinates(Piece const& piece) const;
+  template <typename Callable>
+  MoveResult move(Coordinates const& source, Coordinates const& targetCoord,
+                                                        Callable&& mover);
+  void undoLastMove();
+  void undoMoveInStackTop();
+  std::optional<CastlingType> tryCastling(Coordinates const& source,
+                                          Coordinates const& target);
+  bool hasMovesLeft(Piece::Colour colour);
+  bool isKingInCheck(Piece::Colour kingColour) const;
+  bool isMoveSuicide(Coordinates sourceCoord, Coordinates targetCoord);
+  void recordAndMove(Coordinates const& source,
+                     Coordinates const& destination);
+  void ensureGameNotOver();
+  void ensurePlayerCanMovePiece(Piece const& piece);
+  MoveResult::GameState checkGameState();
+  void ensureNoPromotionNeeded();
+  void togglePlayer();
+  std::unique_ptr<PromotionPiece> buildPromotionPiece(PromotionOption piece);
+  void storeBoardHash(int hash);
+  bool isMaterialSufficient() const;
+  bool isPieceAtSource(Piece const& piece, Coordinates const& source) const;
+  void ensurePieceIsAtSource(Piece const& piece,
+                              Coordinates const& source) const;
 
-    /// Returns true if the game reached its conclusion, false otherwise.
-    bool isGameOver() const;
-
-    /// Prints the board to the output stream provided.
-    friend std::ostream& operator<<(std::ostream& out, Board const& board);
-
-    /// Returns true if the given player can claim a draw, false otherwise.
-    bool drawCanBeClaimed() const;
-
-    /// Ends the game in a draw if it can be claimed, does nothing otherwise.
-    void claimDraw();
-
-  private:
-    void initializePieces();
-    Coordinates getPieceCoordinates(Piece const& piece) const;
-    template <typename Callable>
-    MoveResult move(Coordinates const& source, Coordinates const& targetCoord,
-                                                          Callable&& mover);
-    void undoLastMove();
-    void undoMoveInStackTop();
-    std::optional<CastlingType> tryCastling(Coordinates const& source,
-                                            Coordinates const& target);
-    bool hasMovesLeft(Piece::Colour colour);
-    bool isKingInCheck(Piece::Colour kingColour) const;
-    bool isMoveSuicide(Coordinates sourceCoord, Coordinates targetCoord);
-    void recordAndMove(Coordinates const& source,
-                       Coordinates const& destination);
-    void ensureGameNotOver();
-    void ensurePlayerCanMovePiece(Piece const& piece);
-    MoveResult::GameState checkGameState();
-    void ensureNoPromotionNeeded();
-    void togglePlayer();
-    std::unique_ptr<PromotionPiece> buildPromotionPiece(PromotionOption piece);
-    void storeBoardHash(int hash);
-    bool isMaterialSufficient() const;
-    bool isPieceAtSource(Piece const& piece, Coordinates const& source) const;
-    void ensurePieceIsAtSource(Piece const& piece,
-                               Coordinates const& source) const;
-
-    bool m_isGameOver = false;
-    bool isWhiteTurn = true;
-    std::optional<Coordinates> promotionSource;
-    std::unordered_map<Coordinates,
-      std::unique_ptr<Piece>, CoordinatesHasher> board;
-    std::unordered_map<Piece::Colour, King&> kings;
-    std::stack<PastMove> movesHistory;
-    ZobristHasher zobrist;
-    std::unordered_map<int, size_t> boardHashCount;
-    bool threeFoldRepetition = false;
-    int countSincePawnMoveOrCapture = 0;
-    std::unordered_set<std::reference_wrapper<Piece>,
-                                          PieceRefHasher> insufficientMaterial;
-  };
+  bool m_isGameOver = false;
+  bool isWhiteTurn = true;
+  std::optional<Coordinates> promotionSource;
+  std::unordered_map<Coordinates,
+                     std::unique_ptr<Piece>, CoordinatesHasher> board;
+  std::unordered_map<Piece::Colour, King&> kings;
+  std::stack<PastMove> movesHistory;
+  ZobristHasher zobrist;
+  std::unordered_map<int, size_t> boardHashCount;
+  bool threeFoldRepetition = false;
+  int countSincePawnMoveOrCapture = 0;
+  std::unordered_set<std::reference_wrapper<Piece>,
+                                        PieceRefHasher> insufficientMaterial;
+};
 
 }
 

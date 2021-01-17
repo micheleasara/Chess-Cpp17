@@ -124,3 +124,21 @@ TEST_F(ZobristHasherTest, togglingPlayerAnEvenNumberOfTimesDoesNotChangeHash) {
   hasher.togglePlayer();
   EXPECT_EQ(originalHash, hasher.hash());
 }
+
+TEST_F(ZobristHasherTest, removingInvalidCoordinatesThrows) {
+  auto originalHash = hasher.hash();
+  EXPECT_THROW(hasher.remove(Coordinates(99,99)), std::out_of_range);
+  EXPECT_EQ(originalHash, hasher.hash());
+}
+
+TEST_F(ZobristHasherTest, deletingEmptySquareDoesNotChangeHash) {
+  auto originalHash = hasher.hash();
+  hasher.remove(Coordinates(0,2));
+  EXPECT_EQ(originalHash, hasher.hash());
+}
+
+TEST_F(ZobristHasherTest, deletingNonEmptySquareChangesHash) {
+  auto originalHash = hasher.hash();
+  hasher.remove(Coordinates(0,1));
+  EXPECT_NE(originalHash, hasher.hash());
+}

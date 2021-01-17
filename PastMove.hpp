@@ -37,7 +37,7 @@ private:
   bool m_sourceMovedStatus;
   Coordinates m_removedPieceCoords;
   Piece::Colour m_playerColour;
-  std::unique_ptr<Piece> eatenPiece;
+  std::unique_ptr<Piece> capturedPiece;
 };
 }
 

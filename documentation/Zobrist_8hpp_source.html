@@ -85,54 +85,58 @@ $(function() {
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classChess_1_1ZobristHasher.html#a437d31ec2edd4a699c9bd2b30d25b70e">pieceHasMoved</a>(<a class="code" href="structChess_1_1Coordinates.html">Coordinates</a> <span class="keyword">const</span>&amp; source, <a class="code" href="structChess_1_1Coordinates.html">Coordinates</a> <span class="keyword">const</span>&amp; destination);</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;  <span class="keywordtype">int</span> <a class="code" href="classChess_1_1ZobristHasher.html#a8d93b3a73d2f906ea3ab101947bd1425">hash</a>();</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classChess_1_1ZobristHasher.html#ad25c37fa9bc2b8e209dde8041aaf71e0">replacedWithPromotion</a>(<a class="code" href="structChess_1_1Coordinates.html">Coordinates</a> <span class="keyword">const</span>&amp; source,</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;                            PromotionOption prom, <a class="code" href="classChess_1_1Piece.html#a9d05a36fce65a50dac5c478805381779">Piece::Colour</a> colour);</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classChess_1_1ZobristHasher.html#a8f35f3e2939989d65e6245aa3b1b8990">reset</a>();</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classChess_1_1ZobristHasher.html#a2e06c4d9dcb64308aecb2b323fa3d5b7">togglePlayer</a>();</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classChess_1_1ZobristHasher.html#afd73f95b97b2cec39618b18aac79f1ce">remove</a>(<a class="code" href="structChess_1_1Coordinates.html">Coordinates</a> <span class="keyword">const</span>&amp; coordDeletion);</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;  <span class="keywordtype">int</span> <a class="code" href="classChess_1_1ZobristHasher.html#a8d93b3a73d2f906ea3ab101947bd1425">hash</a>();</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classChess_1_1ZobristHasher.html#ad25c37fa9bc2b8e209dde8041aaf71e0">replacedWithPromotion</a>(<a class="code" href="structChess_1_1Coordinates.html">Coordinates</a> <span class="keyword">const</span>&amp; source,</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;                            PromotionOption prom, <a class="code" href="classChess_1_1Piece.html#a9d05a36fce65a50dac5c478805381779">Piece::Colour</a> colour);</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  <span class="keyword">static</span> <span class="keywordtype">size_t</span> constexpr PIECE_INDEXES_COUNT = 20;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  <span class="keyword">static</span> <span class="keywordtype">int</span> constexpr EMPTY = -1;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <span class="keyword">enum class</span> PieceIndex;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  <span class="keywordtype">void</span> initializeTableAndWhitePlayer();</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  <span class="keywordtype">void</span> fillInitialBoard();</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  <span class="keywordtype">int</span> computeHashFromBoard();</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  <span class="keywordtype">int</span> to1D(<a class="code" href="structChess_1_1Coordinates.html">Coordinates</a> <span class="keyword">const</span>&amp; coords);</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <span class="keywordtype">bool</span> areWithinLimits(<a class="code" href="structChess_1_1Coordinates.html">Coordinates</a> <span class="keyword">const</span>&amp; coords);</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <span class="keywordtype">bool</span> isEnPassantRow(<span class="keywordtype">int</span> row);</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <span class="keywordtype">void</span> replace(<span class="keywordtype">int</span> coord1D, PieceIndex replacement);</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  <span class="keywordtype">void</span> remove(<span class="keywordtype">int</span> coord1D);</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  PieceIndex constexpr movedEquivalent(PieceIndex idx);</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  std::optional&lt;PieceIndex&gt; getEnemyMovedPawn(PieceIndex pawn);</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  std::optional&lt;PieceIndex&gt; getEnPassantPawn(PieceIndex pawn);</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <span class="keywordtype">size_t</span> CHESSBOARD_AREA;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <span class="keywordtype">int</span> MAX_ROW_NUM, MAX_COL_NUM;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  std::vector&lt;std::vector&lt;int&gt;&gt; table;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  std::vector&lt;int&gt; board;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <span class="keywordtype">int</span> currentHash = 0;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keywordtype">int</span> coord1DEnPassant = EMPTY;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <span class="keywordtype">int</span> whitePlayerHash;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  PieceIndex beforeEnPassant;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;};</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;}</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="preprocessor">#endif // ZOBRIST_H</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classChess_1_1ZobristHasher.html#a8f35f3e2939989d65e6245aa3b1b8990">reset</a>();</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classChess_1_1ZobristHasher.html#a2e06c4d9dcb64308aecb2b323fa3d5b7">togglePlayer</a>();</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  <span class="keyword">static</span> <span class="keywordtype">size_t</span> constexpr PIECE_INDEXES_COUNT = 20;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <span class="keyword">static</span> <span class="keywordtype">int</span> constexpr EMPTY = -1;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <span class="keyword">enum class</span> PieceIndex;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <span class="keywordtype">void</span> initializeTableAndWhitePlayer();</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  <span class="keywordtype">void</span> fillInitialBoard();</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  <span class="keywordtype">int</span> computeHashFromBoard();</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <span class="keywordtype">int</span> to1D(<a class="code" href="structChess_1_1Coordinates.html">Coordinates</a> <span class="keyword">const</span>&amp; coords);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <span class="keywordtype">bool</span> areWithinLimits(<a class="code" href="structChess_1_1Coordinates.html">Coordinates</a> <span class="keyword">const</span>&amp; coords);</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <span class="keywordtype">bool</span> isEnPassantRow(<span class="keywordtype">int</span> row);</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <span class="keywordtype">void</span> replace(<span class="keywordtype">int</span> coord1D, PieceIndex replacement);</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classChess_1_1ZobristHasher.html#afd73f95b97b2cec39618b18aac79f1ce">remove</a>(<span class="keywordtype">int</span> coord1D);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  PieceIndex constexpr movedEquivalent(PieceIndex idx);</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  std::optional&lt;PieceIndex&gt; getEnemyMovedPawn(PieceIndex pawn);</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  std::optional&lt;PieceIndex&gt; getEnPassantPawn(PieceIndex pawn);</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <span class="keywordtype">size_t</span> CHESSBOARD_AREA;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="keywordtype">int</span> MAX_ROW_NUM, MAX_COL_NUM;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  std::vector&lt;std::vector&lt;int&gt;&gt; table;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  std::vector&lt;int&gt; board;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <span class="keywordtype">int</span> currentHash = 0;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="keywordtype">int</span> coord1DEnPassant = EMPTY;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <span class="keywordtype">int</span> whitePlayerHash;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  PieceIndex beforeEnPassant;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  std::unordered_map&lt;int, PieceIndex&gt; pawnsBeforeEnPassant;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;};</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;}</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="preprocessor">#endif // ZOBRIST_H</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="aclassChess_1_1Piece_html_a9d05a36fce65a50dac5c478805381779"><div class="ttname"><a href="classChess_1_1Piece.html#a9d05a36fce65a50dac5c478805381779">Chess::Piece::Colour</a></div><div class="ttdeci">Colour</div><div class="ttdoc">Defines the colour of a piece.</div><div class="ttdef"><b>Definition:</b> Piece.hpp:15</div></div>
 <div class="ttc" id="aclassChess_1_1ZobristHasher_html_abe981796b63c583843ac7bee3e0d38b5"><div class="ttname"><a href="classChess_1_1ZobristHasher.html#abe981796b63c583843ac7bee3e0d38b5">Chess::ZobristHasher::ZobristHasher</a></div><div class="ttdeci">ZobristHasher(size_t width, size_t height)</div><div class="ttdoc">Constructs a hasher for a board of the given size.</div><div class="ttdef"><b>Definition:</b> Zobrist.cpp:23</div></div>
 <div class="ttc" id="astructChess_1_1Coordinates_html"><div class="ttname"><a href="structChess_1_1Coordinates.html">Chess::Coordinates</a></div><div class="ttdoc">Represents a pair of coordinates.</div><div class="ttdef"><b>Definition:</b> Utils.hpp:16</div></div>
-<div class="ttc" id="aclassChess_1_1ZobristHasher_html_a2e06c4d9dcb64308aecb2b323fa3d5b7"><div class="ttname"><a href="classChess_1_1ZobristHasher.html#a2e06c4d9dcb64308aecb2b323fa3d5b7">Chess::ZobristHasher::togglePlayer</a></div><div class="ttdeci">void togglePlayer()</div><div class="ttdoc">Changes the hash by toggling the current player. White always starts.</div><div class="ttdef"><b>Definition:</b> Zobrist.cpp:189</div></div>
+<div class="ttc" id="aclassChess_1_1ZobristHasher_html_a2e06c4d9dcb64308aecb2b323fa3d5b7"><div class="ttname"><a href="classChess_1_1ZobristHasher.html#a2e06c4d9dcb64308aecb2b323fa3d5b7">Chess::ZobristHasher::togglePlayer</a></div><div class="ttdeci">void togglePlayer()</div><div class="ttdoc">Changes the hash by toggling the current player. White always starts.</div><div class="ttdef"><b>Definition:</b> Zobrist.cpp:192</div></div>
 <div class="ttc" id="aclassChess_1_1ZobristHasher_html_a8f35f3e2939989d65e6245aa3b1b8990"><div class="ttname"><a href="classChess_1_1ZobristHasher.html#a8f35f3e2939989d65e6245aa3b1b8990">Chess::ZobristHasher::reset</a></div><div class="ttdeci">void reset()</div><div class="ttdoc">Resets the hasher to an initial configuration.</div><div class="ttdef"><b>Definition:</b> Zobrist.cpp:33</div></div>
-<div class="ttc" id="aclassChess_1_1ZobristHasher_html_a8d93b3a73d2f906ea3ab101947bd1425"><div class="ttname"><a href="classChess_1_1ZobristHasher.html#a8d93b3a73d2f906ea3ab101947bd1425">Chess::ZobristHasher::hash</a></div><div class="ttdeci">int hash()</div><div class="ttdoc">Returns the most recent hash.</div><div class="ttdef"><b>Definition:</b> Zobrist.cpp:77</div></div>
-<div class="ttc" id="aclassChess_1_1ZobristHasher_html_a437d31ec2edd4a699c9bd2b30d25b70e"><div class="ttname"><a href="classChess_1_1ZobristHasher.html#a437d31ec2edd4a699c9bd2b30d25b70e">Chess::ZobristHasher::pieceHasMoved</a></div><div class="ttdeci">void pieceHasMoved(Coordinates const &amp;source, Coordinates const &amp;destination)</div><div class="ttdoc">Updates the hash according to the specified move.</div><div class="ttdef"><b>Definition:</b> Zobrist.cpp:39</div></div>
-<div class="ttc" id="aclassChess_1_1ZobristHasher_html_ad25c37fa9bc2b8e209dde8041aaf71e0"><div class="ttname"><a href="classChess_1_1ZobristHasher.html#ad25c37fa9bc2b8e209dde8041aaf71e0">Chess::ZobristHasher::replacedWithPromotion</a></div><div class="ttdeci">void replacedWithPromotion(Coordinates const &amp;source, PromotionOption prom, Piece::Colour colour)</div><div class="ttdef"><b>Definition:</b> Zobrist.cpp:81</div></div>
+<div class="ttc" id="aclassChess_1_1ZobristHasher_html_afd73f95b97b2cec39618b18aac79f1ce"><div class="ttname"><a href="classChess_1_1ZobristHasher.html#afd73f95b97b2cec39618b18aac79f1ce">Chess::ZobristHasher::remove</a></div><div class="ttdeci">void remove(Coordinates const &amp;coordDeletion)</div><div class="ttdef"><b>Definition:</b> Zobrist.cpp:76</div></div>
+<div class="ttc" id="aclassChess_1_1ZobristHasher_html_a8d93b3a73d2f906ea3ab101947bd1425"><div class="ttname"><a href="classChess_1_1ZobristHasher.html#a8d93b3a73d2f906ea3ab101947bd1425">Chess::ZobristHasher::hash</a></div><div class="ttdeci">int hash()</div><div class="ttdoc">Returns the most recent hash.</div><div class="ttdef"><b>Definition:</b> Zobrist.cpp:80</div></div>
+<div class="ttc" id="aclassChess_1_1ZobristHasher_html_a437d31ec2edd4a699c9bd2b30d25b70e"><div class="ttname"><a href="classChess_1_1ZobristHasher.html#a437d31ec2edd4a699c9bd2b30d25b70e">Chess::ZobristHasher::pieceHasMoved</a></div><div class="ttdeci">void pieceHasMoved(Coordinates const &amp;source, Coordinates const &amp;destination)</div><div class="ttdoc">Updates the hash according to the specified move.</div><div class="ttdef"><b>Definition:</b> Zobrist.cpp:40</div></div>
+<div class="ttc" id="aclassChess_1_1ZobristHasher_html_ad25c37fa9bc2b8e209dde8041aaf71e0"><div class="ttname"><a href="classChess_1_1ZobristHasher.html#ad25c37fa9bc2b8e209dde8041aaf71e0">Chess::ZobristHasher::replacedWithPromotion</a></div><div class="ttdeci">void replacedWithPromotion(Coordinates const &amp;source, PromotionOption prom, Piece::Colour colour)</div><div class="ttdef"><b>Definition:</b> Zobrist.cpp:84</div></div>
 <div class="ttc" id="aclassChess_1_1ZobristHasher_html"><div class="ttname"><a href="classChess_1_1ZobristHasher.html">Chess::ZobristHasher</a></div><div class="ttdoc">An object capable of hashing a chessboard configuration.</div><div class="ttdef"><b>Definition:</b> Zobrist.hpp:16</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

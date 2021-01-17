@@ -196,13 +196,13 @@ MoveResult Board::move(Pawn& piece, Coordinates const& source,
   return move(source, destination,
     [this, &piece] (Coordinates const& source, Coordinates const& destination) {
       if (isValidEnPassant(piece, source, destination)) {
-          auto toEatRow = (destination.row == 2) ? 3 : MAX_ROW_NUM - 3;
-          Coordinates toEat(destination.column, toEatRow);
+          auto toCaptureRow = (destination.row == 2) ? 3 : MAX_ROW_NUM - 3;
+          Coordinates toCapture(destination.column, toCaptureRow);
           movesHistory.emplace(source, destination,
                                board[source]->getMovedStatus(),
                                board[source]->getColour(),
-                               std::move(board[toEat]), toEat);
-          board.erase(toEat);
+                               std::move(board[toCapture]), toCapture);
+          board.erase(toCapture);
           board[source]->setMovedStatus(true);
           board[destination] = std::move(board[source]);
           board.erase(source);
@@ -285,9 +285,14 @@ MoveResult Board::move(Coordinates const& source,
 
   zobrist.pieceHasMoved(source, destination);
   std::optional<std::string> capturedPieceName;
-  if (movesHistory.top().wasAPieceRemoved()) {
+  auto& lastMove = movesHistory.top();
+  if (lastMove.wasAPieceRemoved()) {
     countSincePawnMoveOrCapture = 0;
-    capturedPieceName = movesHistory.top().getRemovedPiece().getName();
+    capturedPieceName = lastMove.getRemovedPiece().getName();
+  }
+
+  if (lastMove.destination() != lastMove.removedPieceCoords()) { // en passant
+    zobrist.remove(lastMove.removedPieceCoords());
   }
 
   if (isPromotionPending()) {
@@ -805,4 +810,5 @@ std::ostream& operator<<(std::ostream& out, Board const& board) {
   printColumnLegend(out);
   return out << "\n\n";
 }
+
 }

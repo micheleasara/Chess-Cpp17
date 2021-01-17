@@ -2,16 +2,17 @@
 
 namespace Chess {
 PastMove::PastMove(Coordinates const& source, Coordinates const& destination,
-     bool sourceMoved, Piece::Colour player, std::unique_ptr<Piece> eatenPiece):
-            PastMove(source, destination, sourceMoved, player,
-                                         std::move(eatenPiece), destination) {}
+        bool sourceMoved, Piece::Colour player,
+        std::unique_ptr<Piece> capturedPiece):
+                              PastMove(source, destination, sourceMoved, player,
+                                       std::move(capturedPiece), destination) {}
 
 PastMove::PastMove(Coordinates const& source, Coordinates const& destination,
        bool sourceMoved, Piece::Colour player,
        std::unique_ptr<Piece> eatenPiece, Coordinates const& eatenCoords):
        m_source(source), m_destination(destination),
        m_sourceMovedStatus(sourceMoved), m_removedPieceCoords(eatenCoords),
-       m_playerColour(player), eatenPiece(std::move(eatenPiece)) {}
+       m_playerColour(player), capturedPiece(std::move(eatenPiece)) {}
 
 Coordinates const& PastMove::source() const {
   return m_source;
@@ -34,16 +35,16 @@ Piece::Colour const& PastMove::playerColour() const {
 }
 
 bool PastMove::wasAPieceRemoved() const {
-  return eatenPiece != nullptr;
+  return capturedPiece != nullptr;
 }
 
 std::unique_ptr<Piece> PastMove::transferRemovedPiece() {
-  return std::move(eatenPiece);
+  return std::move(capturedPiece);
 }
 
 Piece const& PastMove::getRemovedPiece() const {
-  if (eatenPiece) {
-    return *eatenPiece;
+  if (capturedPiece) {
+    return *capturedPiece;
   }
   throw std::logic_error("No piece was removed in this past move record");
 }

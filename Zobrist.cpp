@@ -31,6 +31,7 @@ ZobristHasher::ZobristHasher(size_t width, size_t height):
 }
 
 void ZobristHasher::reset() {
+  pawnsBeforeEnPassant.clear();
   initializeTableAndWhitePlayer();
   fillInitialBoard();
   currentHash = computeHashFromBoard();
@@ -38,40 +39,42 @@ void ZobristHasher::reset() {
 
 void ZobristHasher::pieceHasMoved(Coordinates const& source,
                                   Coordinates const& destination) {
-   auto src1D = to1D(source);
-   if (board[src1D] != EMPTY) {
-     auto dest1D = to1D(destination);
-     auto movedVersion = movedEquivalent(
-                          static_cast<ZobristHasher::PieceIndex>(board[src1D]));
+  auto src1D = to1D(source);
+  if (board[src1D] != EMPTY) {
+    auto dest1D = to1D(destination);
+    auto movedVersion = movedEquivalent(
+                        static_cast<ZobristHasher::PieceIndex>(board[src1D]));
+      
+    // reset en passant piece to what it was before
+    // regardless of the move, the right to en passant is gone
+    for (auto const& coordPiece : pawnsBeforeEnPassant) {
+      replace(coordPiece.first, coordPiece.second);
+    }
+    pawnsBeforeEnPassant.clear();
 
-     // reset en passant piece to what it was before
-     // regardless of the move, the right to en passant is gone
-     if (coord1DEnPassant != EMPTY) {
-       replace(coord1DEnPassant, beforeEnPassant);
-       coord1DEnPassant = EMPTY;
-     }
+    if (isEnPassantRow(destination.row)) {
+      auto left = Coordinates(destination.column-1, destination.row);
+      auto right = Coordinates(destination.column+1, destination.row);
+      std::vector<int> coords1D;
+      if (areWithinLimits(left)) coords1D.emplace_back(to1D(left));
+      if (areWithinLimits(right)) coords1D.emplace_back(to1D(right));
 
-     if (isEnPassantRow(destination.row)) {
-       auto left = Coordinates(destination.column-1, destination.row);
-       auto right = Coordinates(destination.column+1, destination.row);
-       std::vector<int> coords1D;
-       if (areWithinLimits(left)) coords1D.emplace_back(to1D(left));
-       if (areWithinLimits(right)) coords1D.emplace_back(to1D(right));
+      if (auto enemyPawnOpt = getEnemyMovedPawn(movedVersion)) {
+        for (auto const& coord1D : coords1D) {
+          if (board[coord1D] == static_cast<int>(*enemyPawnOpt)) {
+            pawnsBeforeEnPassant[coord1D] = *enemyPawnOpt;
+            replace(coord1D, *getEnPassantPawn(*enemyPawnOpt));
+          }
+        }
+      }
+    }
+    replace(dest1D, movedVersion);
+    remove(src1D);
+  }
+}
 
-       if (auto enemyPawnOpt = getEnemyMovedPawn(movedVersion)) {
-         for (auto const& coord1D : coords1D) {
-           if (board[coord1D] == static_cast<int>(*enemyPawnOpt)) {
-             beforeEnPassant = movedVersion;
-             replace(coord1D, *getEnPassantPawn(movedVersion));
-             coord1DEnPassant = coord1D;
-             break;
-           }
-         }
-       }
-     }
-     replace(dest1D, movedVersion);
-     remove(src1D);
-   }
+void ZobristHasher::remove(Coordinates const& coordDeletion) {
+  remove(to1D(coordDeletion));
 }
 
 int ZobristHasher::hash() {
@@ -86,7 +89,7 @@ void ZobristHasher::replacedWithPromotion(Coordinates const& source,
     replacement = (colour == Piece::Colour::White) ?
       PieceIndex::WhiteQueen : PieceIndex::BlackQueen; break;
   case PromotionOption::Bishop:
-    replacement = (colour == Piece::Colour::White) ? 
+    replacement = (colour == Piece::Colour::White) ?
       PieceIndex::WhiteBishop : PieceIndex::BlackBishop; break;
   case PromotionOption::Knight:
     replacement = (colour == Piece::Colour::White) ?
@@ -236,4 +239,5 @@ std::optional<ZobristHasher::PieceIndex>
       return std::nullopt;
   }
 }
+
 }
