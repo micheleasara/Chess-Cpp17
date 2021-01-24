@@ -26,13 +26,13 @@ TEST_F(PawnTest, pawnCannotMoveBackward) {
   EXPECT_FALSE(wPawn.isMovePlausible(Coordinates(4, 2), Coordinates(4, 1)));
 }
 
-TEST_F(PawnTest, pawnCannotMoveDiagonallyWithoutEating) {
+TEST_F(PawnTest, pawnCannotMoveDiagonallyWithoutCapturing) {
   auto& wPawn = board.getPieceAtCoordinates(Coordinates(4, 1))->get();
   EXPECT_FALSE(wPawn.isMovePlausible(Coordinates(4, 1), Coordinates(3, 2)));
   EXPECT_FALSE(wPawn.isMovePlausible(Coordinates(4, 1), Coordinates(2, 3)));
 }
 
-TEST_F(PawnTest, pawnCanMoveDiagonallyWhenEating) {
+TEST_F(PawnTest, pawnCanMoveDiagonallyWhenCapturing) {
   auto& wPawn = board.getPieceAtCoordinates(Coordinates(4, 1))->get();
   board.move("E2", "E4"); board.move("D7", "D5");
   EXPECT_TRUE(wPawn.isMovePlausible(Coordinates(4, 3), Coordinates(3, 4)));

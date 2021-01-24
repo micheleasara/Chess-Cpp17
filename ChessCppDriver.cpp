@@ -10,12 +10,33 @@ using Chess::Piece;
 using Chess::MoveResult;
 using Chess::CastlingType;
 
+/// Prints an explanation of how to undo a move to the output stream.
+void printUndoInstruction();
+
+/**
+ Requests to input a promotion type and returns the result of the promotion.
+ Returns an empty optional if the user decided to undo the last move.
+ The user will be prompted until a valid input is entered.
+*/
+std::optional<MoveResult> promptForPromotion(Board& cb);
+
+/// Returns the corresponding promotion option, or an empty optional if invalid.
 std::optional<PromotionOption> strToPromotionPiece(std::string const& piece);
+
+/// Prints a message to the output stream in case of special state (eg check).
 void printIfSpecialState(MoveResult::GameState state,
                         std::string const& opponent);
+
+/// Prints a message to the output stream describing which castling occurred.
 void printCastlingMessage(CastlingType type, std::string const& player);
+
+/// Asks the user if they wish to claim a draw, and does the claim if so.
 void promptForDraw(Board& cb);
+
+/// Asks the user if they wish to reset the game, and resets the game if so.
 void promptToReset(Board& cb);
+
+std::string const UNDO_STR = "undo";
 
 int main() {
     using namespace std;
@@ -36,9 +57,20 @@ int main() {
         cout << "It's " << currentPlayer << "'s turn.\n";
 
         cout << "Please input source coordinates (e.g. A2)\n";
+        printUndoInstruction();
         getline(cin, source);
+        if (source == UNDO_STR) {
+          cb.undoLastMove();
+          continue;
+        }
+
         cout << "Please input destination coordinates (e.g. A3)\n";
+        printUndoInstruction();
         getline(cin, dest);
+        if (dest == UNDO_STR) {
+          cb.undoLastMove();
+          continue;
+        }
 
         auto result = cb.move(source, dest);
         if (auto castlingType = result.castlingType()) {
@@ -47,22 +79,19 @@ int main() {
           auto destCoord = Board::stringToCoordinates(dest);
           if (auto movedPiece = cb.getPieceAtCoordinates(destCoord)) {
             cout << *movedPiece << " moves from " << source << " to " << dest;
-            if (auto eatenName = result.capturedPieceName()) {
-              cout << " taking " << opponent << "'s " << *eatenName;
+            if (auto capturedName = result.capturedPieceName()) {
+              cout << " taking " << opponent << "'s " << *capturedName;
             }
             cout << "\n";
           }
         }
 
-        while (cb.isPromotionPending()) {
-          cout << cb;
-          cout << "\nPlease enter a valid piece for pawn promotion.\n";
-          cout << "Possible options: knight, rook, bishop, and queen.\n";
-          string promotionInput;
-          getline(std::cin, promotionInput);
-
-          if (auto piece = strToPromotionPiece(promotionInput)) {
-            result = cb.promote(*piece);
+        if (cb.isPromotionPending()) {
+          if (auto promotionMoveResult = promptForPromotion(cb)) {
+            result = *promotionMoveResult;
+          } else {
+            cb.undoLastMove();
+            continue;
           }
         }
 
@@ -80,6 +109,30 @@ int main() {
         cout << e.what() << "\n";
       }
     }
+}
+
+void printUndoInstruction() {
+  std::cout << "Enter '" << UNDO_STR << "' to undo the last move.\n";
+}
+
+std::optional<MoveResult> promptForPromotion(Board& cb) {
+  std::optional<MoveResult> result = std::nullopt;
+  while (cb.isPromotionPending()) {
+    std::cout << cb;
+    std::cout << "\nPlease enter a valid piece for pawn promotion.\n";
+    std::cout << "Possible options: knight, rook, bishop, and queen.\n";
+    printUndoInstruction();
+
+    std::string promotionInput;
+    std::getline(std::cin, promotionInput);
+    if (promotionInput == UNDO_STR) {
+      break;
+    } else if (auto piece = strToPromotionPiece(promotionInput)) {
+      auto resultOpt = cb.promote(*piece);
+      result = *resultOpt;
+    }
+  }
+  return result;
 }
 
 void printCastlingMessage(CastlingType type, std::string const& player) {

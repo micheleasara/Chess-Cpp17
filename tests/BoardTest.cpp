@@ -173,7 +173,7 @@ TEST_F(BoardTest, gameCanStalemate) {
   EXPECT_TRUE(board.isGameOver());
 }
 
-TEST_F(BoardTest, canPromoteWithoutEatingInTheLastMove) {
+TEST_F(BoardTest, canPromoteWithoutCapturingInTheLastMove) {
   movePawnsForPromotion();
   board.move("E2", "E3"); board.move("B7", "B6");
   board.move("G1", "H3"); board.move("C8", "B7");
@@ -190,7 +190,7 @@ TEST_F(BoardTest, canPromoteWithoutEatingInTheLastMove) {
   EXPECT_EQ(result.gameState(), MoveResult::GameState::AWAITING_PROMOTION);
 }
 
-TEST_F(BoardTest, canPromoteByEatingInTheLastMove) {
+TEST_F(BoardTest, canPromoteByCapturingInTheLastMove) {
   movePawnsForPromotion();
   auto result = board.move("C7", "B8");
   EXPECT_TRUE(board.isPromotionPending());
@@ -215,7 +215,7 @@ TEST_F(BoardTest, whiteCanPromoteAndPutBlackInCheck) {
   movePawnsForPromotion();
   board.move("C7", "D8");
   auto result = board.promote(PromotionOption::Queen);
-  EXPECT_EQ(result.gameState(), MoveResult::GameState::OPPONENT_IN_CHECK);
+  EXPECT_EQ(result->gameState(), MoveResult::GameState::OPPONENT_IN_CHECK);
 }
 
 TEST_F(BoardTest, blackCanPromoteAndPutWhiteInCheck) {
@@ -224,7 +224,7 @@ TEST_F(BoardTest, blackCanPromoteAndPutWhiteInCheck) {
 
   board.move("G2", "F1");
   auto result = board.promote(PromotionOption::Rook);
-  EXPECT_EQ(result.gameState(), MoveResult::GameState::OPPONENT_IN_CHECK);
+  EXPECT_EQ(result->gameState(), MoveResult::GameState::OPPONENT_IN_CHECK);
 }
 
 TEST_F(BoardTest, threeFoldRepetitionAllowsToClaimDraw) {
@@ -341,6 +341,182 @@ TEST_F(BoardTest, cannotCastleIfRookHasMoved) {
 
   auto& whiteK = board.getPieceAtCoordinates(Coordinates(4, 0))->get();
   moveAndTestThrow("E1", "G1", InvalidMove::ErrorCode::PIECE_LOGIC_ERROR);
+}
+
+TEST_F(BoardTest, undoingWithNoRecordedMovesDoesNothing) {
+  EXPECT_NO_THROW(board.undoLastMove());
+}
+
+TEST_F(BoardTest, canUndoNonCapturingMove) {
+  auto& piece = board.getPieceAtCoordinates(Coordinates(6, 0))->get();
+  auto hasMoved = piece.getMovedStatus();
+  board.move("G1", "F3");
+
+  board.undoLastMove();
+  auto& expectedPieceOpt = board.getPieceAtCoordinates(Coordinates(6, 0));
+  ASSERT_TRUE(expectedPieceOpt.has_value());
+  EXPECT_EQ(&(expectedPieceOpt->get()), &piece);
+  EXPECT_EQ(hasMoved, piece.getMovedStatus());
+  EXPECT_FALSE(board.getPieceAtCoordinates(Coordinates(5, 2)).has_value());
+}
+
+TEST_F(BoardTest, canUndoCapturingMove) {
+  board.move("A2", "A4"); board.move("B7", "B5");
+  auto& capturingPiece = board.getPieceAtCoordinates(Coordinates(0, 3))->get();
+  auto& capturedPiece = board.getPieceAtCoordinates(Coordinates(1, 4))->get();
+  board.move("A4", "B5");
+
+  board.undoLastMove();
+  auto& expectedCaptured = board.getPieceAtCoordinates(Coordinates(1, 4));
+  ASSERT_TRUE(expectedCaptured.has_value());
+  EXPECT_EQ(&(expectedCaptured->get()), &capturedPiece);
+
+  auto& expectedCapturing = board.getPieceAtCoordinates(Coordinates(0, 3));
+  ASSERT_TRUE(expectedCapturing.has_value());
+  EXPECT_EQ(&(expectedCapturing->get()), &capturingPiece);
+}
+
+TEST_F(BoardTest, canUndoEnPassant) {
+  board.move("E2", "E4"); board.move("H7", "H5");
+  board.move("E4", "E5"); board.move("D7", "D5");
+  auto& wPawn = board.getPieceAtCoordinates(Coordinates(4, 4))->get();
+  auto& bPawn = board.getPieceAtCoordinates(Coordinates(3, 4))->get();
+  board.move("E5", "D6");
+
+  board.undoLastMove();
+  auto& expectedWPawnOpt = board.getPieceAtCoordinates(Coordinates(4, 4));
+  auto& expectedBPawnOpt = board.getPieceAtCoordinates(Coordinates(3, 4));
+  ASSERT_TRUE(expectedBPawnOpt.has_value());
+  ASSERT_TRUE(expectedWPawnOpt.has_value());
+  EXPECT_EQ(&(expectedBPawnOpt->get()), &bPawn);
+  EXPECT_EQ(&(expectedWPawnOpt->get()), &wPawn);
+  EXPECT_FALSE(board.getPieceAtCoordinates(Coordinates(3, 5)).has_value());
+
+}
+
+TEST_F(BoardTest, canUndoCastlingKingSide) {
+  board.move("G1", "F3"); board.move("G8", "F6");
+  board.move("G2", "G3"); board.move("G7", "G6");
+  board.move("F1", "G2"); board.move("F8", "G7");
+  board.move("E1", "G1");
+  auto& whiteK = board.getPieceAtCoordinates(Coordinates(6, 0))->get();
+  auto& whiteR = board.getPieceAtCoordinates(Coordinates(5, 0))->get();
+
+  board.undoLastMove();
+  auto& expectedWhiteK = board.getPieceAtCoordinates(Coordinates(4, 0))->get();
+  auto& expectedWhiteR = board.getPieceAtCoordinates(Coordinates(7, 0))->get();
+  EXPECT_EQ(&whiteK, &expectedWhiteK);
+  EXPECT_EQ(&whiteR, &expectedWhiteR);
+  EXPECT_FALSE(whiteK.getMovedStatus());
+  EXPECT_FALSE(whiteR.getMovedStatus());
+}
+
+TEST_F(BoardTest, canUndoCastlingQueenSide) {
+  board.move("B2", "B3"); board.move("B7", "B6");
+  board.move("C2", "C3"); board.move("C7", "C6");
+  board.move("C1", "B2"); board.move("C8", "B7");
+  board.move("B1", "A3"); board.move("B8", "A6");
+  board.move("D1", "C2"); board.move("D8", "C7");
+  board.move("E1", "C1");
+  auto& whiteK = board.getPieceAtCoordinates(Coordinates(2, 0))->get();
+  auto& whiteR = board.getPieceAtCoordinates(Coordinates(3, 0))->get();
+
+  board.undoLastMove();
+  auto& expectedWhiteK = board.getPieceAtCoordinates(Coordinates(4, 0))->get();
+  auto& expectedWhiteR = board.getPieceAtCoordinates(Coordinates(0, 0))->get();
+  EXPECT_EQ(&whiteK, &expectedWhiteK);
+  EXPECT_EQ(&whiteR, &expectedWhiteR);
+  EXPECT_FALSE(whiteK.getMovedStatus());
+  EXPECT_FALSE(whiteR.getMovedStatus());
+}
+
+TEST_F(BoardTest, canUndoPromotion) {
+  movePawnsForPromotion();
+  board.move("E2", "E3"); board.move("B7", "B6");
+  board.move("G1", "H3"); board.move("C8", "B7");
+  board.move("C7", "C8");
+  auto& pawn = board.getPieceAtCoordinates(Coordinates(2, 7))->get();
+  board.promote(PromotionOption::Queen);
+
+  board.undoLastMove();
+  EXPECT_FALSE(board.isPromotionPending());
+  auto& expectedPawnOpt = board.getPieceAtCoordinates(Coordinates(2, 6));
+  ASSERT_TRUE(expectedPawnOpt.has_value());
+  EXPECT_EQ(&(expectedPawnOpt->get()), &pawn);
+  EXPECT_FALSE(board.getPieceAtCoordinates(Coordinates(2, 7)).has_value());
+}
+
+TEST_F(BoardTest, canUndoStalemate) {
+  board.move("E2", "E3"); board.move("A7", "A5");
+  board.move("D1", "H5"); board.move("A8", "A6");
+  board.move("H5", "A5"); board.move("H7", "H5");
+  board.move("A5", "C7"); board.move("A6", "H6");
+  board.move("H2", "H4"); board.move("F7", "F6");
+  board.move("C7", "D7"); board.move("E8", "F7");
+  board.move("D7", "B7"); board.move("D8", "D3");
+  board.move("B7", "B8"); board.move("D3", "H7");
+  board.move("B8", "C8"); board.move("F7", "G6");
+  auto state = board.move("C8", "E6").gameState();
+  EXPECT_EQ(state, MoveResult::GameState::STALEMATE);
+  EXPECT_TRUE(board.isGameOver());
+
+  board.undoLastMove();
+  state = board.move("A2", "A3").gameState();
+  EXPECT_EQ(state, MoveResult::GameState::NORMAL);
+  EXPECT_FALSE(board.isGameOver());
+}
+
+TEST_F(BoardTest, canUndoThreeFoldRepetition) {
+  doThreeFoldRepetition();
+  EXPECT_TRUE(board.drawCanBeClaimed());
+
+  board.undoLastMove();
+  EXPECT_FALSE(board.drawCanBeClaimed());
+}
+
+TEST_F(BoardTest, canUndoFiveFoldRepetition) {
+  doThreeFoldRepetition();
+  board.move("D1", "D2"); board.move("D8", "D7");
+  board.move("D2", "D1"); board.move("D7", "D8");
+  board.move("D1", "D2"); board.move("D8", "D7");
+  board.move("D2", "D1");
+  auto state = board.move("D7", "D8").gameState();
+  EXPECT_EQ(state, MoveResult::GameState::FIVEFOLD_REPETITION_DRAW);
+  EXPECT_TRUE(board.isGameOver());
+
+  board.undoLastMove();
+  EXPECT_FALSE(board.isGameOver());
+  state = board.move("F7", "F6").gameState();
+  EXPECT_EQ(state, MoveResult::GameState::NORMAL);
+}
+
+TEST_F(BoardTest, canUndoCheck) {
+  board.move("E2", "E4"); board.move("E7", "E6");
+  board.move("D2", "D4"); board.move("D7", "D5");
+  board.move("B1", "C3"); board.move("F8", "B4");
+  board.move("F1", "D3");
+  auto state = board.move("B4", "C3").gameState();
+  EXPECT_EQ(state, MoveResult::GameState::OPPONENT_IN_CHECK);
+
+  board.undoLastMove();
+  state = board.move("A7", "A6").gameState();
+  EXPECT_EQ(state, MoveResult::GameState::NORMAL);
+  EXPECT_NO_THROW(board.move("F2", "F3"));
+}
+
+TEST_F(BoardTest, canUndoCheckmate) {
+  board.move("E2", "E4");
+  board.move("F7", "F6");
+  board.move("D2", "D3");
+  board.move("G7", "G5");
+  auto state = board.move("D1", "H5").gameState();
+  EXPECT_EQ(state, MoveResult::GameState::OPPONENT_IN_CHECKMATE);
+  EXPECT_TRUE(board.isGameOver());
+
+  board.undoLastMove();
+  state = board.move("A2", "A3").gameState();
+  EXPECT_EQ(state, MoveResult::GameState::NORMAL);
+  EXPECT_FALSE(board.isGameOver());
 }
 
 TEST_F(BoardTest, canClaimDrawAccordingToFiftyMovesRule) {

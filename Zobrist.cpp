@@ -2,7 +2,6 @@
 #include <cstdlib>
 #include <unordered_set>
 #include <ctime>
-#include <type_traits>
 
 namespace Chess {
 enum class ZobristHasher::PieceIndex : int {
@@ -20,6 +19,31 @@ enum class ZobristHasher::PieceIndex : int {
   BlackKnight
 };
 
+struct ZobristHasher::PastMove {
+  PastMove(ZobristHasher const& hasher,
+           int src1D, int dest1D, int removedContent = EMPTY):
+                    PastMove(hasher, src1D, dest1D, removedContent, dest1D) {}
+  PastMove(ZobristHasher const& hasher,
+           int src1D, int dest1D, int removedContent, int removedCoords):
+            source(src1D),
+            destination(dest1D),
+            removedCoords(removedCoords),
+            sourceContent(hasher.board[src1D]),
+            destinationContent(hasher.board[dest1D]),
+            removedContent(removedContent),
+            pawnsBeforeEnPassant(hasher.pawnsBeforeEnPassant), 
+            hashBeforeMove(hasher.currentHash) {}
+
+  int source = 0;
+  int destination = 0;
+  int removedCoords = 0;
+  int sourceContent = EMPTY;
+  int destinationContent = EMPTY;
+  int removedContent = EMPTY;
+  std::unordered_map<int, PieceIndex> pawnsBeforeEnPassant;
+  int hashBeforeMove = 0;
+};
+
 ZobristHasher::ZobristHasher(size_t width, size_t height):
     CHESSBOARD_AREA(width*height), MAX_ROW_NUM(height-1), MAX_COL_NUM(width-1),
     table(CHESSBOARD_AREA, std::vector<int>(PIECE_INDEXES_COUNT, EMPTY)),
@@ -31,50 +55,56 @@ ZobristHasher::ZobristHasher(size_t width, size_t height):
 }
 
 void ZobristHasher::reset() {
-  pawnsBeforeEnPassant.clear();
+  movesHistory.clear();
   initializeTableAndWhitePlayer();
   fillInitialBoard();
   currentHash = computeHashFromBoard();
 }
 
-void ZobristHasher::pieceHasMoved(Coordinates const& source,
+void ZobristHasher::pieceMoved(Coordinates const& source,
                                   Coordinates const& destination) {
-  auto src1D = to1D(source);
-  if (board[src1D] != EMPTY) {
-    auto dest1D = to1D(destination);
-    auto movedVersion = movedEquivalent(
-                        static_cast<ZobristHasher::PieceIndex>(board[src1D]));
-      
-    // reset en passant piece to what it was before
-    // regardless of the move, the right to en passant is gone
-    for (auto const& coordPiece : pawnsBeforeEnPassant) {
-      replace(coordPiece.first, coordPiece.second);
-    }
-    pawnsBeforeEnPassant.clear();
+   auto src1D = to1D(source);
+   if (board[src1D] != EMPTY) {
+     auto dest1D = to1D(destination);
+     auto movedVersion = movedEquivalent(
+                          static_cast<ZobristHasher::PieceIndex>(board[src1D]));
+     auto stateBeforeMove = PastMove(*this, src1D, dest1D);
 
-    if (isEnPassantRow(destination.row)) {
-      auto left = Coordinates(destination.column-1, destination.row);
-      auto right = Coordinates(destination.column+1, destination.row);
-      std::vector<int> coords1D;
-      if (areWithinLimits(left)) coords1D.emplace_back(to1D(left));
-      if (areWithinLimits(right)) coords1D.emplace_back(to1D(right));
+     // reset en passant piece to what it was before
+     // regardless of the move, the right to en passant is gone
+     for (auto const& coordPiece : pawnsBeforeEnPassant) {
+       replace(coordPiece.first, coordPiece.second);
+     }
+     pawnsBeforeEnPassant.clear();
 
-      if (auto enemyPawnOpt = getEnemyMovedPawn(movedVersion)) {
-        for (auto const& coord1D : coords1D) {
-          if (board[coord1D] == static_cast<int>(*enemyPawnOpt)) {
-            pawnsBeforeEnPassant[coord1D] = *enemyPawnOpt;
-            replace(coord1D, *getEnPassantPawn(*enemyPawnOpt));
-          }
-        }
-      }
-    }
-    replace(dest1D, movedVersion);
-    remove(src1D);
-  }
+     if (isEnPassantRow(destination.row)) {
+       auto left = Coordinates(destination.column-1, destination.row);
+       auto right = Coordinates(destination.column+1, destination.row);
+       std::vector<int> coords1D;
+       if (areWithinLimits(left)) coords1D.emplace_back(to1D(left));
+       if (areWithinLimits(right)) coords1D.emplace_back(to1D(right));
+
+       if (auto enemyPawnOpt = getEnemyMovedPawn(movedVersion)) {
+         for (auto const& coord1D : coords1D) {
+           if (board[coord1D] == static_cast<int>(*enemyPawnOpt)) {
+             pawnsBeforeEnPassant[coord1D] = *enemyPawnOpt;
+             replace(coord1D, *getEnPassantPawn(*enemyPawnOpt));
+           }
+         }
+       }
+     }
+     replace(dest1D, movedVersion);
+     remove(src1D);
+     movesHistory.emplace_back(stateBeforeMove);
+   }
 }
 
-void ZobristHasher::remove(Coordinates const& coordDeletion) {
-  remove(to1D(coordDeletion));
+void ZobristHasher::removed(Coordinates const& coords) {
+  auto coords1D = to1D(coords);
+  if (board[coords1D] != EMPTY) {
+    movesHistory.emplace_back(*this, coords1D, coords1D);
+    remove(coords1D);
+  }
 }
 
 int ZobristHasher::hash() {
@@ -89,7 +119,7 @@ void ZobristHasher::replacedWithPromotion(Coordinates const& source,
     replacement = (colour == Piece::Colour::White) ?
       PieceIndex::WhiteQueen : PieceIndex::BlackQueen; break;
   case PromotionOption::Bishop:
-    replacement = (colour == Piece::Colour::White) ?
+    replacement = (colour == Piece::Colour::White) ? 
       PieceIndex::WhiteBishop : PieceIndex::BlackBishop; break;
   case PromotionOption::Knight:
     replacement = (colour == Piece::Colour::White) ?
@@ -100,7 +130,10 @@ void ZobristHasher::replacedWithPromotion(Coordinates const& source,
   default:
     throw std::logic_error("Promotion not implemented correctly");
   }
-  replace(to1D(source), replacement);
+  auto src1D = to1D(source);
+  auto stateBeforeMove = PastMove(*this, src1D, src1D);
+  replace(src1D, replacement);
+  movesHistory.emplace_back(stateBeforeMove);
 }
 
 void ZobristHasher::initializeTableAndWhitePlayer() {
@@ -239,5 +272,32 @@ std::optional<ZobristHasher::PieceIndex>
       return std::nullopt;
   }
 }
+
+void ZobristHasher::restorePreviousHash() {
+  if (!movesHistory.empty()) {
+    auto& lastMove = movesHistory.back();
+    auto piece = static_cast<PieceIndex>(lastMove.sourceContent);
+    replace(lastMove.source, piece);
+
+    if (lastMove.destinationContent == EMPTY) {
+      remove(lastMove.destination);
+    } else {
+      replace(lastMove.destination,
+              static_cast<PieceIndex>(lastMove.destinationContent));
+    }
+
+    pawnsBeforeEnPassant = lastMove.pawnsBeforeEnPassant;
+    for (auto const& coordPiece : lastMove.pawnsBeforeEnPassant) {
+      if (auto pawnEnPassant = getEnPassantPawn(coordPiece.second)) {
+        replace(coordPiece.first, *pawnEnPassant);
+      }
+    }
+    currentHash = lastMove.hashBeforeMove;
+    
+    movesHistory.pop_back();
+  }
+}
+
+ZobristHasher::~ZobristHasher() = default;
 
 }

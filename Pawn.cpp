@@ -19,7 +19,7 @@ bool Pawn::isMovePlausibleSpecific(Coordinates const& source,
   forwardSteps *= (getColour() == Colour::White) ? 1 : -1;
   auto piece = board.getPieceAtCoordinates(destination);
 
-  // return true only for: normal pawn step, eating one step diagonally,
+  // return true only for: normal pawn step, capturing one step diagonally,
   // double step as first move and en passant
   if (forwardSteps == 1 && horizontalSteps == 0 && !piece) {
     return true;
