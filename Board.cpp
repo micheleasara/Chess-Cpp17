@@ -510,6 +510,9 @@ bool Board::isMaterialSufficient() const {
   if (board.size() <= 2) {
     return false;
   }
+  if (board.size() > 4) {
+    return true;
+  }
 
   std::vector<std::reference_wrapper<Piece>> whites;
   std::vector<std::reference_wrapper<Piece>> blacks;
