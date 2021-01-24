@@ -66,6 +66,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="classChess_1_1ZobristHasher-members.html">List of all members</a>  </div>
@@ -79,6 +80,11 @@ $(function() {
 
 <p><code>#include &lt;<a class="el" href="Zobrist_8hpp_source.html">Zobrist.hpp</a>&gt;</code></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structChess_1_1ZobristHasher_1_1PastMove.html">PastMove</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
 <tr class="memitem:a870dbaca220134af48d370a9533819c5"><td class="memItemLeft" align="right" valign="top"><a id="a870dbaca220134af48d370a9533819c5"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>PieceIndex</b> : int { <br />
@@ -116,16 +122,16 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1ZobristHasher.html#abe981796b63c583843ac7bee3e0d38b5">ZobristHasher</a> (size_t width, size_t height)</td></tr>
 <tr class="memdesc:abe981796b63c583843ac7bee3e0d38b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a hasher for a board of the given size. <br /></td></tr>
 <tr class="separator:abe981796b63c583843ac7bee3e0d38b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a437d31ec2edd4a699c9bd2b30d25b70e"><td class="memItemLeft" align="right" valign="top"><a id="a437d31ec2edd4a699c9bd2b30d25b70e"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1ZobristHasher.html#a437d31ec2edd4a699c9bd2b30d25b70e">pieceHasMoved</a> (<a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;source, <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;destination)</td></tr>
-<tr class="memdesc:a437d31ec2edd4a699c9bd2b30d25b70e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the hash according to the specified move. <br /></td></tr>
-<tr class="separator:a437d31ec2edd4a699c9bd2b30d25b70e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afd73f95b97b2cec39618b18aac79f1ce"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1ZobristHasher.html#afd73f95b97b2cec39618b18aac79f1ce">remove</a> (<a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;coordDeletion)</td></tr>
-<tr class="separator:afd73f95b97b2cec39618b18aac79f1ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a3fb368c3c3845d18a18b56a5b2ca3d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1ZobristHasher.html#a9a3fb368c3c3845d18a18b56a5b2ca3d">pieceMoved</a> (<a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;source, <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;destination)</td></tr>
+<tr class="separator:a9a3fb368c3c3845d18a18b56a5b2ca3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d93b3a73d2f906ea3ab101947bd1425"><td class="memItemLeft" align="right" valign="top"><a id="a8d93b3a73d2f906ea3ab101947bd1425"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1ZobristHasher.html#a8d93b3a73d2f906ea3ab101947bd1425">hash</a> ()</td></tr>
 <tr class="memdesc:a8d93b3a73d2f906ea3ab101947bd1425"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the most recent hash. <br /></td></tr>
 <tr class="separator:a8d93b3a73d2f906ea3ab101947bd1425"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f0ae358bc43292264f780cb6630e5b7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1ZobristHasher.html#a7f0ae358bc43292264f780cb6630e5b7">restorePreviousHash</a> ()</td></tr>
+<tr class="separator:a7f0ae358bc43292264f780cb6630e5b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8481f3ab108125617141baf069012aff"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1ZobristHasher.html#a8481f3ab108125617141baf069012aff">removed</a> (<a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;coords)</td></tr>
+<tr class="separator:a8481f3ab108125617141baf069012aff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad25c37fa9bc2b8e209dde8041aaf71e0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1ZobristHasher.html#ad25c37fa9bc2b8e209dde8041aaf71e0">replacedWithPromotion</a> (<a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;source, PromotionOption prom, <a class="el" href="classChess_1_1Piece.html#a9d05a36fce65a50dac5c478805381779">Piece::Colour</a> colour)</td></tr>
 <tr class="separator:ad25c37fa9bc2b8e209dde8041aaf71e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8f35f3e2939989d65e6245aa3b1b8990"><td class="memItemLeft" align="right" valign="top"><a id="a8f35f3e2939989d65e6245aa3b1b8990"></a>
@@ -140,22 +146,51 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>An object capable of hashing a chessboard configuration. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="afd73f95b97b2cec39618b18aac79f1ce"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afd73f95b97b2cec39618b18aac79f1ce">&#9670;&nbsp;</a></span>remove()</h2>
+<a id="a9a3fb368c3c3845d18a18b56a5b2ca3d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9a3fb368c3c3845d18a18b56a5b2ca3d">&#9670;&nbsp;</a></span>pieceMoved()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void Chess::ZobristHasher::remove </td>
+          <td class="memname">void Chess::ZobristHasher::pieceMoved </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;&#160;</td>
-          <td class="paramname"><em>coordDeletion</em></td><td>)</td>
+          <td class="paramname"><em>source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;&#160;</td>
+          <td class="paramname"><em>destination</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Updates the hash by considering the piece at the source to have moved to the destination provided. </p>
+
+</div>
+</div>
+<a id="a8481f3ab108125617141baf069012aff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8481f3ab108125617141baf069012aff">&#9670;&nbsp;</a></span>removed()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Chess::ZobristHasher::removed </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;&#160;</td>
+          <td class="paramname"><em>coords</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Updates the hash by deleting the piece at the specified coordinates. The hash does not change in case of deletion of an empty square. </p>
+<p>Updates the hash by considering the piece at the specified coordinates to have been removed. The hash does not change in case of deletion of an empty square. </p>
 
 </div>
 </div>
@@ -191,6 +226,24 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
       </table>
 </div><div class="memdoc">
 <p>Updates the hash by assuming the source given to be replaced with a promotion piece. </p>
+
+</div>
+</div>
+<a id="a7f0ae358bc43292264f780cb6630e5b7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7f0ae358bc43292264f780cb6630e5b7">&#9670;&nbsp;</a></span>restorePreviousHash()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Chess::ZobristHasher::restorePreviousHash </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Restores the hasher to the state before the last change. Does nothing if called with no change has occurred yet. </p>
 
 </div>
 </div>

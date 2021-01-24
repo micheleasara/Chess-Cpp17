@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['wasapieceremoved_156',['wasAPieceRemoved',['../classChess_1_1PastMove.html#a1a37bc4a8ce71fcae1538abad0c1899b',1,'Chess::PastMove']]]
+  ['undolastmove_144',['undoLastMove',['../classChess_1_1Board.html#a0134a0169503e0177e180d2ab1dbf3b6',1,'Chess::Board']]]
 ];

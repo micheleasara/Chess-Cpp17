@@ -44,7 +44,7 @@ namespace Chess {
     /// Defines the horizontal printing space used for a square of the board.
     static int constexpr H_PRINT_SIZE = 15;
 
-    // Checks if the coordinates are within a chessboard.
+    /// Checks if the coordinates are within a chessboard.
     static bool areWithinLimits(Coordinates const& coord);
     /// Checks if the coordinates are in the same row.
     static bool areInSameRow(Coordinates const& coord1,

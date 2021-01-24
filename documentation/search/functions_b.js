@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['piece_140',['Piece',['../classChess_1_1Piece.html#a349d5ae518b3320e119f8da3a63f2e32',1,'Chess::Piece']]],
-  ['piecehasmoved_141',['pieceHasMoved',['../classChess_1_1ZobristHasher.html#a437d31ec2edd4a699c9bd2b30d25b70e',1,'Chess::ZobristHasher']]],
-  ['playercolour_142',['playerColour',['../classChess_1_1PastMove.html#a8628b14cf6a63779b0a57c514cf4dae3',1,'Chess::PastMove']]],
-  ['promote_143',['promote',['../classChess_1_1Board.html#ab2fd43028167685e50fcc1632d78da50',1,'Chess::Board']]]
+  ['piece_132',['Piece',['../classChess_1_1Piece.html#a349d5ae518b3320e119f8da3a63f2e32',1,'Chess::Piece']]],
+  ['piecemoved_133',['pieceMoved',['../classChess_1_1ZobristHasher.html#a9a3fb368c3c3845d18a18b56a5b2ca3d',1,'Chess::ZobristHasher']]],
+  ['promote_134',['promote',['../classChess_1_1Board.html#aa46df720e3eae85b80de7e31e1db165a',1,'Chess::Board']]]
 ];
