@@ -715,6 +715,7 @@ void Board::undoLastMove() {
          movesHistory.back().source == movesHistory.back().destination) {
       revertLastPieceMovement();
       movesHistory.pop_back();
+      zobrist.restorePreviousHash();
     }
     revertLastPieceMovement();
 
