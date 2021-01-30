@@ -320,6 +320,7 @@ MoveResult Board::move(Coordinates const& source,
 
   if (isKingInCheck(currentPlayer())) {
     std::stringstream ss;
+    promotionSource.reset();
     revertLastPieceMovement();
     movesHistory.pop_back();
     countSincePawnMoveOrCapture = tmpCount;
@@ -743,7 +744,7 @@ void Board::revertLastPieceMovement() {
   board.erase(dest);
 
   if (lastMove.removedPiece != nullptr) {
-    auto target = dest;
+    Coordinates target = dest;
     if (lastMove.removedPieceCoords != lastMove.destination) { // en passant
       target = lastMove.removedPieceCoords;
     }
