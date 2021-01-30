@@ -5,9 +5,7 @@
 #include <vector>
 #include <ostream>
 #include <memory>
-#include <stack>
 #include <optional>
-#include <bitset>
 #include "Piece.hpp"
 #include "Utils.hpp"
 #include "Exceptions.hpp"
