@@ -620,9 +620,9 @@ OptionalRef<Piece> Board::getPieceAtCoordinates(
 }
 
 Coordinates Board::getPieceCoordinates(Piece const& piece) const {
-  for (auto const& pair : board) {
-    if (pair.second.get() == &piece) {
-      return pair.first;
+  for (auto const& [coord, otherPiece] : board) {
+    if (otherPiece.get() == &piece) {
+      return coord;
     }
   }
 
@@ -633,13 +633,10 @@ Coordinates Board::getPieceCoordinates(Piece const& piece) const {
 bool Board::isKingInCheck(Piece::Colour kingColour) const {
   Coordinates kingCoord = getPieceCoordinates(kings.at(kingColour));
 
-  for (auto const& pair : board) {
-    Coordinates pieceCoord = pair.first;
-    auto& piece = pair.second;
-
+  for (auto const& [coord, piece] : board) {
     // check if an enemy piece can move where the king is
     if (piece->getColour() != kingColour &&
-      piece->isMovePlausible(pieceCoord, kingCoord)) {
+      piece->isMovePlausible(coord, kingCoord)) {
       return true;
     }
   }

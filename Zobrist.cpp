@@ -72,8 +72,8 @@ void ZobristHasher::pieceMoved(Coordinates const& source,
 
      // reset en passant piece to what it was before
      // regardless of the move, the right to en passant is gone
-     for (auto const& coordPiece : pawnsBeforeEnPassant) {
-       replace(coordPiece.first, coordPiece.second);
+     for (auto const& [coord, piece] : pawnsBeforeEnPassant) {
+       replace(coord, piece);
      }
      pawnsBeforeEnPassant.clear();
 
@@ -287,9 +287,9 @@ void ZobristHasher::restorePreviousHash() {
     }
 
     pawnsBeforeEnPassant = lastMove.pawnsBeforeEnPassant;
-    for (auto const& coordPiece : lastMove.pawnsBeforeEnPassant) {
-      if (auto pawnEnPassant = getEnPassantPawn(coordPiece.second)) {
-        replace(coordPiece.first, *pawnEnPassant);
+    for (auto const& [coord, pawn] : lastMove.pawnsBeforeEnPassant) {
+      if (auto pawnEnPassant = getEnPassantPawn(pawn)) {
+        replace(coord, *pawnEnPassant);
       }
     }
     currentHash = lastMove.hashBeforeMove;
