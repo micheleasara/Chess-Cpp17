@@ -81,8 +81,8 @@ void ZobristHasher::pieceMoved(Coordinates const& source,
        auto left = Coordinates(destination.column-1, destination.row);
        auto right = Coordinates(destination.column+1, destination.row);
        std::vector<int> coords1D;
-       if (areWithinLimits(left)) coords1D.emplace_back(to1D(left));
-       if (areWithinLimits(right)) coords1D.emplace_back(to1D(right));
+       if (areWithinLimits(left)) coords1D.push_back(to1D(left));
+       if (areWithinLimits(right)) coords1D.push_back(to1D(right));
 
        if (auto enemyPawnOpt = getEnemyMovedPawn(movedVersion)) {
          for (auto const& coord1D : coords1D) {
@@ -95,7 +95,7 @@ void ZobristHasher::pieceMoved(Coordinates const& source,
      }
      replace(dest1D, movedVersion);
      remove(src1D);
-     movesHistory.emplace_back(stateBeforeMove);
+     movesHistory.push_back(std::move(stateBeforeMove));
    }
 }
 
@@ -133,7 +133,7 @@ void ZobristHasher::replacedWithPromotion(Coordinates const& source,
   auto src1D = to1D(source);
   auto stateBeforeMove = PastMove(*this, src1D, src1D);
   replace(src1D, replacement);
-  movesHistory.emplace_back(stateBeforeMove);
+  movesHistory.push_back(std::move(stateBeforeMove));
 }
 
 void ZobristHasher::initializeTableAndWhitePlayer() {
