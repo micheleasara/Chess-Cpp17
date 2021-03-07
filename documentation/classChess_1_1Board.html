@@ -94,8 +94,8 @@ Public Member Functions</h2></td></tr>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Board.html#a175abc9d3188b8ad7ae4d2b94b68ee42">reset</a> ()</td></tr>
 <tr class="memdesc:a175abc9d3188b8ad7ae4d2b94b68ee42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the chessboard to its initial status. <br /></td></tr>
 <tr class="separator:a175abc9d3188b8ad7ae4d2b94b68ee42"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a25ffa264084b6f8663a2dc5ec91ef8af"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classChess_1_1MoveResult.html">MoveResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Board.html#a25ffa264084b6f8663a2dc5ec91ef8af">move</a> (std::string const &amp;src, std::string const &amp;destination)</td></tr>
-<tr class="separator:a25ffa264084b6f8663a2dc5ec91ef8af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2679c38ab98ac72815b30422aa963d1b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classChess_1_1MoveResult.html">MoveResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Board.html#a2679c38ab98ac72815b30422aa963d1b">move</a> (std::string_view src, std::string_view destination)</td></tr>
+<tr class="separator:a2679c38ab98ac72815b30422aa963d1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aab7c716745c221816c24c384fb7745b7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classChess_1_1MoveResult.html">MoveResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Board.html#aab7c716745c221816c24c384fb7745b7">move</a> (<a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;src, <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;dest)</td></tr>
 <tr class="separator:aab7c716745c221816c24c384fb7745b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a89b27f1550fb0c7ea630e64bf41064c5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classChess_1_1MoveResult.html">MoveResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Board.html#a89b27f1550fb0c7ea630e64bf41064c5">move</a> (<a class="el" href="classChess_1_1Pawn.html">Pawn</a> &amp;piece, <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;source, <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;destination)</td></tr>
@@ -110,12 +110,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Board.html#a0a80af29195e5aaf88e113e6642c3c55">isValidEnPassant</a> (<a class="el" href="classChess_1_1Pawn.html">Pawn</a> const &amp;pawn, <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;source, <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;destination) const</td></tr>
 <tr class="memdesc:a0a80af29195e5aaf88e113e6642c3c55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if a pawn can do en passant from a source to a destination. <br /></td></tr>
 <tr class="separator:a0a80af29195e5aaf88e113e6642c3c55"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a05506099c744243a11329353cc87d99f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Board.html#a05506099c744243a11329353cc87d99f">isColumnFree</a> (<a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> source, int limitRow) const</td></tr>
-<tr class="separator:a05506099c744243a11329353cc87d99f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaf1353a19fe7ec5c1abd03a389809115"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Board.html#aaf1353a19fe7ec5c1abd03a389809115">isRowFree</a> (<a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> source, int limitCol) const</td></tr>
-<tr class="separator:aaf1353a19fe7ec5c1abd03a389809115"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad464da248609757fa40b2bbab278c861"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Board.html#ad464da248609757fa40b2bbab278c861">isDiagonalFree</a> (<a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> source, <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;destination) const</td></tr>
-<tr class="separator:ad464da248609757fa40b2bbab278c861"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaefca94209b6e7e04b15f6090780f698"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Board.html#aaefca94209b6e7e04b15f6090780f698">isColumnFree</a> (<a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;source, int limitRow) const</td></tr>
+<tr class="separator:aaefca94209b6e7e04b15f6090780f698"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab87db7e3f66399fe372e7dd47ad9c694"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Board.html#ab87db7e3f66399fe372e7dd47ad9c694">isRowFree</a> (<a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;source, int limitCol) const</td></tr>
+<tr class="separator:ab87db7e3f66399fe372e7dd47ad9c694"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1cc883d00c908d0b9c0edf9ff3938274"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Board.html#a1cc883d00c908d0b9c0edf9ff3938274">isDiagonalFree</a> (<a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;source, <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;destination) const</td></tr>
+<tr class="separator:a1cc883d00c908d0b9c0edf9ff3938274"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa6d7a1e093f0f19c7a8dc19190609099"><td class="memItemLeft" align="right" valign="top"><a id="aa6d7a1e093f0f19c7a8dc19190609099"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Board.html#aa6d7a1e093f0f19c7a8dc19190609099">isPromotionPending</a> () const</td></tr>
 <tr class="memdesc:aa6d7a1e093f0f19c7a8dc19190609099"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true is a player needs to promote a piece. False otherwise. <br /></td></tr>
@@ -159,10 +159,8 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Board.html#afd94d95c87f0de9354922dc658833596">areInSameDiagonal</a> (<a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;coord1, <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;coord2)</td></tr>
 <tr class="memdesc:afd94d95c87f0de9354922dc658833596"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the coordinates are in the same diagonal. <br /></td></tr>
 <tr class="separator:afd94d95c87f0de9354922dc658833596"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a124ec28e4f93510e8bbaa8130d43a9a9"><td class="memItemLeft" align="right" valign="top"><a id="a124ec28e4f93510e8bbaa8130d43a9a9"></a>
-static <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Board.html#a124ec28e4f93510e8bbaa8130d43a9a9">stringToCoordinates</a> (std::string const &amp;coord)</td></tr>
-<tr class="memdesc:a124ec28e4f93510e8bbaa8130d43a9a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts string coordinates into a pair of integers (eg "A2" to 0,1). <br /></td></tr>
-<tr class="separator:a124ec28e4f93510e8bbaa8130d43a9a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ff1c5f960185b2746ad7b7386c229b5"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Board.html#a3ff1c5f960185b2746ad7b7386c229b5">stringToCoordinates</a> (std::string_view coord)</td></tr>
+<tr class="separator:a3ff1c5f960185b2746ad7b7386c229b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa24cd237a53e2462b6d05106ca5f307b"><td class="memItemLeft" align="right" valign="top"><a id="aa24cd237a53e2462b6d05106ca5f307b"></a>
 static std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Board.html#aa24cd237a53e2462b6d05106ca5f307b">coordinatesToString</a> (<a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;coord)</td></tr>
 <tr class="memdesc:aa24cd237a53e2462b6d05106ca5f307b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts numeric coordinates into string coordinates (eg 0,1 to "A2"). <br /></td></tr>
@@ -240,8 +238,8 @@ std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="
 
 </div>
 </div>
-<a id="a05506099c744243a11329353cc87d99f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a05506099c744243a11329353cc87d99f">&#9670;&nbsp;</a></span>isColumnFree()</h2>
+<a id="aaefca94209b6e7e04b15f6090780f698"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaefca94209b6e7e04b15f6090780f698">&#9670;&nbsp;</a></span>isColumnFree()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -249,7 +247,7 @@ std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="
         <tr>
           <td class="memname">bool Chess::Board::isColumnFree </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structChess_1_1Coordinates.html">Coordinates</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;&#160;</td>
           <td class="paramname"><em>source</em>, </td>
         </tr>
         <tr>
@@ -269,8 +267,8 @@ std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="
 
 </div>
 </div>
-<a id="ad464da248609757fa40b2bbab278c861"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad464da248609757fa40b2bbab278c861">&#9670;&nbsp;</a></span>isDiagonalFree()</h2>
+<a id="a1cc883d00c908d0b9c0edf9ff3938274"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1cc883d00c908d0b9c0edf9ff3938274">&#9670;&nbsp;</a></span>isDiagonalFree()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -278,7 +276,7 @@ std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="
         <tr>
           <td class="memname">bool Chess::Board::isDiagonalFree </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structChess_1_1Coordinates.html">Coordinates</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;&#160;</td>
           <td class="paramname"><em>source</em>, </td>
         </tr>
         <tr>
@@ -298,8 +296,8 @@ std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="
 
 </div>
 </div>
-<a id="aaf1353a19fe7ec5c1abd03a389809115"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaf1353a19fe7ec5c1abd03a389809115">&#9670;&nbsp;</a></span>isRowFree()</h2>
+<a id="ab87db7e3f66399fe372e7dd47ad9c694"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab87db7e3f66399fe372e7dd47ad9c694">&#9670;&nbsp;</a></span>isRowFree()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -307,7 +305,7 @@ std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="
         <tr>
           <td class="memname">bool Chess::Board::isRowFree </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structChess_1_1Coordinates.html">Coordinates</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;&#160;</td>
           <td class="paramname"><em>source</em>, </td>
         </tr>
         <tr>
@@ -466,8 +464,8 @@ std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="
 
 </div>
 </div>
-<a id="a25ffa264084b6f8663a2dc5ec91ef8af"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a25ffa264084b6f8663a2dc5ec91ef8af">&#9670;&nbsp;</a></span>move() <span class="overload">[5/5]</span></h2>
+<a id="a2679c38ab98ac72815b30422aa963d1b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2679c38ab98ac72815b30422aa963d1b">&#9670;&nbsp;</a></span>move() <span class="overload">[5/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -475,13 +473,13 @@ std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="
         <tr>
           <td class="memname"><a class="el" href="classChess_1_1MoveResult.html">MoveResult</a> Chess::Board::move </td>
           <td>(</td>
-          <td class="paramtype">std::string const &amp;&#160;</td>
+          <td class="paramtype">std::string_view&#160;</td>
           <td class="paramname"><em>src</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::string const &amp;&#160;</td>
+          <td class="paramtype">std::string_view&#160;</td>
           <td class="paramname"><em>destination</em>&#160;</td>
         </tr>
         <tr>
@@ -512,6 +510,33 @@ std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="
       </table>
 </div><div class="memdoc">
 <p>If a promotion is pending, the piece is replaced with the given promotion piece. Returns an object containing information about the board. Returns an empty optional when no promotion is pending. </p>
+
+</div>
+</div>
+<a id="a3ff1c5f960185b2746ad7b7386c229b5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ff1c5f960185b2746ad7b7386c229b5">&#9670;&nbsp;</a></span>stringToCoordinates()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> Chess::Board::stringToCoordinates </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>coord</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Converts string coordinates into a pair of integers (eg "A2" to 0,1). Throws if the format is incorrect, or the coordinates are out of bounds. </p>
 
 </div>
 </div>

@@ -13,7 +13,7 @@ class BoardTest : public ::testing::Test {
 protected:
   Board board;
 
-  void moveAndTestThrow(std::string const& src, std::string const& dest,
+  void moveAndTestThrow(std::string_view src, std::string_view dest,
                                          InvalidMove::ErrorCode err) {
     EXPECT_THROW({
      try {

@@ -56,18 +56,23 @@ struct Board::PastMove {
                                           PieceRefHasher> insufficientMaterial;
 };
 
-Coordinates Board::stringToCoordinates(std::string const& coord) {
-  if (coord.size() != 2)
-    throw std::invalid_argument(coord + std::string(" is an invalid"
-          " coordinate pair. Size must be 2."));
-  if (coord[0] < MIN_COLUMN || coord[0] > MAX_COLUMN)
-    throw std::out_of_range(coord + std::string(" is an invalid "
-        "coordinate pair. Column must be within ") +
+Coordinates Board::stringToCoordinates(std::string_view coord) {
+  if (coord.size() != 2) {
+    throw std::invalid_argument(std::string(coord) + 
+      std::string(" is an invalid coordinate pair. Size must be 2."));
+  }
+
+  if (coord[0] < MIN_COLUMN || coord[0] > MAX_COLUMN) {
+    throw std::out_of_range(std::string(coord) +
+      std::string(" is an invalid coordinate pair. Column must be within ") +
         MIN_COLUMN + std::string(" and ") + MAX_COLUMN);
-  if (coord[1] < MIN_ROW || coord[1] > MAX_ROW)
-    throw std::out_of_range(coord + std::string(" is an invalid "
-        "coordinate pair. Row must be within ") +
+  }
+
+  if (coord[1] < MIN_ROW || coord[1] > MAX_ROW) {
+    throw std::out_of_range(std::string(coord) +
+      std::string(" is an invalid coordinate pair. Row must be within ") +
         MIN_ROW + std::string(" and ") + MAX_ROW);
+  }
 
   // all good if we get here
   return Coordinates((int)(coord[0] - MIN_COLUMN), (int)(coord[1] - MIN_ROW));
@@ -184,7 +189,7 @@ void Board::reset() {
   initializePieces();
 }
 
-MoveResult Board::move(std::string const& src, std::string const& destination) {
+MoveResult Board::move(std::string_view src, std::string_view destination) {
   Coordinates sourceCoord;
   Coordinates targetCoord;
   try {
@@ -346,7 +351,7 @@ MoveResult Board::move(Coordinates const& source,
   } else {
     zobrist.togglePlayer();
     auto hash = zobrist.hash();
-    storeBoardHash(hash);
+    boardHashCount[hash]++;
     gameState = checkGameState();
     if (boardHashCount.at(hash) >= 3) {
       threeFoldRepetition = true;
@@ -496,15 +501,8 @@ std::optional<CastlingType> Board::tryCastling(Coordinates const& source,
   zobrist.pieceMoved(rookSource, rookTarget);
   zobrist.pieceMoved(source, target);
   zobrist.togglePlayer();
-  storeBoardHash(zobrist.hash());
+  boardHashCount[zobrist.hash()]++;
   return castlingType;
-}
-
-void Board::storeBoardHash(int hash) {
-  if (boardHashCount.count(hash) == 0) {
-    boardHashCount[hash] = 0;
-  }
-  boardHashCount[hash] += 1;
 }
 
 bool Board::isMaterialSufficient() const {
@@ -545,19 +543,19 @@ bool Board::isMaterialSufficient() const {
   return false;
 }
 
-bool Board::isColumnFree(Coordinates source, int limitRow) const {
+bool Board::isColumnFree(Coordinates const& source, int limitRow) const {
   if (source.row == limitRow)
     throw std::invalid_argument("source row and limitRow cannot be equal");
 
   // figure out directionality
   int dir = (source.row > limitRow) ? -1: 1;
-
-  for (int row = source.row + dir; row != limitRow; row += dir) {
-    source.row = row;
-    if (!areWithinLimits(source)) {
+  Coordinates src = source;
+  for (int row = src.row + dir; row != limitRow; row += dir) {
+    src.row = row;
+    if (!areWithinLimits(src)) {
       throw std::invalid_argument("Coordinates go beyond the board limits");
     }
-    if (getPieceAtCoordinates(source)) {
+    if (getPieceAtCoordinates(src)) {
       return false;
     }
   }
@@ -565,19 +563,19 @@ bool Board::isColumnFree(Coordinates source, int limitRow) const {
   return true;
 }
 
-bool Board::isRowFree(Coordinates source, int limitCol) const {
+bool Board::isRowFree(Coordinates const& source, int limitCol) const {
   if (source.column == limitCol)
     throw std::invalid_argument("source column and limitCol cannot be equal");
 
   // figure out directionality
   int dir = (source.column > limitCol) ? -1 : 1;
-
-  for (int column = source.column+dir; column != limitCol; column += dir) {
-    source.column = column;
-    if (!areWithinLimits(source)) {
+  Coordinates src = source;
+  for (int column = src.column+dir; column != limitCol; column += dir) {
+    src.column = column;
+    if (!areWithinLimits(src)) {
       throw std::invalid_argument("Coordinates go beyond the board limits");
     }
-    if (getPieceAtCoordinates(source)) {
+    if (getPieceAtCoordinates(src)) {
       return false;
     }
   }
@@ -585,7 +583,7 @@ bool Board::isRowFree(Coordinates source, int limitCol) const {
   return true;
 }
 
-bool Board::isDiagonalFree(Coordinates source,
+bool Board::isDiagonalFree(Coordinates const& source,
                                 Coordinates const& destination) const {
   if (source == destination)
     throw std::invalid_argument("source and destination cannot be equal");
@@ -597,13 +595,14 @@ bool Board::isDiagonalFree(Coordinates source,
   int columnAdd = (source.column > destination.column)? -1 : 1;
 
   // this will not check the extremes, as intended
-  for (source = Coordinates(source.column + columnAdd, source.row + rowAdd);
-                                                    source != destination;
-                      source.row += rowAdd, source.column += columnAdd) {
-    if (!areWithinLimits(source)) {
+  Coordinates src = source;
+  for (src = Coordinates(src.column + columnAdd, src.row + rowAdd);
+                                                    src != destination;
+                      src.row += rowAdd, src.column += columnAdd) {
+    if (!areWithinLimits(src)) {
       throw std::invalid_argument("Coordinates go beyond the board limits");
     }
-    if (getPieceAtCoordinates(source)) {
+    if (getPieceAtCoordinates(src)) {
       return false;
     }
   }

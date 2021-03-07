@@ -21,14 +21,14 @@ void printUndoInstruction();
 std::optional<MoveResult> promptForPromotion(Board& cb);
 
 /// Returns the corresponding promotion option, or an empty optional if invalid.
-std::optional<PromotionOption> strToPromotionPiece(std::string const& piece);
+std::optional<PromotionOption> strToPromotionPiece(std::string_view piece);
 
 /// Prints a message to the output stream in case of special state (eg check).
 void printIfSpecialState(MoveResult::GameState state,
-                        std::string const& opponent);
+                        std::string_view opponent);
 
 /// Prints a message to the output stream describing which castling occurred.
-void printCastlingMessage(CastlingType type, std::string const& player);
+void printCastlingMessage(CastlingType type, std::string_view player);
 
 /// Asks the user if they wish to claim a draw, and does the claim if so.
 void promptForDraw(Board& cb);
@@ -135,7 +135,7 @@ std::optional<MoveResult> promptForPromotion(Board& cb) {
   return result;
 }
 
-void printCastlingMessage(CastlingType type, std::string const& player) {
+void printCastlingMessage(CastlingType type, std::string_view player) {
   if (type == CastlingType::KingSide) {
     std::cout << player << " castles king side.\n";
   } else {
@@ -143,7 +143,7 @@ void printCastlingMessage(CastlingType type, std::string const& player) {
   }
 }
 
-std::optional<PromotionOption> strToPromotionPiece(std::string const& piece) {
+std::optional<PromotionOption> strToPromotionPiece(std::string_view piece) {
   std::string lowercased;
   std::transform(piece.begin(), piece.end(), std::back_inserter(lowercased),
     [](unsigned char c) { return std::tolower(c); });
@@ -163,7 +163,7 @@ std::optional<PromotionOption> strToPromotionPiece(std::string const& piece) {
 }
 
 void printIfSpecialState(MoveResult::GameState state,
-  std::string const& opponent) {
+  std::string_view opponent) {
   using namespace std;
   switch (state) {
   case MoveResult::GameState::OPPONENT_IN_CHECK:

@@ -3,13 +3,14 @@
 #include <unordered_map>
 #include <string>
 #include <vector>
-#include <ostream>
-#include <memory>
-#include <optional>
-#include "Piece.hpp"
-#include "Utils.hpp"
 #include "Exceptions.hpp"
+#include <memory>
 #include "MoveResult.hpp"
+#include <optional>
+#include <ostream>
+#include "Piece.hpp"
+#include <string_view>
+#include "Utils.hpp"
 #include "Zobrist.hpp"
 
 namespace Chess {
@@ -53,8 +54,11 @@ namespace Chess {
     /// Checks if the coordinates are in the same diagonal.
     static bool areInSameDiagonal(Coordinates const& coord1,
                                   Coordinates const& coord2);
-    /// Converts string coordinates into a pair of integers (eg "A2" to 0,1).
-    static Coordinates stringToCoordinates(std::string const& coord);
+    /**
+     Converts string coordinates into a pair of integers (eg "A2" to 0,1).
+     Throws if the format is incorrect, or the coordinates are out of bounds.
+    */
+    static Coordinates stringToCoordinates(std::string_view coord);
     /// Converts numeric coordinates into string coordinates (eg 0,1 to "A2").
     static std::string coordinatesToString(Coordinates const& coord);
 
@@ -73,7 +77,7 @@ namespace Chess {
      Returns an object containing information regarding the move executed.
      In case of invalid move, an InvalidMove exception is thrown.
     */
-    MoveResult move(std::string const& src, std::string const& destination);
+    MoveResult move(std::string_view src, std::string_view destination);
 
     /**
      Performs a move from a source to a destination and alternates between
@@ -111,19 +115,20 @@ namespace Chess {
      Checks if there are no pieces from the source to the destination.
      The check is not inclusive of the start and end columns.
     */
-    bool isColumnFree(Coordinates source, int limitRow) const;
+    bool isColumnFree(Coordinates const& source, int limitRow) const;
 
     /**
      Checks if there are no pieces from the source to the destination.
      The check is not inclusive of the start and end rows.
     */
-    bool isRowFree(Coordinates source, int limitCol) const;
+    bool isRowFree(Coordinates const& source, int limitCol) const;
 
     /**
      Checks if there are no pieces from the source to the destination.
      The check is not inclusive of the start and end positions.
     */
-    bool isDiagonalFree(Coordinates source, Coordinates const& destination) const;
+    bool isDiagonalFree(Coordinates const& source,
+                        Coordinates const& destination) const;
 
     /// Returns true is a player needs to promote a piece. False otherwise.
     bool isPromotionPending() const;
@@ -179,7 +184,6 @@ namespace Chess {
     void ensureNoPromotionNeeded();
     void togglePlayer();
     std::unique_ptr<PromotionPiece> buildPromotionPiece(PromotionOption piece);
-    void storeBoardHash(int hash);
     bool isMaterialSufficient() const;
     bool isPieceAtSource(Piece const& piece, Coordinates const& source) const;
     void ensurePieceIsAtSource(Piece const& piece,
