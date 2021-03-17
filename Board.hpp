@@ -31,12 +31,12 @@ namespace Chess {
     /// Defines the maximum row.
     static char constexpr MAX_ROW = '8';
     /// The maximum row number starting to count from 0.
-    static int constexpr MAX_ROW_NUM = (int)(MAX_ROW - MIN_ROW);
+    static int constexpr MAX_ROW_NUM = static_cast<int>(MAX_ROW - MIN_ROW);
     /// The maximum column number starting to count from 0.
-    static int constexpr MAX_COL_NUM = (int)(MAX_COLUMN - MIN_COLUMN);
-    /// Defines the starting positions of the white king.
+    static int constexpr MAX_COL_NUM = static_cast<int>(MAX_COLUMN - MIN_COLUMN);
+    /// Defines the starting position of the white king.
     static auto constexpr WHITE_KING_INIT = Coordinates(4, 0);
-    /// Defines the starting positions of the black king.
+    /// Defines the starting position of the black king.
     static auto constexpr BLACK_KING_INIT = Coordinates(4, 7);
     /// Defines the number of squares the king travels to castle.
     static int constexpr CASTLE_DISTANCE = 2;
