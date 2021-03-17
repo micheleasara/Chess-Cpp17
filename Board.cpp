@@ -141,35 +141,34 @@ void Board::initializePieces() {
     auto colour = static_cast<Piece::Colour>(i);
     int row = MAX_ROW_NUM % (MAX_ROW_NUM + i); // can give 0 or MAX_ROW_NUM
 
-    // not a memory leak ("board" takes ownership of all pieces)
-    auto knight = new Knight(colour, *this);
+    auto knight = std::make_unique<Knight>(colour, *this);
     insufficientMaterial.emplace(*knight);
-    board.emplace(Coordinates(1, row), knight);
+    board.emplace(Coordinates(1, row), std::move(knight));
 
-    auto bishop = new Bishop(colour, *this);
+    auto bishop = std::make_unique<Bishop>(colour, *this);
     insufficientMaterial.emplace(*bishop);
-    board.emplace(Coordinates(2, row), bishop);
+    board.emplace(Coordinates(2, row), std::move(bishop));
 
-    auto king = new King(colour, *this);
-    board.emplace(Coordinates(4, row), king);
+    auto king = std::make_unique<King>(colour, *this);
     insufficientMaterial.emplace(*king);
     kings.emplace(colour, *king);
+    board.emplace(Coordinates(4, row), std::move(king));
 
-    bishop = new Bishop(colour, *this);
+    bishop = std::make_unique<Bishop>(colour, *this);
     insufficientMaterial.emplace(*bishop);
-    board.emplace(Coordinates(5, row), bishop);
+    board.emplace(Coordinates(5, row), std::move(bishop));
 
-    knight = new Knight(colour, *this);
+    knight = std::make_unique<Knight>(colour, *this);
     insufficientMaterial.emplace(*knight);
-    board.emplace(Coordinates(6, row), knight);
+    board.emplace(Coordinates(6, row), std::move(knight));
 
-    board.emplace(Coordinates(0, row), new Rook(colour, *this));
-    board.emplace(Coordinates(3, row), new Queen(colour, *this));
-    board.emplace(Coordinates(7, row), new Rook(colour, *this));
+    board.emplace(Coordinates(0, row), std::make_unique<Rook>(colour, *this));
+    board.emplace(Coordinates(3, row), std::make_unique<Queen>(colour, *this));
+    board.emplace(Coordinates(7, row), std::make_unique<Rook>(colour, *this));
 
     row = (row == 0) ? 1 : MAX_ROW_NUM - 1;
     for (int c = 0; c <= MAX_COL_NUM; c++) {
-      board.emplace(Coordinates(c, row), new Pawn(colour, *this));
+      board.emplace(Coordinates(c, row), std::make_unique<Pawn>(colour, *this));
     }
   }
 }
