@@ -2,56 +2,40 @@
 #define ZOBRIST_H
 
 #include <unordered_set>
-#include <array>
-#include <iostream>
-#include <cstdlib>
-#include <ctime>
-#include <optional>
 #include <vector>
-#include "Piece.hpp"
+#include "BoardHasher.hpp"
 
 namespace Chess {
 
-/// An object capable of hashing a chessboard configuration.
-class ZobristHasher {
+/// An implementation of Zobrist hashing for a chessboard.
+class ZobristHasher: public BoardHasher {
 public:
   /// Constructs a hasher for a board of the given size.
   ZobristHasher(size_t width, size_t height);
 
-  /**
-   Updates the hash by considering the piece at the source to have moved
-   to the destination provided.
-   */
-  void pieceMoved(Coordinates const& source, Coordinates const& destination);
+  //! @copydoc BoardHasher::pieceMoved(Coordinates const&,Coordinates const&)
+  void pieceMoved(Coordinates const& source,
+                  Coordinates const& destination) override;
 
-  /// Returns the most recent hash.
-  int hash();
+  //! @copydoc BoardHasher::hash()
+  int hash() override;
 
-  /**
-   Restores the hasher to the state before the last change.
-   Does nothing if called with no change has occurred yet.
-  */
-  void restorePreviousHash();
+  //! @copydoc BoardHasher::restorePreviousHash()
+  void restorePreviousHash() override;
 
-  /**
-   Updates the hash by considering the piece at the specified coordinates to
-   have been removed.
-   The hash does not change in case of deletion of an empty square.
-  */
-  void removed(Coordinates const& coords);
+  //! @copydoc BoardHasher::removed(Coordinates const&)
+  void removed(Coordinates const& coords) override;
 
-  /**
-   Updates the hash by assuming the source given to be replaced with a promotion
-   piece.
-  */
+  //! @copydoc BoardHasher::replacedWithPromotion(Coordinates const&,PromotionOption,Piece::Colour)
   void replacedWithPromotion(Coordinates const& source,
-                            PromotionOption prom, Piece::Colour colour);
+                             PromotionOption prom,
+                             Piece::Colour colour) override;
 
-  /// Resets the hasher to an initial configuration.
-  void reset();
+  //! @copydoc BoardHasher::reset()
+  void reset() override;
 
-  /// Changes the hash by toggling the current player. White always starts.
-  void togglePlayer();
+  //! @copydoc BoardHasher::togglePlayer()
+  void togglePlayer() override;
 
   virtual ~ZobristHasher();
 

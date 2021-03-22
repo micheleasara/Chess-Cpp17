@@ -118,8 +118,10 @@ bool Board::isGameOver() const {
   return m_isGameOver;
 }
 
-Board::Board():
-  zobrist(ZobristHasher(Board::MAX_COL_NUM+1, Board::MAX_ROW_NUM+1)) {
+Board::Board(): Board(std::make_unique<ZobristHasher>(Board::MAX_COL_NUM+1,
+                                                      Board::MAX_ROW_NUM+1)) {}
+
+Board::Board(std::unique_ptr<BoardHasher> hasher): hasher(std::move(hasher)) {
   initializePieces();
 }
 
@@ -175,7 +177,7 @@ void Board::initializePieces() {
 
 void Board::reset() {
   countSincePawnMoveOrCapture = 0;
-  zobrist.reset();
+  hasher->reset();
   promotionSource.reset();
   boardHashCount.clear();
   isWhiteTurn = true;
@@ -335,10 +337,10 @@ MoveResult Board::move(Coordinates const& source,
 
   auto& lastMove = movesHistory.back();
   if (lastMove.destination != lastMove.removedPieceCoords) { // en passant
-    zobrist.removed(lastMove.removedPieceCoords);
+    hasher->removed(lastMove.removedPieceCoords);
   }
 
-  zobrist.pieceMoved(source, destination);
+  hasher->pieceMoved(source, destination);
   std::optional<std::string> capturedPieceName;
   if (lastMove.removedPiece != nullptr) {
     countSincePawnMoveOrCapture = 0;
@@ -348,8 +350,8 @@ MoveResult Board::move(Coordinates const& source,
   if (isPromotionPending()) {
     gameState = MoveResult::GameState::AWAITING_PROMOTION;
   } else {
-    zobrist.togglePlayer();
-    auto hash = zobrist.hash();
+    hasher->togglePlayer();
+    auto hash = hasher->hash();
     boardHashCount[hash]++;
     gameState = checkGameState();
     if (boardHashCount.at(hash) >= 3) {
@@ -408,8 +410,8 @@ MoveResult::GameState Board::checkGameState() {
   } else if (countSincePawnMoveOrCapture >= 150) { // 75 by each player
     m_isGameOver = true;
     return MoveResult::GameState::SEVENTYFIVE_MOVES_DRAW;
-  } else if (boardHashCount.count(zobrist.hash()) &&
-                                      boardHashCount.at(zobrist.hash()) >= 5) {
+  } else if (boardHashCount.count(hasher->hash()) &&
+                                      boardHashCount.at(hasher->hash()) >= 5) {
     m_isGameOver = true;
     return MoveResult::GameState::FIVEFOLD_REPETITION_DRAW;
   } else if (inCheck && hasMoves) {
@@ -497,10 +499,10 @@ std::optional<CastlingType> Board::tryCastling(Coordinates const& source,
     return std::nullopt;
   }
 
-  zobrist.pieceMoved(rookSource, rookTarget);
-  zobrist.pieceMoved(source, target);
-  zobrist.togglePlayer();
-  boardHashCount[zobrist.hash()]++;
+  hasher->pieceMoved(rookSource, rookTarget);
+  hasher->pieceMoved(source, target);
+  hasher->togglePlayer();
+  boardHashCount[hasher->hash()]++;
   return castlingType;
 }
 
@@ -711,7 +713,7 @@ void Board::undoLastMove() {
          movesHistory.back().source == movesHistory.back().destination) {
       revertLastPieceMovement();
       movesHistory.pop_back();
-      zobrist.restorePreviousHash();
+      hasher->restorePreviousHash();
     }
     revertLastPieceMovement();
 
@@ -725,7 +727,7 @@ void Board::undoLastMove() {
     insufficientMaterial = lastMove.insufficientMaterial;
 
     movesHistory.pop_back();
-    zobrist.restorePreviousHash();
+    hasher->restorePreviousHash();
   }
 }
 
@@ -801,8 +803,9 @@ std::optional<MoveResult> Board::promote(PromotionOption piece) {
 
   promotionSource.reset();
   auto state = checkGameState();
-  zobrist.replacedWithPromotion(source, piece, currentPlayer());
+  hasher->replacedWithPromotion(source, piece, currentPlayer());
   togglePlayer();
+  hasher->togglePlayer();
   return MoveResult(state);
 }
 

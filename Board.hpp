@@ -62,8 +62,17 @@ namespace Chess {
     /// Converts numeric coordinates into string coordinates (eg 0,1 to "A2").
     static std::string coordinatesToString(Coordinates const& coord);
 
-    /// Constructs a chessboard and places all pieces in their starting positions.
+    /**
+     Constructs a chessboard and places all pieces in their starting positions.
+     Defaults to Zobrist hashing for the 3-fold and 5-fold repetition rules.
+    */
     Board();
+
+    /**
+     Constructs a chessboard and places all pieces in their starting positions.
+     Uses the hasher provided for the 3-fold and 5-fold repetition rules.
+    */
+    Board(std::unique_ptr<BoardHasher> hasher);
 
     /// Resets the chessboard to its initial status.
     void reset();
@@ -195,7 +204,7 @@ namespace Chess {
     std::unordered_map<Coordinates, std::unique_ptr<Piece>,
                                                        CoordinatesHasher> board;
     std::unordered_map<Piece::Colour, King&> kings;
-    ZobristHasher zobrist;
+    std::unique_ptr<BoardHasher> hasher;
     std::unordered_map<int, size_t> boardHashCount;
     bool threeFoldRepetition = false;
     int countSincePawnMoveOrCapture = 0;

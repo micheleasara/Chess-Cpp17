@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Board.hpp"
+#include "BoardHasherMock.hpp"
 #include "MoveResult.hpp"
+#include "Zobrist.hpp"
 
 using Chess::InvalidMove;
 using Chess::Board;
@@ -8,6 +10,8 @@ using Chess::MoveResult;
 using Chess::PromotionOption;
 using Chess::Coordinates;
 using Chess::CastlingType;
+using ::testing::AtLeast;
+using ::testing::NiceMock;
 
 class BoardTest : public ::testing::Test {
 protected:
@@ -24,7 +28,15 @@ protected:
      }}, Chess::InvalidMove);
   }
 
+  decltype(auto) buildNiceBoardHasherMock() {
+    return std::make_unique<NiceMock<BoardHasherMock>>();
+  }
+
   void movePawnsForPromotion() {
+    movePawnsForPromotion(board);
+  }
+
+  void movePawnsForPromotion(Board& board) {
     board.move("B2", "B4"); board.move("H7", "H5");
     board.move("B4", "B5"); board.move("H5", "H4");
     board.move("B5", "B6"); board.move("H4", "H3");
@@ -596,6 +608,90 @@ TEST_F(BoardTest, canClaimDrawAccordingToFiftyMovesRule) {
   EXPECT_FALSE(board.drawCanBeClaimed());
   board.move("D8", "D7");
   EXPECT_TRUE(board.drawCanBeClaimed());
+}
+
+
+TEST_F(BoardTest, hashIsGeneratedDuringAMove) {
+  auto hasher = buildNiceBoardHasherMock();
+  auto& mock = *hasher;
+  auto board = Board(std::move(hasher));
+  EXPECT_CALL(mock, hash()).Times(AtLeast(1));
+  board.move("A2", "A3");
+}
+
+TEST_F(BoardTest, hasherIsNotifiedOfMove) {
+  auto hasher = buildNiceBoardHasherMock();
+  auto& mock = *hasher;
+  auto board = Board(std::move(hasher));
+  board.move("A2", "A4"); board.move("B7", "B5");
+  EXPECT_CALL(mock, pieceMoved(Coordinates(0, 3), Coordinates(1, 4)));
+  EXPECT_CALL(mock, togglePlayer());
+  board.move("A4", "B5");
+}
+
+TEST_F(BoardTest, hasherIsResetWithBoard) {
+  auto hasher = buildNiceBoardHasherMock();
+  auto& mock = *hasher;
+  auto board = Board(std::move(hasher));
+  EXPECT_CALL(mock, reset());
+  board.reset();
+}
+
+TEST_F(BoardTest, previousHashIsRestoredWhenAMoveIsUndone) {
+  auto hasher = buildNiceBoardHasherMock();
+  auto& mock = *hasher;
+  auto board = Board(std::move(hasher));
+  board.move("A2", "A3");
+  EXPECT_CALL(mock, restorePreviousHash()).Times(AtLeast(1));
+  board.undoLastMove();
+}
+
+TEST_F(BoardTest, hasherIsNotifiedOfPromotion) {
+  auto hasher = buildNiceBoardHasherMock();
+  auto& mock = *hasher;
+  auto board = Board(std::move(hasher));
+  decltype(mock.hash()) callCount = 0;
+  ON_CALL(mock, hash())
+    .WillByDefault(testing::Invoke(
+        [&callCount]() { return callCount++; }
+    ));
+  movePawnsForPromotion(board);
+  board.move("C7", "B8");
+
+  EXPECT_CALL(mock, replacedWithPromotion(Coordinates(1, 7),
+                                          PromotionOption::Queen,
+                                          Chess::Piece::Colour::White));
+  EXPECT_CALL(mock, togglePlayer());
+  board.promote(PromotionOption::Queen);
+}
+
+TEST_F(BoardTest, hasherIsNotifiedOfCastling) {
+  auto hasher = buildNiceBoardHasherMock();
+  auto& mock = *hasher;
+  auto board = Board(std::move(hasher));
+  decltype(mock.hash()) callCount = 0;
+  ON_CALL(mock, hash())
+    .WillByDefault(testing::Invoke(
+        [&callCount]() { return callCount++; }
+    ));
+  board.move("G1", "F3"); board.move("G8", "F6");
+  board.move("G2", "G3"); board.move("G7", "G6");
+  board.move("F1", "G2"); board.move("F8", "G7");
+  EXPECT_CALL(mock, pieceMoved(Coordinates(4, 0), Coordinates(6, 0))); // king
+  EXPECT_CALL(mock, pieceMoved(Coordinates(7, 0), Coordinates(5, 0))); // rook
+  EXPECT_CALL(mock, togglePlayer());
+  board.move("E1", "G1");
+}
+
+TEST_F(BoardTest, hasherIsNotifiedOfCapturedPieceDuringEnPassant) {
+  auto hasher = buildNiceBoardHasherMock();
+  auto& mock = *hasher;
+  auto board = Board(std::move(hasher));
+  board.move("E2", "E4"); board.move("H7", "H5");
+  board.move("E4", "E5"); board.move("D7", "D5");
+  EXPECT_CALL(mock, removed(Coordinates(3, 4)));
+  EXPECT_CALL(mock, togglePlayer());
+  board.move("E5", "D6");
 }
 
 TEST_F(BoardTest, canDoAlekhineVsVasic1931) {
