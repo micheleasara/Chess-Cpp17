@@ -107,6 +107,10 @@ TEST_F(BoardTest, throwsIfAttemptedMoveWhilePromotionIsPending) {
   moveAndTestThrow("C8", "D8", InvalidMove::ErrorCode::PENDING_PROMOTION);
 }
 
+TEST_F(BoardTest, throwsIfTheBoardIsConstructedWithANullHasher) {
+  EXPECT_THROW(auto board = Board(nullptr), std::invalid_argument);
+}
+
 TEST_F(BoardTest, normalMovesLeaveTheGameInANormalState) {
   auto state = board.move("B2", "B3").gameState();
   EXPECT_EQ(state, MoveResult::GameState::NORMAL);

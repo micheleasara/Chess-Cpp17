@@ -122,6 +122,9 @@ Board::Board(): Board(std::make_unique<ZobristHasher>(Board::MAX_COL_NUM+1,
                                                       Board::MAX_ROW_NUM+1)) {}
 
 Board::Board(std::unique_ptr<BoardHasher> hasher): hasher(std::move(hasher)) {
+  if (this->hasher == nullptr) {
+    throw std::invalid_argument("The board hasher cannot be null.");
+  }
   initializePieces();
 }
 

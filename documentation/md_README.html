@@ -76,8 +76,8 @@ I want to use your chess engine on my chess application. What can I do?</h1>
 <p>You need to include <em><a class="el" href="Board_8hpp_source.html">Board.hpp</a></em> and rely on its <em>move</em> overloads. You can either provide the source and destination as strings, or as numerical values. The result of a move can be determined by inspecting the returned object, for example to verify whether a piece was captured. Some special game states (such as the right to claim a draw or a pending pawn promotion) will need to be checked explicitly with the appropriate functions. Finally, when the game finishes you need to reset or re-create the board in order to start a new session.</p>
 <p>I would suggest having a look at the (relatively short) driver program, but, regardless, all public functions are documented.</p>
 <h1><a class="anchor" id="autotoc_md3"></a>
-Known issues and areas of improvement</h1>
-<p>1) There is high coupling between the pieces and the board, mostly to allow for en passant via a visitor pattern. 2) There is no dependency injection in the board, which makes it a bit trickier to test. This is a trade-off that comes with speed advantages during runtime and compilation, as there are less virtual functions and templates. 3) The Board class contains the game state. This may or may not be better suited to a dedicated Game object. </p>
+Potential improvements</h1>
+<p>1) There is high coupling between the pieces and the board, mostly to allow for en passant via a visitor pattern. 2) Only the hasher can be injected into the board. In other words, there is no dependency injection for the pieces and no straightforward way to mock them. 3) The Board class contains the game state. This may or may not be better suited to a dedicated Game object. </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- start footer part -->

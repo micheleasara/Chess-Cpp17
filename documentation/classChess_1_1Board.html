@@ -86,10 +86,10 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ad1b341aa4ec6bfb23f7b8f6755999c6a"><td class="memItemLeft" align="right" valign="top"><a id="ad1b341aa4ec6bfb23f7b8f6755999c6a"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Board.html#ad1b341aa4ec6bfb23f7b8f6755999c6a">Board</a> ()</td></tr>
-<tr class="memdesc:ad1b341aa4ec6bfb23f7b8f6755999c6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a chessboard and places all pieces in their starting positions. <br /></td></tr>
+<tr class="memitem:ad1b341aa4ec6bfb23f7b8f6755999c6a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Board.html#ad1b341aa4ec6bfb23f7b8f6755999c6a">Board</a> ()</td></tr>
 <tr class="separator:ad1b341aa4ec6bfb23f7b8f6755999c6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77c3f295f3b3ab4e9c5904ae1f8b09a9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Board.html#a77c3f295f3b3ab4e9c5904ae1f8b09a9">Board</a> (std::unique_ptr&lt; <a class="el" href="classChess_1_1BoardHasher.html">BoardHasher</a> &gt; hasher)</td></tr>
+<tr class="separator:a77c3f295f3b3ab4e9c5904ae1f8b09a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a175abc9d3188b8ad7ae4d2b94b68ee42"><td class="memItemLeft" align="right" valign="top"><a id="a175abc9d3188b8ad7ae4d2b94b68ee42"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Board.html#a175abc9d3188b8ad7ae4d2b94b68ee42">reset</a> ()</td></tr>
 <tr class="memdesc:a175abc9d3188b8ad7ae4d2b94b68ee42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the chessboard to its initial status. <br /></td></tr>
@@ -218,7 +218,45 @@ std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Represents a chessboard. It is responsible for executing moves while containing the state of the game. </p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="ad1b341aa4ec6bfb23f7b8f6755999c6a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad1b341aa4ec6bfb23f7b8f6755999c6a">&#9670;&nbsp;</a></span>Board() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Chess::Board::Board </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Constructs a chessboard and places all pieces in their starting positions. Defaults to Zobrist hashing for the 3-fold and 5-fold repetition rules. </p>
+
+</div>
+</div>
+<a id="a77c3f295f3b3ab4e9c5904ae1f8b09a9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a77c3f295f3b3ab4e9c5904ae1f8b09a9">&#9670;&nbsp;</a></span>Board() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Chess::Board::Board </td>
+          <td>(</td>
+          <td class="paramtype">std::unique_ptr&lt; <a class="el" href="classChess_1_1BoardHasher.html">BoardHasher</a> &gt;&#160;</td>
+          <td class="paramname"><em>hasher</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Constructs a chessboard and places all pieces in their starting positions. Uses the hasher provided for the 3-fold and 5-fold repetition rules. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
 <a id="a61644f4077fb4493e3a9f18b4b2af8e6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a61644f4077fb4493e3a9f18b4b2af8e6">&#9670;&nbsp;</a></span>getPieceAtCoordinates()</h2>
 

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['hash_117',['hash',['../classChess_1_1ZobristHasher.html#a8d93b3a73d2f906ea3ab101947bd1425',1,'Chess::ZobristHasher']]]
+  ['hash_119',['hash',['../classChess_1_1BoardHasher.html#aedbbb32c27f2d3f774d6f8b86dc26b6c',1,'Chess::BoardHasher::hash()'],['../classChess_1_1ZobristHasher.html#a8730a163537d462de68feca3a75feb1b',1,'Chess::ZobristHasher::hash()']]]
 ];

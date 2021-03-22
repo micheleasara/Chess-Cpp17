@@ -11,7 +11,7 @@ You need to include _Board.hpp_ and rely on its _move_ overloads. You can either
 
 I would suggest having a look at the (relatively short) driver program, but, regardless, all public functions are documented.
 
-## Known issues and areas of improvement
+## Potential improvements
 1) There is high coupling between the pieces and the board, mostly to allow for en passant via a visitor pattern.
-2) There is no dependency injection in the board, which makes it a bit trickier to test. This is a trade-off that comes with speed advantages during runtime and compilation, as there are less virtual functions and templates. 
+2) Only the hasher can be injected into the board. In other words, there is no dependency injection for the pieces and no straightforward way to mock them. 
 3) The Board class contains the game state. This may or may not be better suited to a dedicated Game object.

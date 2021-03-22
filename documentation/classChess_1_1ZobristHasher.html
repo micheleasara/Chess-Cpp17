@@ -75,10 +75,28 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>An object capable of hashing a chessboard configuration.  
+<p>An implementation of Zobrist hashing for a chessboard.  
  <a href="classChess_1_1ZobristHasher.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="Zobrist_8hpp_source.html">Zobrist.hpp</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for Chess::ZobristHasher:</div>
+<div class="dyncontent">
+<div class="center"><img src="classChess_1_1ZobristHasher__inherit__graph.png" border="0" usemap="#Chess_1_1ZobristHasher_inherit__map" alt="Inheritance graph"/></div>
+<map name="Chess_1_1ZobristHasher_inherit__map" id="Chess_1_1ZobristHasher_inherit__map">
+<area shape="rect" title="An implementation of Zobrist hashing for a chessboard." alt="" coords="5,80,167,107"/>
+<area shape="rect" href="classChess_1_1BoardHasher.html" title="An object capable of hashing a chessboard configuration." alt="" coords="9,5,163,32"/>
+</map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<div class="dynheader">
+Collaboration diagram for Chess::ZobristHasher:</div>
+<div class="dyncontent">
+<div class="center"><img src="classChess_1_1ZobristHasher__coll__graph.png" border="0" usemap="#Chess_1_1ZobristHasher_coll__map" alt="Collaboration graph"/></div>
+<map name="Chess_1_1ZobristHasher_coll__map" id="Chess_1_1ZobristHasher_coll__map">
+<area shape="rect" title="An implementation of Zobrist hashing for a chessboard." alt="" coords="5,80,167,107"/>
+<area shape="rect" href="classChess_1_1BoardHasher.html" title="An object capable of hashing a chessboard configuration." alt="" coords="9,5,163,32"/>
+</map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
@@ -122,35 +140,64 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1ZobristHasher.html#abe981796b63c583843ac7bee3e0d38b5">ZobristHasher</a> (size_t width, size_t height)</td></tr>
 <tr class="memdesc:abe981796b63c583843ac7bee3e0d38b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a hasher for a board of the given size. <br /></td></tr>
 <tr class="separator:abe981796b63c583843ac7bee3e0d38b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9a3fb368c3c3845d18a18b56a5b2ca3d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1ZobristHasher.html#a9a3fb368c3c3845d18a18b56a5b2ca3d">pieceMoved</a> (<a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;source, <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;destination)</td></tr>
-<tr class="separator:a9a3fb368c3c3845d18a18b56a5b2ca3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8d93b3a73d2f906ea3ab101947bd1425"><td class="memItemLeft" align="right" valign="top"><a id="a8d93b3a73d2f906ea3ab101947bd1425"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1ZobristHasher.html#a8d93b3a73d2f906ea3ab101947bd1425">hash</a> ()</td></tr>
-<tr class="memdesc:a8d93b3a73d2f906ea3ab101947bd1425"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the most recent hash. <br /></td></tr>
-<tr class="separator:a8d93b3a73d2f906ea3ab101947bd1425"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7f0ae358bc43292264f780cb6630e5b7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1ZobristHasher.html#a7f0ae358bc43292264f780cb6630e5b7">restorePreviousHash</a> ()</td></tr>
-<tr class="separator:a7f0ae358bc43292264f780cb6630e5b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8481f3ab108125617141baf069012aff"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1ZobristHasher.html#a8481f3ab108125617141baf069012aff">removed</a> (<a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;coords)</td></tr>
-<tr class="separator:a8481f3ab108125617141baf069012aff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad25c37fa9bc2b8e209dde8041aaf71e0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1ZobristHasher.html#ad25c37fa9bc2b8e209dde8041aaf71e0">replacedWithPromotion</a> (<a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;source, PromotionOption prom, <a class="el" href="classChess_1_1Piece.html#a9d05a36fce65a50dac5c478805381779">Piece::Colour</a> colour)</td></tr>
-<tr class="separator:ad25c37fa9bc2b8e209dde8041aaf71e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8f35f3e2939989d65e6245aa3b1b8990"><td class="memItemLeft" align="right" valign="top"><a id="a8f35f3e2939989d65e6245aa3b1b8990"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1ZobristHasher.html#a8f35f3e2939989d65e6245aa3b1b8990">reset</a> ()</td></tr>
-<tr class="memdesc:a8f35f3e2939989d65e6245aa3b1b8990"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the hasher to an initial configuration. <br /></td></tr>
-<tr class="separator:a8f35f3e2939989d65e6245aa3b1b8990"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2e06c4d9dcb64308aecb2b323fa3d5b7"><td class="memItemLeft" align="right" valign="top"><a id="a2e06c4d9dcb64308aecb2b323fa3d5b7"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1ZobristHasher.html#a2e06c4d9dcb64308aecb2b323fa3d5b7">togglePlayer</a> ()</td></tr>
-<tr class="memdesc:a2e06c4d9dcb64308aecb2b323fa3d5b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Changes the hash by toggling the current player. White always starts. <br /></td></tr>
-<tr class="separator:a2e06c4d9dcb64308aecb2b323fa3d5b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf67288ea66d16f8dc9a469e0ebe08f6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1ZobristHasher.html#acf67288ea66d16f8dc9a469e0ebe08f6">pieceMoved</a> (<a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;source, <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;destination) override</td></tr>
+<tr class="separator:acf67288ea66d16f8dc9a469e0ebe08f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8730a163537d462de68feca3a75feb1b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1ZobristHasher.html#a8730a163537d462de68feca3a75feb1b">hash</a> () override</td></tr>
+<tr class="memdesc:a8730a163537d462de68feca3a75feb1b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the most recent hash.  <a href="classChess_1_1ZobristHasher.html#a8730a163537d462de68feca3a75feb1b">More...</a><br /></td></tr>
+<tr class="separator:a8730a163537d462de68feca3a75feb1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af47ca95154260a7731381e3b17c31048"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1ZobristHasher.html#af47ca95154260a7731381e3b17c31048">restorePreviousHash</a> () override</td></tr>
+<tr class="separator:af47ca95154260a7731381e3b17c31048"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f88bdb701b16f699e20a97548bc7597"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1ZobristHasher.html#a7f88bdb701b16f699e20a97548bc7597">removed</a> (<a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;coords) override</td></tr>
+<tr class="separator:a7f88bdb701b16f699e20a97548bc7597"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af3a687d4daa64dd43adbdf329713eef6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1ZobristHasher.html#af3a687d4daa64dd43adbdf329713eef6">replacedWithPromotion</a> (<a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;source, PromotionOption prom, <a class="el" href="classChess_1_1Piece.html#a9d05a36fce65a50dac5c478805381779">Piece::Colour</a> colour) override</td></tr>
+<tr class="separator:af3a687d4daa64dd43adbdf329713eef6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae77bf3a03b465c1d0bea9eea7c01d957"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1ZobristHasher.html#ae77bf3a03b465c1d0bea9eea7c01d957">reset</a> () override</td></tr>
+<tr class="memdesc:ae77bf3a03b465c1d0bea9eea7c01d957"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the hasher to an initial configuration.  <a href="classChess_1_1ZobristHasher.html#ae77bf3a03b465c1d0bea9eea7c01d957">More...</a><br /></td></tr>
+<tr class="separator:ae77bf3a03b465c1d0bea9eea7c01d957"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d44cc51a886ad25139bf646e7371207"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1ZobristHasher.html#a6d44cc51a886ad25139bf646e7371207">togglePlayer</a> () override</td></tr>
+<tr class="memdesc:a6d44cc51a886ad25139bf646e7371207"><td class="mdescLeft">&#160;</td><td class="mdescRight">Changes the hash by toggling the current player. White always starts.  <a href="classChess_1_1ZobristHasher.html#a6d44cc51a886ad25139bf646e7371207">More...</a><br /></td></tr>
+<tr class="separator:a6d44cc51a886ad25139bf646e7371207"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>An object capable of hashing a chessboard configuration. </p>
+<div class="textblock"><p>An implementation of Zobrist hashing for a chessboard. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a9a3fb368c3c3845d18a18b56a5b2ca3d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9a3fb368c3c3845d18a18b56a5b2ca3d">&#9670;&nbsp;</a></span>pieceMoved()</h2>
+<a id="a8730a163537d462de68feca3a75feb1b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8730a163537d462de68feca3a75feb1b">&#9670;&nbsp;</a></span>hash()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Chess::ZobristHasher::hash </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the most recent hash. </p>
+
+<p>Implements <a class="el" href="classChess_1_1BoardHasher.html#aedbbb32c27f2d3f774d6f8b86dc26b6c">Chess::BoardHasher</a>.</p>
+
+</div>
+</div>
+<a id="acf67288ea66d16f8dc9a469e0ebe08f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf67288ea66d16f8dc9a469e0ebe08f6">&#9670;&nbsp;</a></span>pieceMoved()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void Chess::ZobristHasher::pieceMoved </td>
@@ -170,16 +217,28 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
+
+<p></p>
 <p>Updates the hash by considering the piece at the source to have moved to the destination provided. </p>
+
+<p>Implements <a class="el" href="classChess_1_1BoardHasher.html#a698e27f1a3fd7160ff278de1050e998e">Chess::BoardHasher</a>.</p>
 
 </div>
 </div>
-<a id="a8481f3ab108125617141baf069012aff"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8481f3ab108125617141baf069012aff">&#9670;&nbsp;</a></span>removed()</h2>
+<a id="a7f88bdb701b16f699e20a97548bc7597"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7f88bdb701b16f699e20a97548bc7597">&#9670;&nbsp;</a></span>removed()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void Chess::ZobristHasher::removed </td>
@@ -189,16 +248,28 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
+
+<p></p>
 <p>Updates the hash by considering the piece at the specified coordinates to have been removed. The hash does not change in case of deletion of an empty square. </p>
+
+<p>Implements <a class="el" href="classChess_1_1BoardHasher.html#a4e7b8ba9e8b6250b6d9547e6260eb324">Chess::BoardHasher</a>.</p>
 
 </div>
 </div>
-<a id="ad25c37fa9bc2b8e209dde8041aaf71e0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad25c37fa9bc2b8e209dde8041aaf71e0">&#9670;&nbsp;</a></span>replacedWithPromotion()</h2>
+<a id="af3a687d4daa64dd43adbdf329713eef6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af3a687d4daa64dd43adbdf329713eef6">&#9670;&nbsp;</a></span>replacedWithPromotion()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void Chess::ZobristHasher::replacedWithPromotion </td>
@@ -224,16 +295,57 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
+
+<p></p>
 <p>Updates the hash by assuming the source given to be replaced with a promotion piece. </p>
+
+<p>Implements <a class="el" href="classChess_1_1BoardHasher.html#af26983aaf82de02219f19ea2c927f026">Chess::BoardHasher</a>.</p>
 
 </div>
 </div>
-<a id="a7f0ae358bc43292264f780cb6630e5b7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7f0ae358bc43292264f780cb6630e5b7">&#9670;&nbsp;</a></span>restorePreviousHash()</h2>
+<a id="ae77bf3a03b465c1d0bea9eea7c01d957"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae77bf3a03b465c1d0bea9eea7c01d957">&#9670;&nbsp;</a></span>reset()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Chess::ZobristHasher::reset </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Resets the hasher to an initial configuration. </p>
+
+<p>Implements <a class="el" href="classChess_1_1BoardHasher.html#a17c017866b3114d76d5805319f3d0cf9">Chess::BoardHasher</a>.</p>
+
+</div>
+</div>
+<a id="af47ca95154260a7731381e3b17c31048"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af47ca95154260a7731381e3b17c31048">&#9670;&nbsp;</a></span>restorePreviousHash()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void Chess::ZobristHasher::restorePreviousHash </td>
@@ -242,8 +354,46 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
-<p>Restores the hasher to the state before the last change. Does nothing if called with no change has occurred yet. </p>
+
+<p></p>
+<p>Restores the hasher to the state before the last change. Does nothing if called when no change has occurred yet. </p>
+
+<p>Implements <a class="el" href="classChess_1_1BoardHasher.html#ab79917bff5879845d892560116e69abc">Chess::BoardHasher</a>.</p>
+
+</div>
+</div>
+<a id="a6d44cc51a886ad25139bf646e7371207"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6d44cc51a886ad25139bf646e7371207">&#9670;&nbsp;</a></span>togglePlayer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Chess::ZobristHasher::togglePlayer </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Changes the hash by toggling the current player. White always starts. </p>
+
+<p>Implements <a class="el" href="classChess_1_1BoardHasher.html#aada82676d40244e04ba0b94e4714e299">Chess::BoardHasher</a>.</p>
 
 </div>
 </div>

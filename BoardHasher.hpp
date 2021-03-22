@@ -21,7 +21,7 @@ public:
 
   /**
    Restores the hasher to the state before the last change.
-   Does nothing if called with no change has occurred yet.
+   Does nothing if called when no change has occurred yet.
   */
   virtual void restorePreviousHash() = 0;
 
