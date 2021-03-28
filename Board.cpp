@@ -70,7 +70,7 @@ struct Board::PastMove {
 Coordinates Board::stringToCoordinates(std::string_view coord) {
   if (coord.size() != 2) {
     throw std::invalid_argument(std::string(coord) + 
-      std::string(" is an invalid coordinate pair. Size must be 2."));
+      std::string(" is an invalid coordinate pair. Size must be 2"));
   }
 
   if (coord[0] < MIN_COLUMN || coord[0] > MAX_COLUMN) {
@@ -132,7 +132,7 @@ Board::Board(): Board(std::make_unique<ZobristHasher>(Board::MAX_COL_NUM+1,
 
 Board::Board(std::unique_ptr<BoardHasher> hasher): hasher(std::move(hasher)) {
   if (this->hasher == nullptr) {
-    throw std::invalid_argument("The board hasher cannot be null.");
+    throw std::invalid_argument("The board hasher cannot be null");
   }
   initializePiecesInStandardPos();
 }
@@ -179,7 +179,7 @@ void Board::initializePawns(std::vector<Coordinates> const& coords,
     if (coord.row == row) {
       if (promotionSource.has_value()) {
         throw std::invalid_argument("Only one pawn can be positioned for "
-                                    "promotion in any given turn.");
+                                    "promotion in any given turn");
       }
       promotionSource = coord;
     }
@@ -242,7 +242,7 @@ void Board::initializePieces(std::vector<Coordinates> const& coords,
     }
     if (board.count(coord)) {
       throw std::invalid_argument("Cannot initialize board with two or more"
-                                  " pieces in the same coordinates.");
+                                  " pieces in the same coordinates");
     }
 
     auto chessman = std::make_unique<Chessman>(colour, *this);
@@ -367,7 +367,7 @@ bool Board::isPieceAtSource(Piece const& piece,
 void Board::ensurePieceIsAtSource(Piece const& piece,
                                   Coordinates const& source) const {
   if (!isPieceAtSource(piece, source)) {
-    throw std::logic_error("Piece is not a the specified source coordinates");
+    throw std::logic_error("Piece is not at the specified source coordinates");
   }
 }
 

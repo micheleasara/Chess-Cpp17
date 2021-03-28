@@ -90,9 +90,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ad1b341aa4ec6bfb23f7b8f6755999c6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a77c3f295f3b3ab4e9c5904ae1f8b09a9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Board.html#a77c3f295f3b3ab4e9c5904ae1f8b09a9">Board</a> (std::unique_ptr&lt; <a class="el" href="classChess_1_1BoardHasher.html">BoardHasher</a> &gt; hasher)</td></tr>
 <tr class="separator:a77c3f295f3b3ab4e9c5904ae1f8b09a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6970489b21d220eb26e16286968eb68b"><td class="memItemLeft" align="right" valign="top"><a id="a6970489b21d220eb26e16286968eb68b"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Board</b> (std::vector&lt; <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> &gt; const &amp;whitePawns, std::vector&lt; <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> &gt; const &amp;whiteRooks, std::vector&lt; <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> &gt; const &amp;whiteKnights, std::vector&lt; <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> &gt; const &amp;whiteBishops, std::vector&lt; <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> &gt; const &amp;whiteQueens, <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;whiteKing, std::vector&lt; <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> &gt; const &amp;blackPawns, std::vector&lt; <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> &gt; const &amp;blackRooks, std::vector&lt; <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> &gt; const &amp;blackKnights, std::vector&lt; <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> &gt; const &amp;blackBishops, std::vector&lt; <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> &gt; const &amp;blackQueens, <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;blackKing)</td></tr>
+<tr class="separator:a6970489b21d220eb26e16286968eb68b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a175abc9d3188b8ad7ae4d2b94b68ee42"><td class="memItemLeft" align="right" valign="top"><a id="a175abc9d3188b8ad7ae4d2b94b68ee42"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Board.html#a175abc9d3188b8ad7ae4d2b94b68ee42">reset</a> ()</td></tr>
-<tr class="memdesc:a175abc9d3188b8ad7ae4d2b94b68ee42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the chessboard to its initial status. <br /></td></tr>
+<tr class="memdesc:a175abc9d3188b8ad7ae4d2b94b68ee42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the chessboard to its standard, initial configuration. <br /></td></tr>
 <tr class="separator:a175abc9d3188b8ad7ae4d2b94b68ee42"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2679c38ab98ac72815b30422aa963d1b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classChess_1_1MoveResult.html">MoveResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Board.html#a2679c38ab98ac72815b30422aa963d1b">move</a> (std::string_view src, std::string_view destination)</td></tr>
 <tr class="separator:a2679c38ab98ac72815b30422aa963d1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -122,10 +125,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="separator:aa6d7a1e093f0f19c7a8dc19190609099"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa46df720e3eae85b80de7e31e1db165a"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="classChess_1_1MoveResult.html">MoveResult</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Board.html#aa46df720e3eae85b80de7e31e1db165a">promote</a> (PromotionOption piece)</td></tr>
 <tr class="separator:aa46df720e3eae85b80de7e31e1db165a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa541ff3ef72ac8b17647f7116c441eca"><td class="memItemLeft" align="right" valign="top"><a id="aa541ff3ef72ac8b17647f7116c441eca"></a>
-<a class="el" href="classChess_1_1Piece.html#a9d05a36fce65a50dac5c478805381779">Piece::Colour</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Board.html#aa541ff3ef72ac8b17647f7116c441eca">currentPlayer</a> () const</td></tr>
-<tr class="memdesc:aa541ff3ef72ac8b17647f7116c441eca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the current player. White always starts. <br /></td></tr>
-<tr class="separator:aa541ff3ef72ac8b17647f7116c441eca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5cc0fb35bbb0a107efb489227ddf8e06"><td class="memItemLeft" align="right" valign="top"><a id="a5cc0fb35bbb0a107efb489227ddf8e06"></a>
+Colour&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Board.html#a5cc0fb35bbb0a107efb489227ddf8e06">currentPlayer</a> () const</td></tr>
+<tr class="memdesc:a5cc0fb35bbb0a107efb489227ddf8e06"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the current player. White always starts. <br /></td></tr>
+<tr class="separator:a5cc0fb35bbb0a107efb489227ddf8e06"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af67d024836d5381fcadfb67c5fbcef91"><td class="memItemLeft" align="right" valign="top"><a id="af67d024836d5381fcadfb67c5fbcef91"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Board.html#af67d024836d5381fcadfb67c5fbcef91">isGameOver</a> () const</td></tr>
 <tr class="memdesc:af67d024836d5381fcadfb67c5fbcef91"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if the game reached its conclusion, false otherwise. <br /></td></tr>
@@ -192,22 +195,6 @@ static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class
 static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Board.html#a6cee4fb673b3f5dd42b510cc48192a00">MAX_COL_NUM</a> = static_cast&lt;int&gt;(<a class="el" href="classChess_1_1Board.html#af412bfedd2d88f3df86ca238ba99d6ec">MAX_COLUMN</a> - <a class="el" href="classChess_1_1Board.html#a2c9488cdf97ffba1ed9b3b4b1dee98e1">MIN_COLUMN</a>)</td></tr>
 <tr class="memdesc:a6cee4fb673b3f5dd42b510cc48192a00"><td class="mdescLeft">&#160;</td><td class="mdescRight">The maximum column number starting to count from 0. <br /></td></tr>
 <tr class="separator:a6cee4fb673b3f5dd42b510cc48192a00"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a44111542a7555cc295ee239b31d0da7f"><td class="memItemLeft" align="right" valign="top"><a id="a44111542a7555cc295ee239b31d0da7f"></a>
-static constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Board.html#a44111542a7555cc295ee239b31d0da7f">WHITE_KING_INIT</a> = <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a>(4, 0)</td></tr>
-<tr class="memdesc:a44111542a7555cc295ee239b31d0da7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the starting position of the white king. <br /></td></tr>
-<tr class="separator:a44111542a7555cc295ee239b31d0da7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a39d095320002a36c93443604fd268a8e"><td class="memItemLeft" align="right" valign="top"><a id="a39d095320002a36c93443604fd268a8e"></a>
-static constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Board.html#a39d095320002a36c93443604fd268a8e">BLACK_KING_INIT</a> = <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a>(4, 7)</td></tr>
-<tr class="memdesc:a39d095320002a36c93443604fd268a8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the starting position of the black king. <br /></td></tr>
-<tr class="separator:a39d095320002a36c93443604fd268a8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a792852896c5167f80513b1d63c263427"><td class="memItemLeft" align="right" valign="top"><a id="a792852896c5167f80513b1d63c263427"></a>
-static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Board.html#a792852896c5167f80513b1d63c263427">CASTLE_DISTANCE</a> = 2</td></tr>
-<tr class="memdesc:a792852896c5167f80513b1d63c263427"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the number of squares the king travels to castle. <br /></td></tr>
-<tr class="separator:a792852896c5167f80513b1d63c263427"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a69afe72e33f5033c8f455acbdfa2e7fb"><td class="memItemLeft" align="right" valign="top"><a id="a69afe72e33f5033c8f455acbdfa2e7fb"></a>
-static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Board.html#a69afe72e33f5033c8f455acbdfa2e7fb">H_PRINT_SIZE</a> = 15</td></tr>
-<tr class="memdesc:a69afe72e33f5033c8f455acbdfa2e7fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the horizontal printing space used for a square of the board. <br /></td></tr>
-<tr class="separator:a69afe72e33f5033c8f455acbdfa2e7fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
@@ -233,7 +220,7 @@ std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Constructs a chessboard and places all pieces in their starting positions. Defaults to Zobrist hashing for the 3-fold and 5-fold repetition rules. </p>
+<p>Places all pieces in their standard starting positions. Defaults to Zobrist hashing for the 3-fold and 5-fold repetition rules. </p>
 
 </div>
 </div>
@@ -252,7 +239,7 @@ std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Constructs a chessboard and places all pieces in their starting positions. Uses the hasher provided for the 3-fold and 5-fold repetition rules. </p>
+<p>Places all pieces in their standard starting positions. Uses the hasher provided for the 3-fold and 5-fold repetition rules. </p>
 
 </div>
 </div>

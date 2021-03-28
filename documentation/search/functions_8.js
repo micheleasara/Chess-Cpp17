@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['king_128',['King',['../classChess_1_1King.html#a4943b8d7aea5fbab2e6a6bee4e0ba875',1,'Chess::King']]],
-  ['knight_129',['Knight',['../classChess_1_1Knight.html#ad35448b91b259131c1b7d7b6dfa3a3df',1,'Chess::Knight']]]
+  ['king_123',['King',['../classChess_1_1King.html#ae80dbb28ab3d933b21d3b02469c66237',1,'Chess::King']]],
+  ['knight_124',['Knight',['../classChess_1_1Knight.html#aeed5ff86dbcba017b1c73a4f156eaf6f',1,'Chess::Knight']]]
 ];

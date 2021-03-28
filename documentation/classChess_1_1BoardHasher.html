@@ -99,11 +99,9 @@ virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 <tr class="separator:ab79917bff5879845d892560116e69abc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4e7b8ba9e8b6250b6d9547e6260eb324"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1BoardHasher.html#a4e7b8ba9e8b6250b6d9547e6260eb324">removed</a> (<a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;coords)=0</td></tr>
 <tr class="separator:a4e7b8ba9e8b6250b6d9547e6260eb324"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af26983aaf82de02219f19ea2c927f026"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1BoardHasher.html#af26983aaf82de02219f19ea2c927f026">replacedWithPromotion</a> (<a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;source, PromotionOption prom, <a class="el" href="classChess_1_1Piece.html#a9d05a36fce65a50dac5c478805381779">Piece::Colour</a> colour)=0</td></tr>
-<tr class="separator:af26983aaf82de02219f19ea2c927f026"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a17c017866b3114d76d5805319f3d0cf9"><td class="memItemLeft" align="right" valign="top"><a id="a17c017866b3114d76d5805319f3d0cf9"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1BoardHasher.html#a17c017866b3114d76d5805319f3d0cf9">reset</a> ()=0</td></tr>
-<tr class="memdesc:a17c017866b3114d76d5805319f3d0cf9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the hasher to an initial configuration. <br /></td></tr>
+<tr class="memitem:a8ef146a52d1252e4965511adc4b832ba"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1BoardHasher.html#a8ef146a52d1252e4965511adc4b832ba">replacedWithPromotion</a> (<a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;source, PromotionOption prom, Colour colour)=0</td></tr>
+<tr class="separator:a8ef146a52d1252e4965511adc4b832ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17c017866b3114d76d5805319f3d0cf9"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1BoardHasher.html#a17c017866b3114d76d5805319f3d0cf9">reset</a> ()=0</td></tr>
 <tr class="separator:a17c017866b3114d76d5805319f3d0cf9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aada82676d40244e04ba0b94e4714e299"><td class="memItemLeft" align="right" valign="top"><a id="aada82676d40244e04ba0b94e4714e299"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1BoardHasher.html#aada82676d40244e04ba0b94e4714e299">togglePlayer</a> ()=0</td></tr>
@@ -181,8 +179,8 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 
 </div>
 </div>
-<a id="af26983aaf82de02219f19ea2c927f026"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af26983aaf82de02219f19ea2c927f026">&#9670;&nbsp;</a></span>replacedWithPromotion()</h2>
+<a id="a8ef146a52d1252e4965511adc4b832ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ef146a52d1252e4965511adc4b832ba">&#9670;&nbsp;</a></span>replacedWithPromotion()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -205,7 +203,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classChess_1_1Piece.html#a9d05a36fce65a50dac5c478805381779">Piece::Colour</a>&#160;</td>
+          <td class="paramtype">Colour&#160;</td>
           <td class="paramname"><em>colour</em>&#160;</td>
         </tr>
         <tr>
@@ -222,7 +220,35 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </div><div class="memdoc">
 <p>Updates the hash by assuming the source given to be replaced with a promotion piece. </p>
 
-<p>Implemented in <a class="el" href="classChess_1_1ZobristHasher.html#af3a687d4daa64dd43adbdf329713eef6">Chess::ZobristHasher</a>.</p>
+<p>Implemented in <a class="el" href="classChess_1_1ZobristHasher.html#aeca2f77deb1df1d0488f208257b6d2e4">Chess::ZobristHasher</a>.</p>
+
+</div>
+</div>
+<a id="a17c017866b3114d76d5805319f3d0cf9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a17c017866b3114d76d5805319f3d0cf9">&#9670;&nbsp;</a></span>reset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Chess::BoardHasher::reset </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Resets the hasher to an initial configuration, considering all pieces to be in their default starting positions. </p>
+
+<p>Implemented in <a class="el" href="classChess_1_1ZobristHasher.html#ae77bf3a03b465c1d0bea9eea7c01d957">Chess::ZobristHasher</a>.</p>
 
 </div>
 </div>

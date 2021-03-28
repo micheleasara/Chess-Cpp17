@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['queen_67',['Queen',['../classChess_1_1Queen.html',1,'Chess::Queen'],['../classChess_1_1Queen.html#a3e72beff427a2b757421c7d33b6e61c8',1,'Chess::Queen::Queen()']]]
+  ['queen_63',['Queen',['../classChess_1_1Queen.html',1,'Chess::Queen'],['../classChess_1_1Queen.html#a3c958d9cb62ccddc6a3d0c9bf328a424',1,'Chess::Queen::Queen()']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['colour_158',['Colour',['../classChess_1_1Piece.html#a9d05a36fce65a50dac5c478805381779',1,'Chess::Piece']]]
+  ['errorcode_148',['ErrorCode',['../classChess_1_1InvalidMove.html#a330018ca5623a17e22397fd6d356dee3',1,'Chess::InvalidMove']]]
 ];

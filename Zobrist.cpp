@@ -211,7 +211,7 @@ void ZobristHasher::initializePieces(std::vector<Coordinates> const& coords,
     auto coord1D = to1D(coord);
     if (board[coord1D] != EMPTY) {
       throw std::invalid_argument("Cannot initialize board with two or more"
-                                  " pieces in the same coordinates.");
+                                  " pieces in the same coordinates");
     }
 
     if (!isNormalStartingCoord(coord)) {
