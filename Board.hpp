@@ -34,14 +34,6 @@ namespace Chess {
     static int constexpr MAX_ROW_NUM = static_cast<int>(MAX_ROW - MIN_ROW);
     /// The maximum column number starting to count from 0.
     static int constexpr MAX_COL_NUM = static_cast<int>(MAX_COLUMN - MIN_COLUMN);
-    /// Defines the starting position of the white king.
-    static auto constexpr WHITE_KING_INIT = Coordinates(4, 0);
-    /// Defines the starting position of the black king.
-    static auto constexpr BLACK_KING_INIT = Coordinates(4, 7);
-    /// Defines the number of squares the king travels to castle.
-    static int constexpr CASTLE_DISTANCE = 2;
-    /// Defines the horizontal printing space used for a square of the board.
-    static int constexpr H_PRINT_SIZE = 15;
 
     /// Checks if the coordinates are within a chessboard.
     static bool areWithinLimits(Coordinates const& coord);
@@ -63,18 +55,48 @@ namespace Chess {
     static std::string coordinatesToString(Coordinates const& coord);
 
     /**
-     Constructs a chessboard and places all pieces in their starting positions.
+     Places all pieces in their standard starting positions.
      Defaults to Zobrist hashing for the 3-fold and 5-fold repetition rules.
     */
     Board();
 
     /**
-     Constructs a chessboard and places all pieces in their starting positions.
+     Places all pieces in their standard starting positions.
      Uses the hasher provided for the 3-fold and 5-fold repetition rules.
     */
     Board(std::unique_ptr<BoardHasher> hasher);
 
-    /// Resets the chessboard to its initial status.
+
+    /*
+     Places the pieces on the board following a custom configuration.
+
+     When a piece is initialised in a non-standard location, it is considered
+     to have moved. So, for instance, castling rights would not apply to a king
+     initialised in A3. Furthermore, en passant rights are not given
+     upon initialisation, meaning you cannot directly initialise two pawns for
+     en passant and execute it the next turn.
+     Finally, the board defaults to Zobrist hashing for the 3-fold and 5-fold
+     repetition rules.
+
+     Throws in case of:
+     1) invalid coordinates;
+     2) multiple pieces sharing the same coordinates;
+     3) multiple promotions (e.g. two white pawns in the last row).
+    */
+    Board(std::vector<Coordinates> const& whitePawns,
+          std::vector<Coordinates> const& whiteRooks,
+          std::vector<Coordinates> const& whiteKnights,
+          std::vector<Coordinates> const& whiteBishops,
+          std::vector<Coordinates> const& whiteQueens,
+          Coordinates const& whiteKing,
+          std::vector<Coordinates> const& blackPawns,
+          std::vector<Coordinates> const& blackRooks,
+          std::vector<Coordinates> const& blackKnights,
+          std::vector<Coordinates> const& blackBishops,
+          std::vector<Coordinates> const& blackQueens,
+          Coordinates const& blackKing);
+
+    /// Resets the chessboard to its standard, initial configuration.
     void reset();
 
     /**
@@ -150,7 +172,7 @@ namespace Chess {
     std::optional<MoveResult> promote(PromotionOption piece);
 
     /// Returns the current player. White always starts.
-    Piece::Colour currentPlayer() const;
+    Colour currentPlayer() const;
 
     /// Returns true if the game reached its conclusion, false otherwise.
     bool isGameOver() const;
@@ -174,7 +196,7 @@ namespace Chess {
     virtual ~Board();
 
   private:
-    void initializePieces();
+    void initializePiecesInStandardPos();
     Coordinates getPieceCoordinates(Piece const& piece) const;
     template <typename Callable>
     MoveResult move(Coordinates const& source, Coordinates const& destination,
@@ -182,8 +204,8 @@ namespace Chess {
     void revertLastPieceMovement();
     std::optional<CastlingType> tryCastling(Coordinates const& source,
                                             Coordinates const& target);
-    bool hasMovesLeft(Piece::Colour colour);
-    bool isKingInCheck(Piece::Colour kingColour) const;
+    bool hasMovesLeft(Colour colour);
+    bool isKingInCheck(Colour kingColour) const;
     bool isMoveSuicide(Coordinates sourceCoord, Coordinates targetCoord);
     void recordAndMove(Coordinates const& source,
                        Coordinates const& destination);
@@ -198,12 +220,35 @@ namespace Chess {
     void ensurePieceIsAtSource(Piece const& piece,
                                Coordinates const& source) const;
 
+    template <typename Chessman, typename Predicate>
+    void initializePieces(std::vector<Coordinates> const& coords,
+                          Colour colour,
+                          Predicate&& isNormalStartingColumn);
+
+    template <typename Chessman, typename Predicate, typename Finisher>
+    void initializePieces(std::vector<Coordinates> const& coords,
+                          Colour colour,
+                          Predicate&& isNormalStartingColumn,
+                          Finisher&& finalActions);
+
+    void initializePawns(std::vector<Coordinates> const& coords,
+                         Colour colour);
+    void initializeRooks(std::vector<Coordinates> const& coords,
+                         Colour colour);
+    void initializeKnights(std::vector<Coordinates> const& coords,
+                         Colour colour);
+    void initializeBishops(std::vector<Coordinates> const& coords,
+                         Colour colour);
+    void initializeQueens(std::vector<Coordinates> const& coords,
+                          Colour colour);
+    void initializeKing(Coordinates const& coords, Colour colour);
+
     bool m_isGameOver = false;
     bool isWhiteTurn = true;
     std::optional<Coordinates> promotionSource;
     std::unordered_map<Coordinates, std::unique_ptr<Piece>,
                                                        CoordinatesHasher> board;
-    std::unordered_map<Piece::Colour, King&> kings;
+    std::unordered_map<Colour, King&> kings;
     std::unique_ptr<BoardHasher> hasher;
     std::unordered_map<int, size_t> boardHashCount;
     bool threeFoldRepetition = false;

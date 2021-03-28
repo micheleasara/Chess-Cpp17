@@ -8,7 +8,7 @@ namespace Chess {
 class Rook: public PromotionPiece {
   public:
   /// Constructs a rook of the given colour and associated to a board.
-  Rook(Piece::Colour colour, Board& board);
+  Rook(Colour colour, Board& board);
 
   //! @copydoc Board::move(Pawn&,Coordinates const&,Coordinates const&)
   virtual MoveResult move(Coordinates const& source,

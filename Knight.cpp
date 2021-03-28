@@ -3,7 +3,7 @@
 #include <cmath>
 
 namespace Chess {
-Knight::Knight(Piece::Colour colour, Board& board) :
+Knight::Knight(Colour colour, Board& board) :
                                                 PromotionPiece(colour, board){}
 
 bool Knight::isMovePlausibleSpecific(Coordinates const& source,

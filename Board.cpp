@@ -10,6 +10,17 @@
 #include <cmath>
 #include <iomanip>
 #include <sstream>
+#include <array>
+#include <type_traits>
+
+/// Defines the starting position of the white king.
+static auto constexpr WHITE_KING_INIT = Chess::Coordinates(4, 0);
+/// Defines the starting position of the black king.
+static auto constexpr BLACK_KING_INIT = Chess::Coordinates(4, 7);
+/// Defines the number of squares the king travels to castle.
+static int constexpr CASTLE_DISTANCE = 2;
+/// Defines the horizontal printing space used for a square of the board.
+static int constexpr H_PRINT_SIZE = 15;
 
 namespace Chess {
 
@@ -74,8 +85,8 @@ Coordinates Board::stringToCoordinates(std::string_view coord) {
         MIN_ROW + std::string(" and ") + MAX_ROW);
   }
 
-  // all good if we get here
-  return Coordinates((int)(coord[0] - MIN_COLUMN), (int)(coord[1] - MIN_ROW));
+  return Coordinates(static_cast<int>(coord[0] - MIN_COLUMN),
+                     static_cast<int>(coord[1] - MIN_ROW));
 }
 
 std::string Board::coordinatesToString(Coordinates const& coord) {
@@ -83,15 +94,13 @@ std::string Board::coordinatesToString(Coordinates const& coord) {
       coord.column < 0 || coord.row < 0) {
     throw std::out_of_range("Coordinates are beyond the board limits");
   }
-  return std::string(1, (char)(coord.column + MIN_COLUMN)) +
-         std::string(1, (char)(coord.row + MIN_ROW));
+  return std::string(1,static_cast<char>(coord.column + MIN_COLUMN)) +
+         std::string(1, static_cast<char>(coord.row + MIN_ROW));
 }
 
-
-// coordinates are ordered pairs of integers (column, row)
 bool Board::areWithinLimits(Coordinates const& coord) {
-  char row = (char)coord.row + MIN_ROW;
-  char col = (char)coord.column + MIN_COLUMN;
+  char row = static_cast<char>(coord.row) + MIN_ROW;
+  char col = static_cast<char>(coord.column) + MIN_COLUMN;
   return (row >= MIN_ROW && row <= MAX_ROW &&
           col >= MIN_COLUMN && col <= MAX_COLUMN);
 }
@@ -110,8 +119,8 @@ bool Board::areInSameDiagonal(Coordinates const& coord1,
                              abs(coord1.row - coord2.row));
 }
 
-Piece::Colour Board::currentPlayer() const {
-  return isWhiteTurn ? Piece::Colour::White : Piece::Colour::Black;
+Colour Board::currentPlayer() const {
+  return isWhiteTurn ? Colour::White : Colour::Black;
 }
 
 bool Board::isGameOver() const {
@@ -125,7 +134,125 @@ Board::Board(std::unique_ptr<BoardHasher> hasher): hasher(std::move(hasher)) {
   if (this->hasher == nullptr) {
     throw std::invalid_argument("The board hasher cannot be null.");
   }
-  initializePieces();
+  initializePiecesInStandardPos();
+}
+
+Board::Board(std::vector<Coordinates> const& whitePawns,
+             std::vector<Coordinates> const& whiteRooks,
+             std::vector<Coordinates> const& whiteKnights,
+             std::vector<Coordinates> const& whiteBishops,
+             std::vector<Coordinates> const& whiteQueens,
+             Coordinates const& whiteKing,
+             std::vector<Coordinates> const& blackPawns,
+             std::vector<Coordinates> const& blackRooks,
+             std::vector<Coordinates> const& blackKnights,
+             std::vector<Coordinates> const& blackBishops,
+             std::vector<Coordinates> const& blackQueens,
+             Coordinates const& blackKing):
+             hasher(std::make_unique<ZobristHasher>(Board::MAX_COL_NUM+1,
+                                                    Board::MAX_ROW_NUM+1,
+                                                     whitePawns, whiteRooks,
+                                                     whiteKnights, whiteBishops,
+                                                     whiteQueens, whiteKing,
+                                                     blackPawns, blackRooks,
+                                                     blackKnights, blackBishops,
+                                                     blackQueens, blackKing)) {
+  std::array<Colour, 2> colours = {Colour::White, Colour::Black};
+  for (auto const& colour : colours) {
+    initializePawns(colour == Colour::White ? whitePawns : blackPawns, colour);
+    initializeRooks(colour == Colour::White ? whiteRooks : blackRooks, colour);
+    initializeKnights(colour == Colour::White ? whiteKnights : blackKnights, colour);
+    initializeBishops(colour == Colour::White ? whiteBishops : blackBishops, colour);
+    initializeQueens(colour == Colour::White ? whiteQueens : blackQueens, colour);
+    initializeKing(colour == Colour::White ? whiteKing : blackKing, colour);
+  }
+  checkGameState();
+}
+
+void Board::initializePawns(std::vector<Coordinates> const& coords,
+                            Colour colour) {
+  initializePieces<Pawn>(coords, colour,
+          [](int column) { return column > Board::MAX_COL_NUM; });
+
+  auto row = (colour == Colour::White) ? MAX_ROW_NUM : 0;
+  for (auto const& coord : coords) {
+    if (coord.row == row) {
+      if (promotionSource.has_value()) {
+        throw std::invalid_argument("Only one pawn can be positioned for "
+                                    "promotion in any given turn.");
+      }
+      promotionSource = coord;
+    }
+  }
+}
+
+void Board::initializeRooks(std::vector<Coordinates> const& coords,
+                            Colour colour) {
+  initializePieces<Rook>(coords, colour,
+          [](int column) { return column == 0 || column == 7; });
+}
+
+void Board::initializeKnights(std::vector<Coordinates> const& coords,
+                              Colour colour) {
+  initializePieces<Knight>(coords, colour,
+            [](int column) { return column == 1 || column == 6; },
+    [this](auto& piece) { insufficientMaterial.emplace(piece); }
+  );
+}
+
+void Board::initializeBishops(std::vector<Coordinates> const& coords,
+                              Colour colour) {
+  initializePieces<Bishop>(coords, colour,
+    [](int column) { return column == 2 || column == 5; },
+    [this](auto& piece) { insufficientMaterial.emplace(piece); }
+  );
+}
+
+void Board::initializeQueens(std::vector<Coordinates> const& coords,
+                             Colour colour) {
+  initializePieces<Queen>(coords, colour,
+        [](int column) { return column == 3; });
+}
+
+void Board::initializeKing(Coordinates const& coords, Colour colour) {
+  initializePieces<King>({coords}, colour,
+        [](int column) { return column == 4; },
+        [&](King& king) {
+            insufficientMaterial.emplace(king);
+            kings.emplace(colour, king);
+         });
+}
+
+template <typename Chessman, typename Predicate>
+void Board::initializePieces(std::vector<Coordinates> const& coords,
+                             Colour colour,
+                             Predicate&& isNormalStartingColumn) {
+  initializePieces<Chessman>(coords, colour, isNormalStartingColumn,
+                             [](auto const&) {});
+}
+
+template <typename Chessman, typename Predicate, typename Finisher>
+void Board::initializePieces(std::vector<Coordinates> const& coords,
+                             Colour colour,
+                             Predicate&& isNormalStartingColumn,
+                             Finisher&& finalActions) {
+  for (auto const& coord : coords) {
+    if (!areWithinLimits(coord)) {
+      throw std::invalid_argument("Coordinates go beyond the board limits");
+    }
+    if (board.count(coord)) {
+      throw std::invalid_argument("Cannot initialize board with two or more"
+                                  " pieces in the same coordinates.");
+    }
+
+    auto chessman = std::make_unique<Chessman>(colour, *this);
+    int initRow = (colour == Colour::White) ? 0 : MAX_ROW_NUM;
+    if (!isNormalStartingColumn(coord.column) || coord.row != initRow) {
+      chessman->setMovedStatus(true);
+    }
+    finalActions(*chessman);
+    board.emplace(coord, std::move(chessman));
+  }
 }
 
 bool Board::drawCanBeClaimed() const {
@@ -140,10 +267,10 @@ void Board::claimDraw() {
   }
 }
 
-void Board::initializePieces() {
+void Board::initializePiecesInStandardPos() {
   // make white and then black pieces
   for (int i = 0; i <= 1; i++) {
-    auto colour = static_cast<Piece::Colour>(i);
+    auto colour = static_cast<Colour>(i);
     int row = MAX_ROW_NUM % (MAX_ROW_NUM + i); // can give 0 or MAX_ROW_NUM
 
     auto knight = std::make_unique<Knight>(colour, *this);
@@ -190,7 +317,7 @@ void Board::reset() {
   kings.clear();
   movesHistory.clear();
   insufficientMaterial.clear();
-  initializePieces();
+  initializePiecesInStandardPos();
 }
 
 MoveResult Board::move(std::string_view src, std::string_view destination) {
@@ -263,9 +390,9 @@ MoveResult Board::move(Pawn& piece, Coordinates const& source,
         recordAndMove(source, destination);
       }
 
-      if ((piece.getColour() == Piece::Colour::White &&
+      if ((piece.getColour() == Colour::White &&
                   destination.row == MAX_ROW_NUM) ||
-          (piece.getColour() == Piece::Colour::Black &&
+          (piece.getColour() == Colour::Black &&
                               destination.row == 0)) {
         promotionSource = destination;
       }
@@ -378,8 +505,8 @@ void Board::ensureGameNotOver() {
 
 void Board::ensurePlayerCanMovePiece(Piece const& piece) {
   auto pieceColour = piece.getColour();
-  if ((pieceColour == Piece::Colour::Black && isWhiteTurn) ||
-    (pieceColour == Piece::Colour::White && !isWhiteTurn)) {
+  if ((pieceColour == Colour::Black && isWhiteTurn) ||
+    (pieceColour == Colour::White && !isWhiteTurn)) {
     std::stringstream ss;
     ss << "It is not " << (isWhiteTurn ? "Black" : "White");
     ss << "'s turn to move";
@@ -399,8 +526,8 @@ void Board::ensureNoPromotionNeeded() {
 }
 
 MoveResult::GameState Board::checkGameState() {
-  Piece::Colour enemyColour;
-  enemyColour = isWhiteTurn ? Piece::Colour::Black : Piece::Colour::White;
+  Colour enemyColour;
+  enemyColour = isWhiteTurn ? Colour::Black : Colour::White;
 
   bool inCheck = isKingInCheck(enemyColour);
   bool hasMoves = hasMovesLeft(enemyColour);
@@ -417,11 +544,12 @@ MoveResult::GameState Board::checkGameState() {
                                       boardHashCount.at(hasher->hash()) >= 5) {
     m_isGameOver = true;
     return MoveResult::GameState::FIVEFOLD_REPETITION_DRAW;
+  } else if (!isMaterialSufficient()) {
+    m_isGameOver = true;
+    return MoveResult::GameState::INSUFFICIENT_MATERIAL_DRAW;
   } else if (inCheck && hasMoves) {
     return MoveResult::GameState::OPPONENT_IN_CHECK;
-  } else if (!isMaterialSufficient()) {
-    return MoveResult::GameState::INSUFFICIENT_MATERIAL_DRAW;
-  }
+  } 
   return MoveResult::GameState::NORMAL;
 }
 
@@ -431,8 +559,7 @@ void Board::togglePlayer() {
 
 std::optional<CastlingType> getCastlingType(Coordinates const& source,
                                             Coordinates const& target) {
-  if (source != Board::WHITE_KING_INIT &&
-                                       source != Board::BLACK_KING_INIT) {
+  if (source != WHITE_KING_INIT && source != BLACK_KING_INIT) {
     return std::nullopt;
   }
 
@@ -441,9 +568,9 @@ std::optional<CastlingType> getCastlingType(Coordinates const& source,
     return std::nullopt;
 
   int colOffset = source.column - target.column;
-  if (colOffset == -1*Board::CASTLE_DISTANCE) {
+  if (colOffset == -CASTLE_DISTANCE) {
     return CastlingType::KingSide;
-  } else if (colOffset == Board::CASTLE_DISTANCE) {
+  } else if (colOffset == CASTLE_DISTANCE) {
     return CastlingType::QueenSide;
   }
   return std::nullopt;
@@ -521,7 +648,7 @@ bool Board::isMaterialSufficient() const {
   std::vector<std::reference_wrapper<Piece>> blacks;
   for (auto const& coordPiece : board) {
     auto& piece = *(coordPiece.second);
-    if (piece.getColour() == Piece::Colour::White) {
+    if (piece.getColour() == Colour::White) {
       whites.emplace_back(piece);
     } else {
       blacks.emplace_back(piece);
@@ -633,7 +760,7 @@ Coordinates Board::getPieceCoordinates(Piece const& piece) const {
 }
 
 
-bool Board::isKingInCheck(Piece::Colour kingColour) const {
+bool Board::isKingInCheck(Colour kingColour) const {
   Coordinates kingCoord = getPieceCoordinates(kings.at(kingColour));
 
   for (auto const& [coord, piece] : board) {
@@ -647,7 +774,7 @@ bool Board::isKingInCheck(Piece::Colour kingColour) const {
   return false;
 }
 
-bool Board::hasMovesLeft(Piece::Colour colour) {
+bool Board::hasMovesLeft(Colour colour) {
   // copy keys as we need to edit the board in the loop
   std::vector<Coordinates> keys;
   for (auto const& keyVal : board) {
@@ -760,7 +887,7 @@ bool Board::isValidEnPassant(Pawn const& pawn, Coordinates const& source,
   }
   auto& lastMove = movesHistory.back();
   auto lastMoveColour = lastMove.isWhiteTurn ?
-                        Piece::Colour::White : Piece::Colour::Black;
+                        Colour::White : Colour::Black;
   if (lastMove.sourceMovedStatus || pawn.getColour() == lastMoveColour) {
     return false;
   }
@@ -831,12 +958,12 @@ std::unique_ptr<PromotionPiece> Board::buildPromotionPiece(
 void printBottomLines(std::ostream& out) {
   out << "\n|";
   for (int j = 0; j <= Board::MAX_COL_NUM; j++) {
-    out << std::setw(Board::H_PRINT_SIZE) << "|";
+    out << std::setw(H_PRINT_SIZE) << "|";
   }
 
   out << "\n|";
   for (int j = 0; j <= Board::MAX_COL_NUM; j++) {
-    for (int i = 0; i < Board::H_PRINT_SIZE - 1; i++) {
+    for (int i = 0; i < H_PRINT_SIZE - 1; i++) {
       out << '-';
     }
     out << '|';
@@ -845,15 +972,15 @@ void printBottomLines(std::ostream& out) {
 
 void printColumnLegend(std::ostream& out) {
   for (char ch = Board::MIN_COLUMN; ch <= Board::MAX_COLUMN; ch++) {
-    out << std::setw((std::streamsize)Board::H_PRINT_SIZE / 2 + 1) << ch;
-    out << std::setw(Board::H_PRINT_SIZE / 2) << " ";
+    out << std::setw((std::streamsize)H_PRINT_SIZE / 2 + 1) << ch;
+    out << std::setw(H_PRINT_SIZE / 2) << " ";
   }
 }
 
 void printTopLine(std::ostream& out) {
   out << "\n|";
   for (int j = 0; j <= Board::MAX_COL_NUM; j++) {
-    out << std::setw(Board::H_PRINT_SIZE) << '|';
+    out << std::setw(H_PRINT_SIZE) << '|';
   }
   out << "\n|";
 }
@@ -866,10 +993,10 @@ std::ostream& operator<<(std::ostream& out, Board const& board) {
       Coordinates iterCoord(c, r);
       if (auto pieceOptional = board.getPieceAtCoordinates(iterCoord)) {
         out << std::right;
-        out << std::setw((std::streamsize)Board::H_PRINT_SIZE - 1);
+        out << std::setw((std::streamsize)H_PRINT_SIZE - 1);
         out << *pieceOptional << '|';
       } else {
-        out << std::setw(Board::H_PRINT_SIZE) << "|";
+        out << std::setw(H_PRINT_SIZE) << "|";
       }
       if (c == board.MAX_ROW_NUM) {
         out << "  " << r+1;

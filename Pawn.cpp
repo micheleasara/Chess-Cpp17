@@ -3,7 +3,7 @@
 #include <iostream>
 
 namespace Chess {
-Pawn::Pawn(Piece::Colour colour, Board& board) : Piece(colour, board){}
+Pawn::Pawn(Colour colour, Board& board) : Piece(colour, board){}
 
 std::string Pawn::getName() const {
   return "Pawn";

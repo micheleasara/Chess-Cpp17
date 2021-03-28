@@ -8,7 +8,7 @@ namespace Chess {
 class Queen: public PromotionPiece {
   public:
   /// Constructs a queen of the given colour and associated to a board.
-  Queen(Piece::Colour colour, Board& board);
+  Queen(Colour colour, Board& board);
 
   //! @copydoc Board::move(Pawn&,Coordinates const&,Coordinates const&)
   virtual MoveResult move(Coordinates const& source,

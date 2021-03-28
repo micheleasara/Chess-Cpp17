@@ -8,7 +8,7 @@ namespace Chess {
 class King: public Piece {
   public:
   /// Constructs a king of the given colour and associated to a board.
-  King(Piece::Colour colour, Board& board);
+  King(Colour colour, Board& board);
 
   //! @copydoc Board::move(Pawn&,Coordinates const&,Coordinates const&)
   virtual MoveResult move(Coordinates const& source, 

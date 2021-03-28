@@ -11,8 +11,7 @@ class Board;
 /// Represents a generic piece.
 class Piece {
 public:
-  /// Defines the colour of a piece.
-  enum class Colour:int { White = 0, Black };
+
 
   /// Creates a chess piece of the given colour and associated to a board.
   Piece(Colour colour, Board& board);

@@ -664,7 +664,7 @@ TEST_F(BoardTest, hasherIsNotifiedOfPromotion) {
 
   EXPECT_CALL(mock, replacedWithPromotion(Coordinates(1, 7),
                                           PromotionOption::Queen,
-                                          Chess::Piece::Colour::White));
+                                          Chess::Colour::White));
   EXPECT_CALL(mock, togglePlayer());
   board.promote(PromotionOption::Queen);
 }
@@ -696,6 +696,147 @@ TEST_F(BoardTest, hasherIsNotifiedOfCapturedPieceDuringEnPassant) {
   EXPECT_CALL(mock, removed(Coordinates(3, 4)));
   EXPECT_CALL(mock, togglePlayer());
   board.move("E5", "D6");
+}
+
+TEST_F(BoardTest, boardCanBeInstantiatedWithANonStandardInitialConfiguration) {
+  auto board = Board({}, {Coordinates(2, 3), Coordinates(1, 2),
+    Coordinates(2, 2)}, {}, {}, {}, Coordinates(1,1), {}, {}, {}, {},
+    {}, Coordinates(7,7));
+
+  EXPECT_FALSE(board.getPieceAtCoordinates(Coordinates(0, 0)).has_value());
+  auto whiteRook = board.getPieceAtCoordinates(Coordinates(2, 3));
+  ASSERT_TRUE(whiteRook.has_value());
+  auto anotherWhiteRook = board.getPieceAtCoordinates(Coordinates(1, 2));
+  ASSERT_TRUE(anotherWhiteRook.has_value());
+  EXPECT_TRUE(whiteRook->get().getName() == whiteRook->get().getName());
+
+  ASSERT_TRUE(board.getPieceAtCoordinates(Coordinates(2, 2)).has_value());
+  EXPECT_TRUE(board.getPieceAtCoordinates(Coordinates(1, 1)).has_value());
+  EXPECT_TRUE(board.getPieceAtCoordinates(Coordinates(7, 7)).has_value());
+
+  EXPECT_FALSE(board.isGameOver());
+}
+
+TEST_F(BoardTest, throwsIfNonStandardInitialisationHasRepeatedCoordinates) {
+  EXPECT_THROW(auto board = Board({}, {Coordinates(2, 3), Coordinates(2, 3),
+    Coordinates(2, 2)}, {}, {}, {}, Coordinates(1,1), {}, {}, {}, {},
+    {}, Coordinates(7,7));, std::invalid_argument);
+
+  EXPECT_THROW(auto board = Board({}, {Coordinates(2, 3), Coordinates(1, 2),
+    Coordinates(2, 2)}, {}, {}, {}, Coordinates(1,1), {}, {}, {}, {},
+    {}, Coordinates(1,2));, std::invalid_argument);
+}
+
+TEST_F(BoardTest, throwsIfNonStandardInitialisationHasInvalidCoordinates) {
+  EXPECT_THROW(auto board = Board({}, {Coordinates(-2, 3), Coordinates(2, 3),
+    Coordinates(2, 2)}, {}, {}, {}, Coordinates(1,1), {}, {}, {}, {},
+    {}, Coordinates(7,7));, std::invalid_argument);
+
+  EXPECT_THROW(auto board = Board({}, {Coordinates(2, -3), Coordinates(2, 3),
+    Coordinates(2, 2)}, {}, {}, {}, Coordinates(1,1), {}, {}, {}, {},
+    {}, Coordinates(7,7));, std::invalid_argument);
+
+  EXPECT_THROW(auto board = Board({}, {Coordinates(2, Board::MAX_ROW_NUM + 1),
+    Coordinates(1, 2), Coordinates(2, 2)}, {}, {}, {}, Coordinates(1,1),
+    {}, {}, {}, {}, {}, Coordinates(1,2));, std::invalid_argument);
+
+  EXPECT_THROW(auto board = Board({}, {Coordinates(Board::MAX_COL_NUM+1, 3),
+    Coordinates(1, 2), Coordinates(2, 2)}, {}, {}, {}, Coordinates(1,1),
+    {}, {}, {}, {}, {}, Coordinates(1,2));, std::invalid_argument);
+}
+
+TEST_F(BoardTest, throwsIfMoreThanOnePromotionWhenNonStandardInitialised) {
+  EXPECT_THROW(auto board = Board({}, {}, {}, {}, {}, Coordinates(1, 1),
+    {Coordinates(0, 0), Coordinates(4, 0)}, {}, {}, {},
+    {}, Coordinates(7, 7));, std::invalid_argument);
+
+  EXPECT_THROW(auto board = Board({Coordinates(5, 7)}, {}, {}, {}, {},
+    Coordinates(1, 1), {Coordinates(0, 0)}, {}, {}, {}, {},
+    Coordinates(7, 7));, std::invalid_argument);
+}
+
+TEST_F(BoardTest, rooksInitialisedInNonStandardPositionHaveMovedStatusTrue) {
+  auto board = Board({}, {Coordinates(2, 3)}, {}, {}, {}, Coordinates(1,1),
+    {}, {Coordinates(7,6)}, {}, {}, {}, Coordinates(7,7));
+  auto whiteRook = board.getPieceAtCoordinates(Coordinates(2, 3));
+  ASSERT_TRUE(whiteRook.has_value());
+  EXPECT_TRUE(whiteRook->get().getMovedStatus());
+
+  auto blackRook = board.getPieceAtCoordinates(Coordinates(7, 6));
+  ASSERT_TRUE(blackRook.has_value());
+  EXPECT_TRUE(blackRook->get().getMovedStatus());
+}
+
+TEST_F(BoardTest, pawnsInitialisedInNonStandardPositionHaveMovedStatusTrue) {
+  auto board = Board({Coordinates(2, 3)}, {}, {}, {}, {}, Coordinates(1,1),
+    {Coordinates(7,6)}, {}, {}, {}, {}, Coordinates(7,7));
+  auto whitePawn = board.getPieceAtCoordinates(Coordinates(2, 3));
+  ASSERT_TRUE(whitePawn.has_value());
+  EXPECT_TRUE(whitePawn->get().getMovedStatus());
+
+  auto blackPawn = board.getPieceAtCoordinates(Coordinates(7, 6));
+  ASSERT_TRUE(blackPawn.has_value());
+  EXPECT_TRUE(blackPawn->get().getMovedStatus());
+}
+
+TEST_F(BoardTest, kingsInitialisedInNonStandardPositionHaveMovedStatusTrue) {
+  auto board = Board({Coordinates(2, 3)}, {}, {}, {}, {}, Coordinates(1,1),
+    {Coordinates(7,6)}, {}, {}, {}, {}, Coordinates(7,7));
+  auto whiteKing = board.getPieceAtCoordinates(Coordinates(1, 1));
+  ASSERT_TRUE(whiteKing.has_value());
+  EXPECT_TRUE(whiteKing->get().getMovedStatus());
+
+  auto blackKing = board.getPieceAtCoordinates(Coordinates(7, 7));
+  ASSERT_TRUE(blackKing.has_value());
+  EXPECT_TRUE(blackKing->get().getMovedStatus());
+}
+
+TEST_F(BoardTest, piecesInitialisedInStandardPositionHaveMovedStatusFalse) {
+  auto board = Board({}, {Coordinates(2, 3), Coordinates(0, 0),
+    Coordinates(2, 2)}, {}, {}, {}, Coordinates(1, 1), {}, {}, {}, {},
+    {}, Coordinates(7, 7));
+  auto whiteRook = board.getPieceAtCoordinates(Coordinates(0, 0));
+  ASSERT_TRUE(whiteRook.has_value());
+  EXPECT_FALSE(whiteRook->get().getMovedStatus());
+}
+
+TEST_F(BoardTest, pawnsInitialisedInEnPassantCannotExecuteIt) {
+  auto board = Board({Coordinates(2, 4)}, {}, {}, {}, {}, Coordinates(1, 1),
+  {Coordinates(3, 4)}, {}, {}, {}, {}, Coordinates(7, 7));
+  auto whitePawnOpt = board.getPieceAtCoordinates(Coordinates(2, 4));
+  ASSERT_TRUE(whitePawnOpt.has_value());
+  auto& whitePawn = whitePawnOpt->get();
+  EXPECT_FALSE(whitePawn.isMovePlausible(Coordinates(2,4), Coordinates(3,5)));
+}
+
+TEST_F(BoardTest, kingVsKingCausesDraw) {
+  auto board = Board({}, {}, {}, {}, {}, Coordinates(1,1), {}, {}, {}, {},
+    {}, Coordinates(7,7));
+  EXPECT_TRUE(board.isGameOver());
+}
+
+TEST_F(BoardTest, kingAndBishopVsKingAndBishopCausesDraw) {
+  auto board = Board({}, {}, {}, {Coordinates(0, 3)}, {},
+    Coordinates(1, 1), {}, {}, {}, {Coordinates(7, 3)}, {}, Coordinates(7, 7));
+  EXPECT_TRUE(board.isGameOver());
+}
+
+TEST_F(BoardTest, kingAndKnightVsKingAndKnightCausesDraw) {
+  auto board = Board({}, {}, {Coordinates(0,0)}, {}, {},
+    Coordinates(1, 1), {}, {}, {Coordinates(7, 7)}, {}, {}, Coordinates(7, 6));
+  EXPECT_TRUE(board.isGameOver());
+}
+
+TEST_F(BoardTest, kingAndKnightVsKingAndBishopCausesDraw) {
+  // white knight vs black bishop
+  auto board = Board({}, {}, {Coordinates(0,0)}, {}, {},
+    Coordinates(1, 1), {}, {}, {}, {Coordinates(0, 7)}, {}, Coordinates(7, 6));
+  EXPECT_TRUE(board.isGameOver());
+
+  // white bishop vs black knight
+  auto anotherBoard = Board({}, {}, {}, {Coordinates(0,0)}, {},
+    Coordinates(1, 1), {}, {}, {Coordinates(7, 7)}, {}, {}, Coordinates(7, 6));
+  EXPECT_TRUE(anotherBoard.isGameOver());
 }
 
 TEST_F(BoardTest, canDoAlekhineVsVasic1931) {

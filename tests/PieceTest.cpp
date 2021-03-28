@@ -1,8 +1,10 @@
 #include "pch.h"
 #include "Piece.hpp"
 #include "Board.hpp"
+
 using Chess::Coordinates;
 using Chess::Board;
+using Chess::Colour;
 
 class PieceStub : public Chess::Piece {
 public:
@@ -25,7 +27,7 @@ private:
 class PieceTest : public ::testing::Test {
 protected:
   Chess::Board board;
-  Chess::Piece& piece = PieceStub(Chess::Piece::Colour::White, board);
+  Chess::Piece& piece = PieceStub(Colour::White, board);
 };
 
 TEST_F(PieceTest, cannotMoveFromOutOfBoundsCoordinates) {

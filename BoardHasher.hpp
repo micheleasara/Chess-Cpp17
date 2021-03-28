@@ -37,9 +37,12 @@ public:
    piece.
   */
   virtual void replacedWithPromotion(Coordinates const& source,
-                            PromotionOption prom, Piece::Colour colour) = 0;
+                            PromotionOption prom, Colour colour) = 0;
 
-  /// Resets the hasher to an initial configuration.
+  /**
+   Resets the hasher to an initial configuration, considering all pieces to be
+   in their default starting positions.
+  */
   virtual void reset() = 0;
 
   /// Changes the hash by toggling the current player. White always starts.

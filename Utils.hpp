@@ -8,6 +8,9 @@
 namespace Chess {
 class Piece;
 
+/// Defines the typical chess colours.
+enum class Colour:int { White = 0, Black };
+
 /// An optional that can contain a reference type.
 template <typename T>
 using OptionalRef = std::optional<std::reference_wrapper<T>>;
@@ -46,7 +49,6 @@ enum class CastlingType {
   KingSide,
   QueenSide,
 };
-
 }
 
 namespace std {

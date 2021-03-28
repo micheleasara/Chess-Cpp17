@@ -4,7 +4,7 @@
 namespace Chess {
 
 
-Rook::Rook(Piece::Colour colour, Board& board) :
+Rook::Rook(Colour colour, Board& board) :
                                               PromotionPiece(colour, board){}
 
 bool Rook::isMovePlausibleSpecific(Coordinates const& source,

@@ -9,6 +9,7 @@ using Chess::PromotionOption;
 using Chess::Piece;
 using Chess::MoveResult;
 using Chess::CastlingType;
+using Chess::Colour;
 
 /// Prints an explanation of how to undo a move to the output stream.
 void printUndoInstruction();
@@ -47,7 +48,7 @@ int main() {
         cout << cb;
         string source, dest;
         string currentPlayer, opponent;
-        if (cb.currentPlayer() == Piece::Colour::White) {
+        if (cb.currentPlayer() == Colour::White) {
           currentPlayer = "White";
           opponent = "Black";
         } else {

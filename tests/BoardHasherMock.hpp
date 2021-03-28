@@ -12,7 +12,7 @@ public:
     MOCK_METHOD(void, removed, (Coordinates const& coords), (override));
     MOCK_METHOD(void, replacedWithPromotion, (Coordinates const& source,
                                     Chess::PromotionOption prom,
-                                    Chess::Piece::Colour colour), (override));
+                                    Chess::Colour colour), (override));
     MOCK_METHOD(void, reset, (), (override));
     MOCK_METHOD(void, togglePlayer, (), (override));
 };

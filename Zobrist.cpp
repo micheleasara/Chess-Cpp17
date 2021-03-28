@@ -54,6 +54,56 @@ ZobristHasher::ZobristHasher(size_t width, size_t height):
   reset();
 }
 
+ZobristHasher::ZobristHasher(size_t width, size_t height,
+        std::vector<Coordinates> const& whitePawns,
+        std::vector<Coordinates> const& whiteRooks,
+        std::vector<Coordinates> const& whiteKnights,
+        std::vector<Coordinates> const& whiteBishops,
+        std::vector<Coordinates> const& whiteQueens,
+        Coordinates const& whiteKing,
+        std::vector<Coordinates> const& blackPawns,
+        std::vector<Coordinates> const& blackRooks,
+        std::vector<Coordinates> const& blackKnights,
+        std::vector<Coordinates> const& blackBishops,
+        std::vector<Coordinates> const& blackQueens,
+        Coordinates const& blackKing):
+          CHESSBOARD_AREA(width*height),
+          MAX_ROW_NUM(height-1), MAX_COL_NUM(width-1),
+          table(CHESSBOARD_AREA, std::vector<int>(PIECE_INDEXES_COUNT, EMPTY)),
+          board(CHESSBOARD_AREA, EMPTY) {
+  initializeTableAndWhitePlayer();
+  initializePieces(whitePawns, PieceIndex::WhitePawn,
+    [=](Coordinates const& c) {return c.row == 1 && c.column <= MAX_COL_NUM; });
+
+  initializePieces(whiteRooks, PieceIndex::WhiteRook,
+    [](Coordinates const& c) {
+       return c.row == 0 && (c.column == 0 || c.column == 7); });
+
+  // not all pieces have a moved equivalent in the hasher
+  // return true for them as to avoid useless branching
+  auto returnTrue = [](Coordinates const&) { return true; };
+  initializePieces(whiteKnights, PieceIndex::WhiteKnight, returnTrue);
+  initializePieces(whiteBishops, PieceIndex::WhiteBishop, returnTrue);
+  initializePieces(whiteQueens, PieceIndex::WhiteQueen, returnTrue);
+
+  initializePieces({whiteKing}, PieceIndex::WhiteKing,
+    [](Coordinates const& c) { return c.row == 0 && c.column == 3; });
+  
+  initializePieces(blackPawns, PieceIndex::BlackPawn,
+    [=](Coordinates const& c) {return c.row == 6 && c.column <= MAX_COL_NUM; });
+  
+  initializePieces(blackRooks, PieceIndex::BlackRook,
+    [](Coordinates const& c) {
+       return c.row == 0 && (c.column == 0 || c.column == 7); });
+  
+  initializePieces(blackKnights, PieceIndex::BlackKnight, returnTrue);
+  initializePieces(blackBishops, PieceIndex::BlackBishop, returnTrue);
+  initializePieces(blackQueens, PieceIndex::BlackQueen, returnTrue);
+  
+  initializePieces({blackKing}, PieceIndex::BlackKing,
+    [](Coordinates const& c) { return c.row == 0 && c.column == 3; });
+}
+
 void ZobristHasher::reset() {
   movesHistory.clear();
   initializeTableAndWhitePlayer();
@@ -112,20 +162,20 @@ int ZobristHasher::hash() {
 }
 
 void ZobristHasher::replacedWithPromotion(Coordinates const& source,
-                                   PromotionOption prom, Piece::Colour colour) {
+                                   PromotionOption prom, Colour colour) {
   PieceIndex replacement;
   switch (prom) {
   case PromotionOption::Queen:
-    replacement = (colour == Piece::Colour::White) ?
+    replacement = (colour == Colour::White) ?
       PieceIndex::WhiteQueen : PieceIndex::BlackQueen; break;
   case PromotionOption::Bishop:
-    replacement = (colour == Piece::Colour::White) ? 
+    replacement = (colour == Colour::White) ? 
       PieceIndex::WhiteBishop : PieceIndex::BlackBishop; break;
   case PromotionOption::Knight:
-    replacement = (colour == Piece::Colour::White) ?
+    replacement = (colour == Colour::White) ?
       PieceIndex::WhiteKnight : PieceIndex::BlackKnight; break;
   case PromotionOption::Rook:
-    replacement = (colour == Piece::Colour::White) ?
+    replacement = (colour == Colour::White) ?
       PieceIndex::WhiteRook : PieceIndex::BlackRook; break;
   default:
     throw std::logic_error("Promotion not implemented correctly");
@@ -147,6 +197,28 @@ void ZobristHasher::initializeTableAndWhitePlayer() {
     }
   }
   do { whitePlayerHash = rand(); } while (seen.count(whitePlayerHash) > 0);
+}
+
+template <typename Predicate>
+void ZobristHasher::initializePieces(std::vector<Coordinates> const& coords,
+                                     PieceIndex piece,
+                                     Predicate&& isNormalStartingCoord) {
+  for (auto const& coord : coords) {
+    if (!areWithinLimits(coord)) {
+      throw std::invalid_argument("Coordinates go beyond the board limits");
+    }
+
+    auto coord1D = to1D(coord);
+    if (board[coord1D] != EMPTY) {
+      throw std::invalid_argument("Cannot initialize board with two or more"
+                                  " pieces in the same coordinates.");
+    }
+
+    if (!isNormalStartingCoord(coord)) {
+     piece = movedEquivalent(piece);
+    }
+    board[coord1D] = static_cast<int>(piece);
+  }
 }
 
 void ZobristHasher::fillInitialBoard() {

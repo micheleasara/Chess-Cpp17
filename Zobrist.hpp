@@ -1,17 +1,49 @@
 #ifndef ZOBRIST_H
 #define ZOBRIST_H
 
+#include "BoardHasher.hpp"
 #include <unordered_set>
 #include <vector>
-#include "BoardHasher.hpp"
 
 namespace Chess {
 
 /// An implementation of Zobrist hashing for a chessboard.
 class ZobristHasher: public BoardHasher {
 public:
-  /// Constructs a hasher for a board of the given size.
+  /*
+    Constructs a hasher for a board of the given size, considering all pieces
+    to be in their standard starting positions.
+    Throws in case of non-positive size dimensions.
+  */
   ZobristHasher(size_t width, size_t height);
+
+  /*
+   Constructs a hasher for a board of the given size, and consider the pieces
+   to be on the board following a custom configuration.
+
+   When a piece is initialised in a non-standard location, it is considered
+   to have moved. So, for instance, castling rights would not apply to a king
+   initialised in A3. Furthermore, en passant rights are not given
+   upon initialisation.
+
+   Throws in case of:
+   1) invalid coordinates;
+   2) multiple pieces sharing the same coordinates;
+   3) non-positive size dimensions.
+  */
+  ZobristHasher(size_t width, size_t height,
+      std::vector<Coordinates> const& whitePawns,
+      std::vector<Coordinates> const& whiteRooks,
+      std::vector<Coordinates> const& whiteKnights,
+      std::vector<Coordinates> const& whiteBishops,
+      std::vector<Coordinates> const& whiteQueens,
+      Coordinates const& whiteKing,
+      std::vector<Coordinates> const& blackPawns,
+      std::vector<Coordinates> const& blackRooks,
+      std::vector<Coordinates> const& blackKnights,
+      std::vector<Coordinates> const& blackBishops,
+      std::vector<Coordinates> const& blackQueens,
+      Coordinates const& blackKing);
 
   //! @copydoc BoardHasher::pieceMoved(Coordinates const&,Coordinates const&)
   void pieceMoved(Coordinates const& source,
@@ -26,10 +58,10 @@ public:
   //! @copydoc BoardHasher::removed(Coordinates const&)
   void removed(Coordinates const& coords) override;
 
-  //! @copydoc BoardHasher::replacedWithPromotion(Coordinates const&,PromotionOption,Piece::Colour)
+  //! @copydoc BoardHasher::replacedWithPromotion(Coordinates const&,PromotionOption,Colour)
   void replacedWithPromotion(Coordinates const& source,
                              PromotionOption prom,
-                             Piece::Colour colour) override;
+                             Colour colour) override;
 
   //! @copydoc BoardHasher::reset()
   void reset() override;
@@ -46,6 +78,9 @@ private:
   struct PastMove;
 
   void initializeTableAndWhitePlayer();
+  template <typename Predicate>
+  void initializePieces(std::vector<Coordinates> const& coords, PieceIndex piece,
+                        Predicate&& isNormalStartingCoord);
   void fillInitialBoard();
   int computeHashFromBoard();
   int to1D(Coordinates const& coords);

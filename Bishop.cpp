@@ -2,7 +2,7 @@
 #include "Board.hpp"
 
 namespace Chess {
-Bishop::Bishop(Piece::Colour colour, Board& board):
+Bishop::Bishop(Colour colour, Board& board):
                                                 PromotionPiece(colour, board){}
 
 std::string Bishop::getName() const{

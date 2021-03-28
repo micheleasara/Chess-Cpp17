@@ -2,7 +2,7 @@
 #include "Board.hpp"
 
 namespace Chess {
-King::King(Piece::Colour colour, Board& board) : Piece(colour, board){}
+King::King(Colour colour, Board& board) : Piece(colour, board){}
 
 std::string King::getName() const {
   return "King";

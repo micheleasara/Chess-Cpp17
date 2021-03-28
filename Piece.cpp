@@ -3,15 +3,15 @@
 #include <iostream>
 
 namespace Chess {
-Piece::Piece(Piece::Colour colour, Board& board) : colour(colour),
+Piece::Piece(Colour colour, Board& board) : colour(colour),
                                                        board(board) {};
 
-Piece::Colour Piece::getColour() const {
+Colour Piece::getColour() const {
   return colour;
 }
 
 std::ostream& operator<<(std::ostream& out, const Piece& piece) {
-  std::string owner = (piece.colour == Piece::Colour::White)? "White" : "Black";
+  std::string owner = (piece.colour == Colour::White)? "White" : "Black";
   return out << (owner + "'s " + piece.getName());
 }
 

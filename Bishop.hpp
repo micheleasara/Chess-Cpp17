@@ -8,7 +8,7 @@ namespace Chess {
 class Bishop: public PromotionPiece {
   public:
   /// Constructs a bishop of the given colour and associated to a board.
-  Bishop(Piece::Colour colour, Board& board);
+  Bishop(Colour colour, Board& board);
 
   //! @copydoc Board::move(Pawn&,Coordinates const&,Coordinates const&)
   virtual MoveResult move(Coordinates const& source, 
