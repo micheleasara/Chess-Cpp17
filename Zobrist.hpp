@@ -8,7 +8,7 @@
 namespace Chess {
 
 /// An implementation of Zobrist hashing for a chessboard.
-class ZobristHasher: public BoardHasher {
+class ZobristHasher final: public BoardHasher {
 public:
   /*
     Constructs a hasher for a board of the given size, considering all pieces

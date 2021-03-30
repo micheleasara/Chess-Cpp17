@@ -11,9 +11,9 @@ bool Rook::isMovePlausibleSpecific(Coordinates const& source,
                                Coordinates const& destination) const {
 
   if (Board::areInSameRow(source, destination))
-      return board.isRowFree(source, destination.column);
+      return getBoard().isRowFree(source, destination.column);
   else if (Board::areInSameColumn(source, destination))
-      return board.isColumnFree(source, destination.row);
+      return getBoard().isColumnFree(source, destination.row);
 
   // return false if destination is not in same row or column
   return false;
@@ -25,6 +25,6 @@ std::string Rook::getName() const{
 
 MoveResult Rook::move(Coordinates const& source, 
                       Coordinates const& destination) {
-  return board.move(*this, source, destination);
+  return getBoard().move(*this, source, destination);
 }
 }

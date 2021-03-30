@@ -94,7 +94,7 @@ std::string Board::coordinatesToString(Coordinates const& coord) {
       coord.column < 0 || coord.row < 0) {
     throw std::out_of_range("Coordinates are beyond the board limits");
   }
-  return std::string(1,static_cast<char>(coord.column + MIN_COLUMN)) +
+  return std::string(1, static_cast<char>(coord.column + MIN_COLUMN)) +
          std::string(1, static_cast<char>(coord.row + MIN_ROW));
 }
 
@@ -167,6 +167,40 @@ Board::Board(std::vector<Coordinates> const& whitePawns,
     initializeKing(colour == Colour::White ? whiteKing : blackKing, colour);
   }
   checkGameState();
+}
+
+Board::Board(Board&& other) noexcept {
+  operator=(std::move(other));
+}
+
+Board& Board::operator=(Board&& other) noexcept {
+  m_isGameOver = other.m_isGameOver;
+  isWhiteTurn = other.isWhiteTurn;
+  promotionSource = std::move(other.promotionSource);
+  board = std::move(other.board);
+  kings = std::move(other.kings);
+  hasher = std::move(other.hasher);
+  boardHashCount = std::move(other.boardHashCount);;
+  threeFoldRepetition = other.threeFoldRepetition;
+  countSincePawnMoveOrCapture = other.threeFoldRepetition;
+  insufficientMaterial = std::move(other.insufficientMaterial);
+  movesHistory = std::move(other.movesHistory);
+
+  for (auto& coordPiece : board) {
+    if (coordPiece.second) {
+      // assign existing pieces to the current Board object
+      coordPiece.second->setBoard(*this);
+    }
+  }
+
+  for (auto& pastMove : movesHistory) {
+    if (pastMove.removedPiece) {
+      // assign removed pieces to the current Board object
+      pastMove.removedPiece->setBoard(*this);
+    }
+  }
+
+  return *this;
 }
 
 void Board::initializePawns(std::vector<Coordinates> const& coords,
@@ -749,29 +783,30 @@ OptionalRef<Piece> Board::getPieceAtCoordinates(
   return std::nullopt;
 }
 
-Coordinates Board::getPieceCoordinates(Piece const& piece) const {
+std::optional<Coordinates> Board::getPieceCoordinates(Piece const& piece) const {
   for (auto const& [coord, otherPiece] : board) {
     if (otherPiece.get() == &piece) {
       return coord;
     }
   }
-
-  throw std::logic_error("Piece not found in chessboard");
+  return std::nullopt;
 }
 
 
 bool Board::isKingInCheck(Colour kingColour) const {
-  Coordinates kingCoord = getPieceCoordinates(kings.at(kingColour));
-
-  for (auto const& [coord, piece] : board) {
-    // check if an enemy piece can move where the king is
-    if (piece->getColour() != kingColour &&
-      piece->isMovePlausible(coord, kingCoord)) {
-      return true;
+  if (auto kingCoord = getPieceCoordinates(kings.at(kingColour))) {
+    for (auto const& [coord, piece] : board) {
+      // check if an enemy piece can move where the king is
+      if (piece->getColour() != kingColour &&
+                                piece->isMovePlausible(coord, *kingCoord)) {
+        return true;
+      }
     }
+    return false;
   }
 
-  return false;
+  throw std::logic_error("Attempted to find non-existent king while looking "
+                         "for a check.");
 }
 
 bool Board::hasMovesLeft(Colour colour) {

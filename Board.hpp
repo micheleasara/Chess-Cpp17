@@ -96,6 +96,18 @@ namespace Chess {
           std::vector<Coordinates> const& blackQueens,
           Coordinates const& blackKing);
 
+    /**
+     Performs move construction with a cost of O(N^2), where N is the total
+     number of pieces that are and were on the board during this game.
+    */
+    Board(Board&& other) noexcept;
+
+    /**
+     Performs move assignment with a cost of O(N), where N is the total number
+     of pieces that are and were on the board during this game.
+    */
+    Board& operator=(Board&& other) noexcept;
+
     /// Resets the chessboard to its standard, initial configuration.
     void reset();
 
@@ -133,10 +145,16 @@ namespace Chess {
                                  Coordinates const& destination);
 
     /**
-     Retrieves the piece corresponding to the coordinates.
+     Retrieves the piece corresponding to the coordinates given.
      Returns an empty optional if no piece is found at those coordinates.
     */
     OptionalRef<Piece> getPieceAtCoordinates(Coordinates const& coord) const;
+
+    /**
+     Retrieves the coordinates corresponding to the piece given.
+     Returns an empty optional if the piece is not on this board.
+    */
+    std::optional<Coordinates> getPieceCoordinates(Piece const& piece) const;
 
     /// Determines if a pawn can do en passant from a source to a destination.
     bool isValidEnPassant(Pawn const& pawn, Coordinates const& source,
@@ -197,7 +215,6 @@ namespace Chess {
 
   private:
     void initializePiecesInStandardPos();
-    Coordinates getPieceCoordinates(Piece const& piece) const;
     template <typename Callable>
     MoveResult move(Coordinates const& source, Coordinates const& destination,
                                                           Callable&& mover);

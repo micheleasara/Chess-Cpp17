@@ -13,13 +13,13 @@ bool Queen::isMovePlausibleSpecific(Coordinates const& source,
                                Coordinates const& destination) const {
   // check for row and column
   if (Board::areInSameRow(source, destination))
-    return board.isRowFree(source, destination.column);
+    return getBoard().isRowFree(source, destination.column);
   if (Board::areInSameColumn(source, destination))
-    return board.isColumnFree(source, destination.row);
+    return getBoard().isColumnFree(source, destination.row);
 
   // check for diagonal
   try{
-    return board.isDiagonalFree(source, destination);
+    return getBoard().isDiagonalFree(source, destination);
   // exception means source and destination are not in the same diagonal
   } catch (std::invalid_argument const&){
     return false;
@@ -28,7 +28,7 @@ bool Queen::isMovePlausibleSpecific(Coordinates const& source,
 
 MoveResult Queen::move(Coordinates const& source, 
                        Coordinates const& destination) {
-  return board.move(*this, source, destination);
+  return getBoard().move(*this, source, destination);
 }
 
 }

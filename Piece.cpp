@@ -3,15 +3,24 @@
 #include <iostream>
 
 namespace Chess {
-Piece::Piece(Colour colour, Board& board) : colour(colour),
-                                                       board(board) {};
+Piece::Piece(Colour colour, Board& board) : m_colour(colour),
+                                                       m_board(board) {};
 
 Colour Piece::getColour() const {
-  return colour;
+  return m_colour;
+}
+
+void Piece::setBoard(Board& board) {
+  if (board.getPieceCoordinates(*this) == std::nullopt) {
+    throw std::invalid_argument("A piece cannot be assigned to a board which "
+                                "does not contain it");
+  }
+
+  m_board = board;
 }
 
 std::ostream& operator<<(std::ostream& out, const Piece& piece) {
-  std::string owner = (piece.colour == Colour::White)? "White" : "Black";
+  std::string owner = (piece.m_colour == Colour::White)? "White" : "Black";
   return out << (owner + "'s " + piece.getName());
 }
 
@@ -26,12 +35,12 @@ bool Piece::isMovePlausible(Coordinates const& source,
     return false;
   }
 
-  OptionalRef<Piece> target = board.getPieceAtCoordinates(destination);
+  OptionalRef<Piece> target = getBoard().getPieceAtCoordinates(destination);
   if (target && target->get().getColour() == getColour()) {
     return false;
   }
 
-  OptionalRef<Piece> thisPiece = board.getPieceAtCoordinates(source);
+  OptionalRef<Piece> thisPiece = getBoard().getPieceAtCoordinates(source);
   if (!thisPiece || &(thisPiece->get()) != this) {
     return false;
   }
@@ -40,10 +49,15 @@ bool Piece::isMovePlausible(Coordinates const& source,
 }
 
 void Piece::setMovedStatus(bool moved) {
-  this->moved = moved;
+  this->m_moved = moved;
 }
 
 bool Piece::getMovedStatus() const noexcept {
-  return moved;
+  return m_moved;
 }
+
+Board& Piece::getBoard() const {
+  return m_board.get();
+}
+
 }

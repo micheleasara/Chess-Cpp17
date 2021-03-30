@@ -23,6 +23,6 @@ bool King::isMovePlausibleSpecific(Coordinates const& source,
 
 MoveResult King::move(Coordinates const& source,
                       Coordinates const& destination) {
-  return board.move(*this, source, destination);
+  return getBoard().move(*this, source, destination);
 }
 }

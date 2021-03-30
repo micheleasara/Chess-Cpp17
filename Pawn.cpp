@@ -17,7 +17,7 @@ bool Pawn::isMovePlausibleSpecific(Coordinates const& source,
   // white only moves in increasing row direction, black the opposite
   // therefore, 'forward' is relative to the colour
   forwardSteps *= (getColour() == Colour::White) ? 1 : -1;
-  auto piece = board.getPieceAtCoordinates(destination);
+  auto piece = getBoard().getPieceAtCoordinates(destination);
 
   // return true only for: normal pawn step, capturing one step diagonally,
   // double step as first move and en passant
@@ -27,18 +27,18 @@ bool Pawn::isMovePlausibleSpecific(Coordinates const& source,
   if (forwardSteps == 1 && horizontalSteps == 1 && piece) {
     return true;
   }
-  if (board.isValidEnPassant(*this, source, destination)) {
+  if (getBoard().isValidEnPassant(*this, source, destination)) {
     return true;
   }
   if (forwardSteps == 2 && horizontalSteps == 0 && !piece &&
                                                         !getMovedStatus()) {
-    return board.isColumnFree(source, destination.row);
+    return getBoard().isColumnFree(source, destination.row);
   }
   return false;
 }
 
 MoveResult Pawn::move(Coordinates const& source,
                       Coordinates const& destination) {
-  return board.move(*this, source, destination);
+  return getBoard().move(*this, source, destination);
 }
 }
