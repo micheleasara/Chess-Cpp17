@@ -74,7 +74,7 @@ $(function() {
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">namespace </span>Chess {</div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
-<div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="classChess_1_1ZobristHasher.html">   11</a></span>&#160;<span class="keyword">class </span><a class="code" href="classChess_1_1ZobristHasher.html">ZobristHasher</a>: <span class="keyword">public</span> <a class="code" href="classChess_1_1BoardHasher.html">BoardHasher</a> {</div>
+<div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="classChess_1_1ZobristHasher.html">   11</a></span>&#160;<span class="keyword">class </span><a class="code" href="classChess_1_1ZobristHasher.html">ZobristHasher</a> final: <span class="keyword">public</span> <a class="code" href="classChess_1_1BoardHasher.html">BoardHasher</a> {</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;  <span class="comment">/*</span></div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">    Constructs a hasher for a board of the given size, considering all pieces</span></div>
@@ -84,12 +84,12 @@ $(function() {
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;  <a class="code" href="classChess_1_1ZobristHasher.html">ZobristHasher</a>(<span class="keywordtype">size_t</span> width, <span class="keywordtype">size_t</span> height);</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;  <span class="comment">/*</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">   Constructs a hasher for a board of the given size, and consider the pieces</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">   Constructs a hasher for a board of the given size, and considers the pieces</span></div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">   to be on the board following a custom configuration.</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment">   When a piece is initialised in a non-standard location, it is considered</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">   to have moved. So, for instance, castling rights would not apply to a king</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment">   initialised in A3. Furthermore, en passant rights are not given</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment">   When a piece is initialised in a non-standard location, it is treated as if</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">   it had moved there. So, for instance, castling rights would not apply to a </span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment">   king initialised in A3. Furthermore, en passant rights are not given</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment">   upon initialisation.</span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">   Throws in case of:</span></div>

@@ -2,7 +2,7 @@
 <area shape="rect" id="node1" href="$classChess_1_1Piece.html" title="Represents a generic piece." alt="" coords="5,56,109,83"/>
 <area shape="rect" id="node2" href="$classChess_1_1King.html" title="Represents a king." alt="" coords="193,5,292,32"/>
 <area shape="rect" id="node3" href="$classChess_1_1Pawn.html" title="Represents a pawn." alt="" coords="191,56,294,83"/>
-<area shape="rect" id="node4" href="$classChess_1_1PromotionPiece.html" title="Represents a piece that can be used for a promotion." alt="" coords="157,107,328,133"/>
+<area shape="rect" id="node4" href="$classChess_1_1PromotionPiece.html" title="Represents a piece that can be used to promote a pawn." alt="" coords="157,107,328,133"/>
 <area shape="rect" id="node5" href="$classChess_1_1Bishop.html" title="Represents a bishop." alt="" coords="376,31,489,57"/>
 <area shape="rect" id="node6" href="$classChess_1_1Knight.html" title="Represents a knight." alt="" coords="377,81,488,108"/>
 <area shape="rect" id="node7" href="$classChess_1_1Queen.html" title=" " alt="" coords="377,132,488,159"/>

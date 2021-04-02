@@ -93,6 +93,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6970489b21d220eb26e16286968eb68b"><td class="memItemLeft" align="right" valign="top"><a id="a6970489b21d220eb26e16286968eb68b"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Board</b> (std::vector&lt; <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> &gt; const &amp;whitePawns, std::vector&lt; <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> &gt; const &amp;whiteRooks, std::vector&lt; <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> &gt; const &amp;whiteKnights, std::vector&lt; <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> &gt; const &amp;whiteBishops, std::vector&lt; <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> &gt; const &amp;whiteQueens, <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;whiteKing, std::vector&lt; <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> &gt; const &amp;blackPawns, std::vector&lt; <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> &gt; const &amp;blackRooks, std::vector&lt; <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> &gt; const &amp;blackKnights, std::vector&lt; <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> &gt; const &amp;blackBishops, std::vector&lt; <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> &gt; const &amp;blackQueens, <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;blackKing)</td></tr>
 <tr class="separator:a6970489b21d220eb26e16286968eb68b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c7be7204c749c095048a63df50dfbd2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Board.html#a5c7be7204c749c095048a63df50dfbd2">Board</a> (<a class="el" href="classChess_1_1Board.html">Board</a> &amp;&amp;other) noexcept</td></tr>
+<tr class="separator:a5c7be7204c749c095048a63df50dfbd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adfc8903d068b8859849b9d1094116f2a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classChess_1_1Board.html">Board</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Board.html#adfc8903d068b8859849b9d1094116f2a">operator=</a> (<a class="el" href="classChess_1_1Board.html">Board</a> &amp;&amp;other) noexcept</td></tr>
+<tr class="separator:adfc8903d068b8859849b9d1094116f2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a175abc9d3188b8ad7ae4d2b94b68ee42"><td class="memItemLeft" align="right" valign="top"><a id="a175abc9d3188b8ad7ae4d2b94b68ee42"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Board.html#a175abc9d3188b8ad7ae4d2b94b68ee42">reset</a> ()</td></tr>
 <tr class="memdesc:a175abc9d3188b8ad7ae4d2b94b68ee42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the chessboard to its standard, initial configuration. <br /></td></tr>
@@ -109,6 +113,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="separator:aecf7269d1c6a4d4c964389c82f27ffc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a61644f4077fb4493e3a9f18b4b2af8e6"><td class="memItemLeft" align="right" valign="top">OptionalRef&lt; <a class="el" href="classChess_1_1Piece.html">Piece</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Board.html#a61644f4077fb4493e3a9f18b4b2af8e6">getPieceAtCoordinates</a> (<a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;coord) const</td></tr>
 <tr class="separator:a61644f4077fb4493e3a9f18b4b2af8e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f8ad674bac5f20284babd6c01fd32e7"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Board.html#a6f8ad674bac5f20284babd6c01fd32e7">getPieceCoordinates</a> (<a class="el" href="classChess_1_1Piece.html">Piece</a> const &amp;piece) const</td></tr>
+<tr class="separator:a6f8ad674bac5f20284babd6c01fd32e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0a80af29195e5aaf88e113e6642c3c55"><td class="memItemLeft" align="right" valign="top"><a id="a0a80af29195e5aaf88e113e6642c3c55"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Board.html#a0a80af29195e5aaf88e113e6642c3c55">isValidEnPassant</a> (<a class="el" href="classChess_1_1Pawn.html">Pawn</a> const &amp;pawn, <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;source, <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;destination) const</td></tr>
 <tr class="memdesc:a0a80af29195e5aaf88e113e6642c3c55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if a pawn can do en passant from a source to a destination. <br /></td></tr>
@@ -207,7 +213,7 @@ std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="
 <div class="textblock"><p>Represents a chessboard. It is responsible for executing moves while containing the state of the game. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ad1b341aa4ec6bfb23f7b8f6755999c6a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad1b341aa4ec6bfb23f7b8f6755999c6a">&#9670;&nbsp;</a></span>Board() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad1b341aa4ec6bfb23f7b8f6755999c6a">&#9670;&nbsp;</a></span>Board() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -225,7 +231,7 @@ std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="
 </div>
 </div>
 <a id="a77c3f295f3b3ab4e9c5904ae1f8b09a9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a77c3f295f3b3ab4e9c5904ae1f8b09a9">&#9670;&nbsp;</a></span>Board() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a77c3f295f3b3ab4e9c5904ae1f8b09a9">&#9670;&nbsp;</a></span>Board() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -240,6 +246,33 @@ std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="
       </table>
 </div><div class="memdoc">
 <p>Places all pieces in their standard starting positions. Uses the hasher provided for the 3-fold and 5-fold repetition rules. </p>
+
+</div>
+</div>
+<a id="a5c7be7204c749c095048a63df50dfbd2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c7be7204c749c095048a63df50dfbd2">&#9670;&nbsp;</a></span>Board() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Chess::Board::Board </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classChess_1_1Board.html">Board</a> &amp;&amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Performs move construction with a cost of O(N), where N is the total number of pieces that are and were on the board during this game. </p>
 
 </div>
 </div>
@@ -259,7 +292,26 @@ std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Retrieves the piece corresponding to the coordinates. Returns an empty optional if no piece is found at those coordinates. </p>
+<p>Retrieves the piece corresponding to the coordinates given. Returns an empty optional if no piece is found at those coordinates. </p>
+
+</div>
+</div>
+<a id="a6f8ad674bac5f20284babd6c01fd32e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f8ad674bac5f20284babd6c01fd32e7">&#9670;&nbsp;</a></span>getPieceCoordinates()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt; <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> &gt; Chess::Board::getPieceCoordinates </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classChess_1_1Piece.html">Piece</a> const &amp;&#160;</td>
+          <td class="paramname"><em>piece</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Retrieves the coordinates corresponding to the piece given. Returns an empty optional if the piece is not on this board. </p>
 
 </div>
 </div>
@@ -516,6 +568,33 @@ std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="
 </div><div class="memdoc">
 <p>Performs a move from a source to a destination and alternates between players according to the rules of chess. <a class="el" href="structChess_1_1Coordinates.html" title="Represents a pair of coordinates.">Coordinates</a> are given column first and row second, from MIN_COLUMN to MAX_COLUMN and MIN_ROW to MAX_ROW, respectively. So, for instance, "C2" translates to 3rd column, 2nd row.</p>
 <p>Returns an object containing information regarding the move executed. In case of invalid move, an <a class="el" href="classChess_1_1InvalidMove.html" title="An exception thrown in case of an invalid move being attempted.">InvalidMove</a> exception is thrown. </p>
+
+</div>
+</div>
+<a id="adfc8903d068b8859849b9d1094116f2a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adfc8903d068b8859849b9d1094116f2a">&#9670;&nbsp;</a></span>operator=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classChess_1_1Board.html">Board</a> &amp; Chess::Board::operator= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classChess_1_1Board.html">Board</a> &amp;&amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Performs move assignment with a cost of O(N), where N is the total number of pieces that are and were on the board during this game. </p>
 
 </div>
 </div>

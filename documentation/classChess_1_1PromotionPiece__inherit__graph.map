@@ -1,5 +1,5 @@
 <map id="Chess::PromotionPiece" name="Chess::PromotionPiece">
-<area shape="rect" id="node1" title="Represents a piece that can be used for a promotion." alt="" coords="179,80,350,107"/>
+<area shape="rect" id="node1" title="Represents a piece that can be used to promote a pawn." alt="" coords="179,80,350,107"/>
 <area shape="rect" id="node3" href="$classChess_1_1Bishop.html" title="Represents a bishop." alt="" coords="5,155,119,181"/>
 <area shape="rect" id="node4" href="$classChess_1_1Knight.html" title="Represents a knight." alt="" coords="143,155,253,181"/>
 <area shape="rect" id="node5" href="$classChess_1_1Queen.html" title=" " alt="" coords="277,155,388,181"/>
