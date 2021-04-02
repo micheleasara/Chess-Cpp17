@@ -1,34 +1,102 @@
 #include "pch.h"
 #include "Board.hpp"
 
-using Chess::King;
+using Chess::Piece;
 using Chess::Coordinates;
+using Chess::Board;
+using Chess::MoveResult;
+using Chess::InvalidMove;
+
+static auto constexpr KING_COORD = Coordinates(3,3);
 
 class KingTest : public ::testing::Test {
 protected:
-  Chess::Board board;
+  Board board = Board({Coordinates(7,6)}, {}, {},{}, {}, KING_COORD, {}, {}, 
+                       {}, {}, {}, Coordinates(5,7));
+  Piece* king = nullptr;
+
+  void SetUp() {
+    auto kingOpt = board.getPieceAtCoordinates(KING_COORD);
+    ASSERT_TRUE(kingOpt.has_value());
+    king = &(kingOpt->get());
+    ASSERT_FALSE(board.isGameOver());
+  }
 };
 
-TEST_F(KingTest, kingCanMoveByOneForwardAndBackward) {
-  board.move("E2", "E4"); board.move("E7", "E5");
-
-  auto& whiteK = board.getPieceAtCoordinates(Coordinates(4, 0))->get();
-  EXPECT_TRUE(whiteK.isMovePlausible(Coordinates(4, 0), Coordinates(4, 1)));
-  EXPECT_FALSE(whiteK.isMovePlausible(Coordinates(4, 0), Coordinates(4, 2)));
-
-  board.move("E1", "E2");
-  EXPECT_TRUE(whiteK.isMovePlausible(Coordinates(4, 1), Coordinates(4, 0)));
+TEST_F(KingTest, canMoveBackwardVerticallyByOne) {
+  EXPECT_TRUE(king->isMovePlausible(KING_COORD, Coordinates(3, 2)));
+  EXPECT_NO_THROW(king->move(KING_COORD, Coordinates(3, 2)));
 }
 
-TEST_F(KingTest, kingCanMoveByOneDiagonally) {
-  board.move("D2", "D4"); board.move("F7", "F5");
+TEST_F(KingTest, canMoveForwardVerticallyByOne) {
+  EXPECT_TRUE(king->isMovePlausible(KING_COORD, Coordinates(3, 4)));
+  EXPECT_NO_THROW(king->move(KING_COORD, Coordinates(3, 4)));
+}
 
-  auto& whiteK = board.getPieceAtCoordinates(Coordinates(4, 0))->get();
-  EXPECT_TRUE(whiteK.isMovePlausible(Coordinates(4, 0), Coordinates(3, 1)));
-  EXPECT_FALSE(whiteK.isMovePlausible(Coordinates(4, 0), Coordinates(2, 3)));
+TEST_F(KingTest, canMoveBackwardHorizontallyByOne) {
+  EXPECT_TRUE(king->isMovePlausible(KING_COORD, Coordinates(2, 3)));
+  EXPECT_NO_THROW(king->move(KING_COORD, Coordinates(2, 3)));
+}
 
-  board.move("E1", "D2");
-  auto& blackK = board.getPieceAtCoordinates(Coordinates(4, 7))->get();
-  EXPECT_TRUE(blackK.isMovePlausible(Coordinates(4, 7), Coordinates(5, 6)));
-  EXPECT_FALSE(blackK.isMovePlausible(Coordinates(4, 7), Coordinates(6, 5)));
+TEST_F(KingTest, canMoveForwardHorizontallyByOne) {
+  EXPECT_TRUE(king->isMovePlausible(KING_COORD, Coordinates(4, 3)));
+  EXPECT_NO_THROW(king->move(KING_COORD, Coordinates(4, 3)));
+}
+
+TEST_F(KingTest, canMoveDiagonallyForwardByOne) {
+  EXPECT_TRUE(king->isMovePlausible(KING_COORD, Coordinates(4, 4)));
+  EXPECT_NO_THROW(king->move(KING_COORD, Coordinates(4, 4)));
+}
+
+TEST_F(KingTest, canMoveDiagonallyBackwardByOne) {
+  EXPECT_TRUE(king->isMovePlausible(KING_COORD, Coordinates(2, 2)));
+  EXPECT_NO_THROW(king->move(KING_COORD, Coordinates(2, 2)));
+}
+
+TEST_F(KingTest, cannotMoveInStraightLinesByMoreThanOne) {
+  EXPECT_FALSE(king->isMovePlausible(KING_COORD, Coordinates(3, 5)));
+  EXPECT_THROW(king->move(KING_COORD, Coordinates(3, 5)), InvalidMove);
+
+  EXPECT_FALSE(king->isMovePlausible(KING_COORD, Coordinates(3, 1)));
+  EXPECT_THROW(king->move(KING_COORD, Coordinates(3, 1)), InvalidMove);
+
+  EXPECT_FALSE(king->isMovePlausible(KING_COORD, Coordinates(5, 3)));
+  EXPECT_THROW(king->move(KING_COORD, Coordinates(5, 3)), InvalidMove);
+
+  EXPECT_FALSE(king->isMovePlausible(KING_COORD, Coordinates(1, 3)));
+  EXPECT_THROW(king->move(KING_COORD, Coordinates(1, 3)), InvalidMove);
+}
+
+TEST_F(KingTest, cannotMoveInDiagonalLinesByMoreThanOne) {
+  EXPECT_FALSE(king->isMovePlausible(KING_COORD, Coordinates(6, 6)));
+  EXPECT_THROW(king->move(KING_COORD, Coordinates(6, 6)), InvalidMove);
+
+  EXPECT_FALSE(king->isMovePlausible(KING_COORD, Coordinates(0, 0)));
+  EXPECT_THROW(king->move(KING_COORD, Coordinates(0, 0)), InvalidMove);
+}
+
+TEST_F(KingTest, cannotMoveInLShape) {
+  EXPECT_FALSE(king->isMovePlausible(KING_COORD, Coordinates(4, 5)));
+  EXPECT_THROW(king->move(KING_COORD, Coordinates(4, 5)), InvalidMove);
+
+  EXPECT_FALSE(king->isMovePlausible(KING_COORD, Coordinates(2, 5)));
+  EXPECT_THROW(king->move(KING_COORD, Coordinates(2, 5)), InvalidMove);
+
+  EXPECT_FALSE(king->isMovePlausible(KING_COORD, Coordinates(4, 1)));
+  EXPECT_THROW(king->move(KING_COORD, Coordinates(4, 1)), InvalidMove);
+  
+  EXPECT_FALSE(king->isMovePlausible(KING_COORD, Coordinates(2, 1)));
+  EXPECT_THROW(king->move(KING_COORD, Coordinates(2, 1)), InvalidMove);
+
+  EXPECT_FALSE(king->isMovePlausible(KING_COORD, Coordinates(5, 4)));
+  EXPECT_THROW(king->move(KING_COORD, Coordinates(5, 4)), InvalidMove);
+
+  EXPECT_FALSE(king->isMovePlausible(KING_COORD, Coordinates(5, 2)));
+  EXPECT_THROW(king->move(KING_COORD, Coordinates(5, 2)), InvalidMove);
+
+  EXPECT_FALSE(king->isMovePlausible(KING_COORD, Coordinates(1, 4)));
+  EXPECT_THROW(king->move(KING_COORD, Coordinates(1, 4)), InvalidMove);
+
+  EXPECT_FALSE(king->isMovePlausible(KING_COORD, Coordinates(1, 2)));
+  EXPECT_THROW(king->move(KING_COORD, Coordinates(1, 2)), InvalidMove);
 }

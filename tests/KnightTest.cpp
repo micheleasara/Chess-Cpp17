@@ -1,15 +1,84 @@
 #include "pch.h"
 #include "Board.hpp"
 
-using Chess::Knight;
+using Chess::Piece;
 using Chess::Coordinates;
+using Chess::Board;
+using Chess::MoveResult;
+using Chess::InvalidMove;
+
+static auto constexpr KNIGHT_COORD = Coordinates(3,3);
 
 class KnightTest : public ::testing::Test {
 protected:
-  Chess::Board board;
+  Board board = Board({Coordinates(7,6)}, {}, {KNIGHT_COORD},
+               {}, {}, Coordinates(5,1), {}, {}, {}, {}, {}, Coordinates(5,7));
+  Piece* knight = nullptr;
+
+  void SetUp() {
+    auto knightOpt = board.getPieceAtCoordinates(KNIGHT_COORD);
+    ASSERT_TRUE(knightOpt.has_value());
+    knight = &(knightOpt->get());
+    ASSERT_FALSE(board.isGameOver());
+  }
 };
 
-TEST_F(KnightTest, knightCanMoveInLShapeWhileSteppingOverOtherPieces) {
+TEST_F(KnightTest, canMoveInLShapeOneRightTwoUp) {
+  EXPECT_TRUE(knight->isMovePlausible(KNIGHT_COORD, Coordinates(4, 5)));
+  EXPECT_NO_THROW(knight->move(KNIGHT_COORD, Coordinates(4, 5)), InvalidMove);
+}
+
+TEST_F(KnightTest, canMoveInLShapeOneLeftTwoUp) {
+  EXPECT_TRUE(knight->isMovePlausible(KNIGHT_COORD, Coordinates(2, 5)));
+  EXPECT_NO_THROW(knight->move(KNIGHT_COORD, Coordinates(2, 5)), InvalidMove);
+}
+
+TEST_F(KnightTest, canMoveInLShapeOneRightTwoDown) {
+  EXPECT_TRUE(knight->isMovePlausible(KNIGHT_COORD, Coordinates(4, 1)));
+  EXPECT_NO_THROW(knight->move(KNIGHT_COORD, Coordinates(4, 1)), InvalidMove);
+}
+ 
+TEST_F(KnightTest, canMoveInLShapeOneLeftTwoDown) {
+  EXPECT_TRUE(knight->isMovePlausible(KNIGHT_COORD, Coordinates(2, 1)));
+  EXPECT_NO_THROW(knight->move(KNIGHT_COORD, Coordinates(2, 1)), InvalidMove);
+}
+
+TEST_F(KnightTest, canMoveInLShapeTwoRightOneUp) {
+  EXPECT_TRUE(knight->isMovePlausible(KNIGHT_COORD, Coordinates(5, 4)));
+  EXPECT_NO_THROW(knight->move(KNIGHT_COORD, Coordinates(5, 4)), InvalidMove);
+}
+
+TEST_F(KnightTest, canMoveInLShapeTwoRightOneDown) {
+  EXPECT_TRUE(knight->isMovePlausible(KNIGHT_COORD, Coordinates(5, 2)));
+  EXPECT_NO_THROW(knight->move(KNIGHT_COORD, Coordinates(5, 2)), InvalidMove);
+}
+
+TEST_F(KnightTest, canMoveInLShapeTwoLeftOneUp) {
+  EXPECT_TRUE(knight->isMovePlausible(KNIGHT_COORD, Coordinates(1, 4)));
+  EXPECT_NO_THROW(knight->move(KNIGHT_COORD, Coordinates(1, 4)), InvalidMove);
+}
+
+TEST_F(KnightTest, canMoveInLShapeTwoLeftOneDown) {
+  EXPECT_TRUE(knight->isMovePlausible(KNIGHT_COORD, Coordinates(1, 2)));
+  EXPECT_NO_THROW(knight->move(KNIGHT_COORD, Coordinates(1, 2)), InvalidMove);
+}
+
+TEST_F(KnightTest, cannotMoveInStraightLines) {
+  EXPECT_FALSE(knight->isMovePlausible(KNIGHT_COORD, Coordinates(3, 5)));
+  EXPECT_THROW(knight->move(KNIGHT_COORD, Coordinates(3, 5)), InvalidMove);
+
+  EXPECT_FALSE(knight->isMovePlausible(KNIGHT_COORD, Coordinates(3, 1)));
+  EXPECT_THROW(knight->move(KNIGHT_COORD, Coordinates(3, 1)), InvalidMove);
+
+  EXPECT_FALSE(knight->isMovePlausible(KNIGHT_COORD, Coordinates(5, 3)));
+  EXPECT_THROW(knight->move(KNIGHT_COORD, Coordinates(5, 3)), InvalidMove);
+
+  EXPECT_FALSE(knight->isMovePlausible(KNIGHT_COORD, Coordinates(1, 3)));
+  EXPECT_THROW(knight->move(KNIGHT_COORD, Coordinates(1, 3)), InvalidMove);
+}
+
+TEST_F(KnightTest, canMoveInLShapeWhileSteppingOverOtherPieces) {
+  board = Board();
   auto& wKnight = board.getPieceAtCoordinates(Coordinates(1, 0))->get();
   EXPECT_TRUE(wKnight.isMovePlausible(Coordinates(1, 0), Coordinates(2, 2)));
   EXPECT_TRUE(wKnight.isMovePlausible(Coordinates(1, 0), Coordinates(0, 2)));
@@ -17,10 +86,4 @@ TEST_F(KnightTest, knightCanMoveInLShapeWhileSteppingOverOtherPieces) {
   board.move("B1", "C3");
   EXPECT_TRUE(wKnight.isMovePlausible(Coordinates(2, 2), Coordinates(4, 3)));
   EXPECT_TRUE(wKnight.isMovePlausible(Coordinates(2, 2), Coordinates(0, 3)));
-}
-
-TEST_F(KnightTest, knightCanMoveBackwards) {
-  auto& wKnight = board.getPieceAtCoordinates(Coordinates(1, 0))->get();
-  board.move("B1", "C3");
-  EXPECT_TRUE(wKnight.isMovePlausible(Coordinates(2, 2), Coordinates(1, 0)));
 }
