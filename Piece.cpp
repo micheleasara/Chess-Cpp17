@@ -11,11 +11,6 @@ Colour Piece::getColour() const {
 }
 
 void Piece::setBoard(Board& board) {
-  if (board.getPieceCoordinates(*this) == std::nullopt) {
-    throw std::invalid_argument("A piece cannot be assigned to a board which "
-                                "does not contain it");
-  }
-
   m_board = board;
 }
 

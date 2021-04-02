@@ -70,9 +70,9 @@ namespace Chess {
     /*
      Places the pieces on the board following a custom configuration.
 
-     When a piece is initialised in a non-standard location, it is considered
-     to have moved. So, for instance, castling rights would not apply to a king
-     initialised in A3. Furthermore, en passant rights are not given
+     When a piece is initialised in a non-standard location, it is treated as
+     if it had moved there. So, for instance, castling rights would not apply
+     to a king initialised in A3. Furthermore, en passant rights are not given
      upon initialisation, meaning you cannot directly initialise two pawns for
      en passant and execute it the next turn.
      Finally, the board defaults to Zobrist hashing for the 3-fold and 5-fold
@@ -97,7 +97,7 @@ namespace Chess {
           Coordinates const& blackKing);
 
     /**
-     Performs move construction with a cost of O(N^2), where N is the total
+     Performs move construction with a cost of O(N), where N is the total
      number of pieces that are and were on the board during this game.
     */
     Board(Board&& other) noexcept;

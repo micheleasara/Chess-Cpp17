@@ -11,9 +11,7 @@ class Board;
 /// Represents a generic piece.
 class Piece {
 public:
-
-
-  /// Creates a chess piece of the given colour and associated to a board.
+  /// Creates a chess piece of the given colour and associated with a board.
   Piece(Colour colour, Board& board);
 
   /**
@@ -45,8 +43,8 @@ public:
   Colour getColour() const;
 
   /**
-   Assigns the piece to a board.
-   Throws if the given Board does not contain this piece.
+   Performs one-sided assignment of the given board to this piece.
+   In other words, the piece will act assuming it is contained in the board.
   */
   void setBoard(Board& board);
 

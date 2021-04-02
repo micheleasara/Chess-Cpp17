@@ -18,12 +18,12 @@ public:
   ZobristHasher(size_t width, size_t height);
 
   /*
-   Constructs a hasher for a board of the given size, and consider the pieces
+   Constructs a hasher for a board of the given size, and considers the pieces
    to be on the board following a custom configuration.
 
-   When a piece is initialised in a non-standard location, it is considered
-   to have moved. So, for instance, castling rights would not apply to a king
-   initialised in A3. Furthermore, en passant rights are not given
+   When a piece is initialised in a non-standard location, it is treated as if
+   it had moved there. So, for instance, castling rights would not apply to a 
+   king initialised in A3. Furthermore, en passant rights are not given
    upon initialisation.
 
    Throws in case of:

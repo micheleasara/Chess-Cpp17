@@ -11,7 +11,6 @@
 #include <iomanip>
 #include <sstream>
 #include <array>
-#include <type_traits>
 
 /// Defines the starting position of the white king.
 static auto constexpr WHITE_KING_INIT = Chess::Coordinates(4, 0);
