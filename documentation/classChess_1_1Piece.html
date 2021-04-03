@@ -172,8 +172,8 @@ Friends</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Verifies if the piece would be able to move from the source to the destination according to its internal logic. Checks or castling are considered board-level moves, and are not taken into account.</p>
-<p>Performs integrity checks shared among all pieces. For example: coordinates must be within limits, a piece cannot move to a square taken by an ally and source and destination cannot match.</p>
+<p>Returns whether the piece would be able to move from the source to the destination according to its internal logic. Checks or castling are considered board-level moves, and are not taken into account.</p>
+<p>Returns false if certain conditions common to all pieces are not satisfied. For example: coordinates must be within the board limits, a piece cannot move to a square taken by an ally, and source and destination cannot match.</p>
 <p>Returns the derived class' isMovePlausibleSpecific() to check the logic of each piece. </p>
 
 </div>

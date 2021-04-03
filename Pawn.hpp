@@ -18,10 +18,12 @@ class Pawn: public Piece {
   std::string getName() const override;
 
   private:
-  // Checks for pawn-specific moves and returns true if the supplied move
-  // is valid in the given board, false otherwise
-  virtual bool isMovePlausibleSpecific(Coordinates const& source,
-                               Coordinates const& destination) const override;
+  /**
+   Checks for pawn-specific moves and returns true if the supplied move
+   is valid in the associated board, false otherwise.
+  */
+  bool isMovePlausibleSpecific(Coordinates const& source,
+                           Coordinates const& destination) const override final;
 };
 }
 

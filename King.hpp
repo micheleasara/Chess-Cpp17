@@ -19,12 +19,14 @@ class King: public Piece {
 
   private:
 
-  // Checks for king-specific moves and returns true if the supplied move
-  // is valid, false otherwise.
-  // This function does not handle castling, as the Board is
-  // considered responsible for it
-  virtual bool isMovePlausibleSpecific(Coordinates const& source,
-                               Coordinates const& destination) const override;
+  /**
+   Checks for king-specific moves and returns true if the supplied move
+   is valid in the associated board, false otherwise.
+   This function does not handle castling, as the Board is considered
+   responsible for it.
+  */
+  bool isMovePlausibleSpecific(Coordinates const& source,
+                           Coordinates const& destination) const override final;
 };
 }
 

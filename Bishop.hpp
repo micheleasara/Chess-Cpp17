@@ -18,10 +18,12 @@ class Bishop: public PromotionPiece {
   std::string getName() const override;
 
   private:
-  // Checks for bishop-specific moves and returns true if the given move
-  // is valid in the given board
-  virtual bool isMovePlausibleSpecific(Coordinates const& source,
-                               Coordinates const& destination) const override;
+  /**
+   Checks for bishop-specific moves and returns true if the given move
+   is valid in the associated board.
+  */
+  bool isMovePlausibleSpecific(Coordinates const& source,
+                           Coordinates const& destination) const override final;
 };
 }
 

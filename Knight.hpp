@@ -14,14 +14,16 @@ class Knight: public PromotionPiece {
   virtual MoveResult move(Coordinates const& source,
                           Coordinates const& destination) override;
 
-  // Returns "Knight"
+  /// Returns "Knight"
   std::string getName() const override;
 
   private:
-  // Checks for knight-specific moves and returns true if the given move
-  // is valid, false otherwise.
-  virtual bool isMovePlausibleSpecific(Coordinates const& source,
-                               Coordinates const& destination) const override;
+  /**
+   Checks for knight-specific moves and returns true if the given move
+   is valid, false otherwise.
+  */
+  bool isMovePlausibleSpecific(Coordinates const& source,
+                           Coordinates const& destination) const override final;
 };
 }
 #endif
