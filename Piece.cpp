@@ -10,7 +10,7 @@ Colour Piece::getColour() const {
   return m_colour;
 }
 
-void Piece::setBoard(Board& board) {
+void Piece::setBoard(Board& board) noexcept {
   m_board = board;
 }
 
@@ -47,7 +47,7 @@ void Piece::setMovedStatus(bool moved) {
   this->m_moved = moved;
 }
 
-bool Piece::getMovedStatus() const noexcept {
+bool Piece::getMovedStatus() const {
   return m_moved;
 }
 

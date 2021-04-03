@@ -37,7 +37,7 @@ public:
   void setMovedStatus(bool moved);
 
   /// Returns whether the piece has moved before.
-  bool getMovedStatus() const noexcept;
+  bool getMovedStatus() const;
 
   /// Returns the colour of the piece.
   Colour getColour() const;
@@ -46,7 +46,7 @@ public:
    Performs one-sided assignment of the given board to this piece.
    In other words, the piece will act assuming it is contained in the board.
   */
-  void setBoard(Board& board);
+  void setBoard(Board& board) noexcept;
 
   /// Returns the board currently associated with this piece.
   Board& getBoard() const;
