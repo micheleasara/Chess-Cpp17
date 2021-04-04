@@ -52,6 +52,28 @@ protected:
     EXPECT_FALSE(board.drawCanBeClaimed());
     board.move("D2", "D1"); board.move("D7", "D8");
   }
+
+  void testAlekhineVsVasic1931() {
+    board.move("E2", "E4"); board.move("E7", "E6");
+    board.move("D2", "D4"); board.move("D7", "D5");
+    board.move("B1", "C3"); board.move("F8", "B4");
+    board.move("F1", "D3");
+    auto state = board.move("B4", "C3").gameState(); // white in check
+    EXPECT_EQ(state, MoveResult::GameState::OPPONENT_IN_CHECK);
+
+    board.move("B2", "C3"); board.move("H7", "H6");
+    board.move("C1", "A3"); board.move("B8", "D7");
+    board.move("D1", "E2"); board.move("D5", "E4");
+    board.move("D3", "E4"); board.move("G8", "F6");
+    board.move("E4", "D3"); board.move("B7", "B6");
+    state = board.move("E2", "E6").gameState(); // black in check
+    EXPECT_EQ(state, MoveResult::GameState::OPPONENT_IN_CHECK);
+    board.move("F7", "E6");
+
+    state = board.move("D3", "G6").gameState(); // white wins
+    EXPECT_EQ(state, MoveResult::GameState::OPPONENT_IN_CHECKMATE);
+    EXPECT_TRUE(board.isGameOver());
+  }
 };
 
 TEST_F(BoardTest, throwsIfCoordinatesAreInvalid) {
@@ -809,53 +831,59 @@ TEST_F(BoardTest, pawnsInitialisedInEnPassantCannotExecuteIt) {
 }
 
 TEST_F(BoardTest, kingVsKingCausesDraw) {
-  board = Board({}, {}, {}, {}, {}, Coordinates(1,1), {}, {}, {}, {},
-    {}, Coordinates(7,7));
+  board = Board({}, {}, {}, {}, {}, Coordinates(1,1),
+                {Coordinates(1,2)}, {}, {}, {}, {}, Coordinates(7,7));
+  auto result = board.move(Coordinates(1,1), Coordinates(1,2));
+  EXPECT_EQ(result.gameState(),
+            MoveResult::GameState::INSUFFICIENT_MATERIAL_DRAW);
   EXPECT_TRUE(board.isGameOver());
 }
 
 TEST_F(BoardTest, kingAndBishopVsKingAndBishopCausesDraw) {
-  board = Board({}, {}, {}, {Coordinates(0, 3)}, {},
-    Coordinates(1, 1), {}, {}, {}, {Coordinates(7, 3)}, {}, Coordinates(7, 7));
+  board = Board({}, {}, {}, {Coordinates(0, 3)}, {}, Coordinates(1, 1),
+    {Coordinates(1, 4)}, {}, {}, {Coordinates(7, 3)}, {}, Coordinates(7, 7));
+  auto result = board.move(Coordinates(0,3), Coordinates(1,4));
+  EXPECT_EQ(result.gameState(),
+            MoveResult::GameState::INSUFFICIENT_MATERIAL_DRAW);
   EXPECT_TRUE(board.isGameOver());
 }
 
 TEST_F(BoardTest, kingAndKnightVsKingAndKnightCausesDraw) {
-  board = Board({}, {}, {Coordinates(0,0)}, {}, {},
-    Coordinates(1, 1), {}, {}, {Coordinates(7, 7)}, {}, {}, Coordinates(7, 6));
+  board = Board({}, {}, {Coordinates(0,0)}, {}, {}, Coordinates(1,1),
+         {Coordinates(1,2)}, {}, {Coordinates(7,7)}, {}, {}, Coordinates(7,6));
+  auto result = board.move(Coordinates(1,1), Coordinates(1,2));
+  EXPECT_EQ(result.gameState(),
+            MoveResult::GameState::INSUFFICIENT_MATERIAL_DRAW);
   EXPECT_TRUE(board.isGameOver());
 }
 
 TEST_F(BoardTest, kingAndKnightVsKingAndBishopCausesDraw) {
   // white knight vs black bishop
-  board = Board({}, {}, {Coordinates(0,0)}, {}, {},
-    Coordinates(1, 1), {}, {}, {}, {Coordinates(0, 7)}, {}, Coordinates(7, 6));
+  board = Board({}, {}, {Coordinates(0,0)}, {}, {}, Coordinates(1,1),
+       {Coordinates(1,2)}, {}, {}, {Coordinates(0, 7)}, {}, Coordinates(7, 6));
+  auto result = board.move(Coordinates(1,1), Coordinates(1,2));
+  EXPECT_EQ(result.gameState(),
+            MoveResult::GameState::INSUFFICIENT_MATERIAL_DRAW);
   EXPECT_TRUE(board.isGameOver());
 
   // white bishop vs black knight
-  auto anotherBoard = Board({}, {}, {}, {Coordinates(0,0)}, {},
-    Coordinates(1, 1), {}, {}, {Coordinates(7, 7)}, {}, {}, Coordinates(7, 6));
-  EXPECT_TRUE(anotherBoard.isGameOver());
+  board = Board({Coordinates(7,4)}, {}, {}, {Coordinates(0,0)}, {},
+    Coordinates(1,1), {}, {}, {Coordinates(7,7)}, {}, {}, Coordinates(7,6));
+  board.move(Coordinates(7,4), Coordinates(7,5));
+  result = board.move(Coordinates(7,6), Coordinates(7,5));
+  EXPECT_EQ(result.gameState(),
+            MoveResult::GameState::INSUFFICIENT_MATERIAL_DRAW);
+  EXPECT_TRUE(board.isGameOver());
 }
 
-TEST_F(BoardTest, canDoAlekhineVsVasic1931) {
-  board.move("E2", "E4"); board.move("E7", "E6");
-  board.move("D2", "D4"); board.move("D7", "D5");
-  board.move("B1", "C3"); board.move("F8", "B4");
-  board.move("F1", "D3");
-  auto state = board.move("B4", "C3").gameState(); // white in check
-  EXPECT_EQ(state, MoveResult::GameState::OPPONENT_IN_CHECK);
+TEST_F(BoardTest, callingResetResetsTheInternalState) {
+  testAlekhineVsVasic1931();
+  board.reset();
+  testAlekhineVsVasic1931();
+}
 
-  board.move("B2", "C3"); board.move("H7", "H6");
-  board.move("C1", "A3"); board.move("B8", "D7");
-  board.move("D1", "E2"); board.move("D5", "E4");
-  board.move("D3", "E4"); board.move("G8", "F6");
-  board.move("E4", "D3"); board.move("B7", "B6");
-  state = board.move("E2", "E6").gameState(); // black in check
-  EXPECT_EQ(state, MoveResult::GameState::OPPONENT_IN_CHECK);
-  board.move("F7", "E6");
-
-  state = board.move("D3", "G6").gameState(); // white wins
-  EXPECT_EQ(state, MoveResult::GameState::OPPONENT_IN_CHECKMATE);
-  EXPECT_TRUE(board.isGameOver());
+TEST_F(BoardTest, moveAssignmentOverwritesTheInternalState) {
+  testAlekhineVsVasic1931();
+  board = Board();
+  testAlekhineVsVasic1931();
 }
