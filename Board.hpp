@@ -22,13 +22,13 @@ namespace Chess {
   */
   class Board {
   public:
-    /// Defines the minimum column.
+    /// Defines the minimum column in a human readable format.
     static char constexpr MIN_COLUMN = 'A';
-    /// Defines the minimum row.
+    /// Defines the minimum row in a human readable format.
     static char constexpr MIN_ROW = '1';
-    /// Defines the maximum column.
+    /// Defines the maximum column in a human readable format.
     static char constexpr MAX_COLUMN = 'H';
-    /// Defines the maximum row.
+    /// Defines the maximum row in a human readable format.
     static char constexpr MAX_ROW = '8';
     /// The maximum row number starting to count from 0.
     static int constexpr MAX_ROW_NUM = static_cast<int>(MAX_ROW - MIN_ROW);

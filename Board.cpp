@@ -347,9 +347,9 @@ void Board::claimDraw() {
 
 void Board::initializePiecesInStandardPos() {
   std::vector<Coordinates> whitePawns, blackPawns;
-  for (size_t i = 0; i <= 7; i++) {
+  for (int i = 0; i <= MAX_COL_NUM; i++) {
     whitePawns.emplace_back(i, 1);
-    blackPawns.emplace_back(i, 6);
+    blackPawns.emplace_back(i, MAX_ROW_NUM - 1);
   }
 
   std::array<Colour, 2> colours = {Colour::White, Colour::Black};
