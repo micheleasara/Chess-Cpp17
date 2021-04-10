@@ -66,7 +66,6 @@ namespace Chess {
     */
     Board(std::unique_ptr<BoardHasher> hasher);
 
-
     /*
      Places the pieces on the board following a custom configuration.
 
@@ -240,13 +239,13 @@ namespace Chess {
     template <typename Chessman, typename Predicate>
     void initializePieces(std::vector<Coordinates> const& coords,
                           Colour colour,
-                          Predicate&& isNormalStartingColumn);
+                          Predicate&& isStandardStartingPos);
 
-    template <typename Chessman, typename Predicate, typename Finisher>
+    template <typename Chessman, typename Predicate, typename Callable>
     void initializePieces(std::vector<Coordinates> const& coords,
                           Colour colour,
-                          Predicate&& isNormalStartingColumn,
-                          Finisher&& finalActions);
+                          Predicate&& isStandardStartingPos,
+                          Callable&& finalActions);
 
     void initializePawns(std::vector<Coordinates> const& coords,
                          Colour colour);

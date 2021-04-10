@@ -788,16 +788,40 @@ TEST_F(BoardTest, rooksInitialisedInNonStandardPositionHaveMovedStatusTrue) {
   EXPECT_TRUE(blackRook->get().getMovedStatus());
 }
 
+TEST_F(BoardTest, rooksInitialisedInStandardPositionHaveMovedStatusFalse) {
+  board = Board({}, {Coordinates(0, 0)}, {}, {}, {}, Coordinates(1, 1),
+    {}, {Coordinates(7, 7)}, {}, {}, {}, Coordinates(7, 4));
+  auto whiteRook = board.getPieceAtCoordinates(Coordinates(0, 0));
+  ASSERT_TRUE(whiteRook.has_value());
+  EXPECT_FALSE(whiteRook->get().getMovedStatus());
+
+  auto blackRook = board.getPieceAtCoordinates(Coordinates(7, 7));
+  ASSERT_TRUE(blackRook.has_value());
+  EXPECT_FALSE(blackRook->get().getMovedStatus());
+}
+
 TEST_F(BoardTest, pawnsInitialisedInNonStandardPositionHaveMovedStatusTrue) {
   board = Board({Coordinates(2, 3)}, {}, {}, {}, {}, Coordinates(1,1),
-    {Coordinates(7,6)}, {}, {}, {}, {}, Coordinates(7,7));
+    {Coordinates(7,5)}, {}, {}, {}, {}, Coordinates(7,7));
   auto whitePawn = board.getPieceAtCoordinates(Coordinates(2, 3));
   ASSERT_TRUE(whitePawn.has_value());
   EXPECT_TRUE(whitePawn->get().getMovedStatus());
 
-  auto blackPawn = board.getPieceAtCoordinates(Coordinates(7, 6));
+  auto blackPawn = board.getPieceAtCoordinates(Coordinates(7, 5));
   ASSERT_TRUE(blackPawn.has_value());
   EXPECT_TRUE(blackPawn->get().getMovedStatus());
+}
+
+TEST_F(BoardTest, pawnsInitialisedInStandardPositionHaveMovedStatusFalse) {
+  board = Board({Coordinates(0, 1)}, {}, {}, {}, {}, Coordinates(1,1),
+    {Coordinates(7,6)}, {}, {}, {}, {}, Coordinates(7,7));
+  auto whitePawn = board.getPieceAtCoordinates(Coordinates(0, 1));
+  ASSERT_TRUE(whitePawn.has_value());
+  EXPECT_FALSE(whitePawn->get().getMovedStatus());
+
+  auto blackPawn = board.getPieceAtCoordinates(Coordinates(7, 6));
+  ASSERT_TRUE(blackPawn.has_value());
+  EXPECT_FALSE(blackPawn->get().getMovedStatus());
 }
 
 TEST_F(BoardTest, kingsInitialisedInNonStandardPositionHaveMovedStatusTrue) {
@@ -812,13 +836,16 @@ TEST_F(BoardTest, kingsInitialisedInNonStandardPositionHaveMovedStatusTrue) {
   EXPECT_TRUE(blackKing->get().getMovedStatus());
 }
 
-TEST_F(BoardTest, piecesInitialisedInStandardPositionHaveMovedStatusFalse) {
-  board = Board({}, {Coordinates(2, 3), Coordinates(0, 0),
-    Coordinates(2, 2)}, {}, {}, {}, Coordinates(1, 1), {}, {}, {}, {},
-    {}, Coordinates(7, 7));
-  auto whiteRook = board.getPieceAtCoordinates(Coordinates(0, 0));
-  ASSERT_TRUE(whiteRook.has_value());
-  EXPECT_FALSE(whiteRook->get().getMovedStatus());
+TEST_F(BoardTest, kingsInitialisedInStandardPositionHaveMovedStatusFalse) {
+  board = Board({Coordinates(2, 3)}, {}, {}, {}, {}, Coordinates(4,0),
+    {Coordinates(7,6)}, {}, {}, {}, {}, Coordinates(4,7));
+  auto whiteKing = board.getPieceAtCoordinates(Coordinates(4, 0));
+  ASSERT_TRUE(whiteKing.has_value());
+  EXPECT_FALSE(whiteKing->get().getMovedStatus());
+
+  auto blackKing = board.getPieceAtCoordinates(Coordinates(4, 7));
+  ASSERT_TRUE(blackKing.has_value());
+  EXPECT_FALSE(blackKing->get().getMovedStatus());
 }
 
 TEST_F(BoardTest, pawnsInitialisedInEnPassantCannotExecuteIt) {

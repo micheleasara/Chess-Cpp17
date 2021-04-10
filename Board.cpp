@@ -12,14 +12,39 @@
 #include <sstream>
 #include <array>
 
-/// Defines the starting position of the white king.
-static auto constexpr WHITE_KING_INIT = Chess::Coordinates(4, 0);
-/// Defines the starting position of the black king.
-static auto constexpr BLACK_KING_INIT = Chess::Coordinates(4, 7);
+using Chess::Coordinates;
+
+/// Defines the standard starting position of the white king.
+auto constexpr WHITE_KING_INIT = Coordinates(4, 0);
+/// Defines the standard starting position of the black king.
+auto constexpr BLACK_KING_INIT = Coordinates(4, 7);
+/// Defines the standard starting position of the white rooks.
+std::vector<Coordinates> const WHITE_ROOKS_INIT = 
+                                         {Coordinates(0, 0), Coordinates(7, 0)};
+/// Defines the standard starting position of the black rooks.
+std::vector<Coordinates> const BLACK_ROOKS_INIT = 
+                                         {Coordinates(0, 7), Coordinates(7, 7)};
+/// Defines the standard starting position of the white knights.
+std::vector<Coordinates> const WHITE_KNIGHTS_INIT = 
+                                         {Coordinates(1, 0), Coordinates(6, 0)};
+/// Defines the standard starting position of the black knights.
+std::vector<Coordinates> const BLACK_KNIGHTS_INIT = 
+                                         {Coordinates(1, 7), Coordinates(6, 7)};
+/// Defines the standard starting position of the white bishops.
+std::vector<Coordinates> const WHITE_BISHOPS_INIT = 
+                                         {Coordinates(2, 0), Coordinates(5, 0)};
+/// Defines the standard starting position of the black bishops.
+std::vector<Coordinates> const BLACK_BISHOPS_INIT = 
+                                         {Coordinates(2, 7), Coordinates(5, 7)};
+/// Defines the standard starting position of the white queen.
+auto constexpr WHITE_QUEEN_INIT = Coordinates(3, 0);
+/// Defines the standard starting position of the black queen.
+auto constexpr BLACK_QUEEN_INIT = Coordinates(3, 7);
+
 /// Defines the number of squares the king travels to castle.
-static int constexpr CASTLE_DISTANCE = 2;
+int constexpr CASTLE_DISTANCE = 2;
 /// Defines the horizontal printing space used for a square of the board.
-static int constexpr H_PRINT_SIZE = 15;
+int constexpr H_PRINT_SIZE = 15;
 
 namespace Chess {
 
@@ -205,11 +230,14 @@ Board& Board::operator=(Board&& other) noexcept {
 void Board::initializePawns(std::vector<Coordinates> const& coords,
                             Colour colour) {
   initializePieces<Pawn>(coords, colour,
-          [](int column) { return column > Board::MAX_COL_NUM; });
+              [&](Coordinates const& coord) {
+                auto row = (colour == Colour::White) ? 1 : MAX_COL_NUM - 1;
+                return coord.column <= Board::MAX_COL_NUM && coord.row == row;
+              });
 
-  auto row = (colour == Colour::White) ? MAX_ROW_NUM : 0;
+  auto promotionRow = (colour == Colour::White) ? MAX_ROW_NUM : 0;
   for (auto const& coord : coords) {
-    if (coord.row == row) {
+    if (coord.row == promotionRow) {
       if (promotionSource.has_value()) {
         throw std::invalid_argument("Only one pawn can be positioned for "
                                     "promotion in any given turn");
@@ -222,13 +250,21 @@ void Board::initializePawns(std::vector<Coordinates> const& coords,
 void Board::initializeRooks(std::vector<Coordinates> const& coords,
                             Colour colour) {
   initializePieces<Rook>(coords, colour,
-          [](int column) { return column == 0 || column == 7; });
+    [&](Coordinates const& coord) {
+      auto& coords = (colour == Colour::White ? WHITE_ROOKS_INIT :
+                                                BLACK_ROOKS_INIT);
+      return std::find(coords.begin(), coords.end(), coord) != coords.end();
+    });
 }
 
 void Board::initializeKnights(std::vector<Coordinates> const& coords,
                               Colour colour) {
   initializePieces<Knight>(coords, colour,
-            [](int column) { return column == 1 || column == 6; },
+    [&](Coordinates const& coord) {
+      auto& coords = (colour == Colour::White ? WHITE_KNIGHTS_INIT :
+                                                BLACK_KNIGHTS_INIT);
+      return std::find(coords.begin(), coords.end(), coord) != coords.end();
+    },
     [this](auto& piece) { insufficientMaterial.emplace(piece); }
   );
 }
@@ -236,7 +272,11 @@ void Board::initializeKnights(std::vector<Coordinates> const& coords,
 void Board::initializeBishops(std::vector<Coordinates> const& coords,
                               Colour colour) {
   initializePieces<Bishop>(coords, colour,
-    [](int column) { return column == 2 || column == 5; },
+    [&](Coordinates const& coord) {
+        auto& coords = (colour == Colour::White ? WHITE_BISHOPS_INIT :
+                                                  BLACK_BISHOPS_INIT);
+        return std::find(coords.begin(), coords.end(), coord) != coords.end();
+    },
     [this](auto& piece) { insufficientMaterial.emplace(piece); }
   );
 }
@@ -244,31 +284,37 @@ void Board::initializeBishops(std::vector<Coordinates> const& coords,
 void Board::initializeQueens(std::vector<Coordinates> const& coords,
                              Colour colour) {
   initializePieces<Queen>(coords, colour,
-        [](int column) { return column == 3; });
+            [&](Coordinates const& coord) { 
+                return coord == (colour == Colour::White ? WHITE_QUEEN_INIT :
+                                                           BLACK_QUEEN_INIT);
+            });
 }
 
 void Board::initializeKing(Coordinates const& coords, Colour colour) {
   initializePieces<King>({coords}, colour,
-        [](int column) { return column == 4; },
+        [&](Coordinates const& coord) { 
+            return coord == (colour == Colour::White ? WHITE_KING_INIT :
+                                                       BLACK_KING_INIT);
+        },
         [&](King& king) {
             insufficientMaterial.emplace(king);
             kings.emplace(colour, king);
-         });
+        });
 }
 
 template <typename Chessman, typename Predicate>
 void Board::initializePieces(std::vector<Coordinates> const& coords,
                              Colour colour,
-                             Predicate&& isNormalStartingColumn) {
-  initializePieces<Chessman>(coords, colour, isNormalStartingColumn,
+                             Predicate&& isStandardStartingPos) {
+  initializePieces<Chessman>(coords, colour, isStandardStartingPos,
                              [](auto const&) {});
 }
 
-template <typename Chessman, typename Predicate, typename Finisher>
+template <typename Chessman, typename Predicate, typename Callable>
 void Board::initializePieces(std::vector<Coordinates> const& coords,
                              Colour colour,
-                             Predicate&& isNormalStartingColumn,
-                             Finisher&& finalActions) {
+                             Predicate&& isStandardStartingPos,
+                             Callable&& finalActions) {
   for (auto const& coord : coords) {
     if (!areWithinLimits(coord)) {
       throw std::invalid_argument("Coordinates go beyond the board limits");
@@ -279,8 +325,7 @@ void Board::initializePieces(std::vector<Coordinates> const& coords,
     }
 
     auto chessman = std::make_unique<Chessman>(colour, *this);
-    int initRow = (colour == Colour::White) ? 0 : MAX_ROW_NUM;
-    if (!isNormalStartingColumn(coord.column) || coord.row != initRow) {
+    if (!isStandardStartingPos(coord)) {
       chessman->setMovedStatus(true);
     }
     finalActions(*chessman);
@@ -301,40 +346,25 @@ void Board::claimDraw() {
 }
 
 void Board::initializePiecesInStandardPos() {
-  // make white and then black pieces
-  for (int i = 0; i <= 1; i++) {
-    auto colour = static_cast<Colour>(i);
-    int row = MAX_ROW_NUM % (MAX_ROW_NUM + i); // can give 0 or MAX_ROW_NUM
+  std::vector<Coordinates> whitePawns, blackPawns;
+  for (size_t i = 0; i <= 7; i++) {
+    whitePawns.emplace_back(i, 1);
+    blackPawns.emplace_back(i, 6);
+  }
 
-    auto knight = std::make_unique<Knight>(colour, *this);
-    insufficientMaterial.emplace(*knight);
-    board.emplace(Coordinates(1, row), std::move(knight));
-
-    auto bishop = std::make_unique<Bishop>(colour, *this);
-    insufficientMaterial.emplace(*bishop);
-    board.emplace(Coordinates(2, row), std::move(bishop));
-
-    auto king = std::make_unique<King>(colour, *this);
-    insufficientMaterial.emplace(*king);
-    kings.emplace(colour, *king);
-    board.emplace(Coordinates(4, row), std::move(king));
-
-    bishop = std::make_unique<Bishop>(colour, *this);
-    insufficientMaterial.emplace(*bishop);
-    board.emplace(Coordinates(5, row), std::move(bishop));
-
-    knight = std::make_unique<Knight>(colour, *this);
-    insufficientMaterial.emplace(*knight);
-    board.emplace(Coordinates(6, row), std::move(knight));
-
-    board.emplace(Coordinates(0, row), std::make_unique<Rook>(colour, *this));
-    board.emplace(Coordinates(3, row), std::make_unique<Queen>(colour, *this));
-    board.emplace(Coordinates(7, row), std::make_unique<Rook>(colour, *this));
-
-    row = (row == 0) ? 1 : MAX_ROW_NUM - 1;
-    for (int c = 0; c <= MAX_COL_NUM; c++) {
-      board.emplace(Coordinates(c, row), std::make_unique<Pawn>(colour, *this));
-    }
+  std::array<Colour, 2> colours = {Colour::White, Colour::Black};
+  for (auto const& colour : colours) {
+    initializePawns(colour == Colour::White ? whitePawns : blackPawns, colour);
+    initializeRooks(colour == Colour::White ? 
+                              WHITE_ROOKS_INIT : BLACK_ROOKS_INIT, colour);
+    initializeKnights(colour == Colour::White ? 
+                              WHITE_KNIGHTS_INIT : BLACK_KNIGHTS_INIT, colour);
+    initializeBishops(colour == Colour::White ?
+                              WHITE_BISHOPS_INIT : BLACK_BISHOPS_INIT, colour);
+    initializeQueens({colour == Colour::White ? 
+                              WHITE_QUEEN_INIT : BLACK_QUEEN_INIT}, colour);
+    initializeKing(colour == Colour::White ?
+                              WHITE_KING_INIT : BLACK_KING_INIT, colour);
   }
 }
 
