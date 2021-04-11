@@ -7,6 +7,7 @@ namespace Chess {
  }
  
  InvalidMove::InvalidMove(std::string const& what, ErrorCode code): 
-   std::logic_error(what), m_errorCode(code) {}
+                                    std::logic_error(what), m_errorCode(code) {}
+
 }
 

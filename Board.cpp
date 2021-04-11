@@ -7,7 +7,6 @@
 #include "Pawn.hpp"
 #include <iostream>
 #include <stdexcept>
-#include <cmath>
 #include <iomanip>
 #include <sstream>
 #include <array>
@@ -139,8 +138,7 @@ bool Board::areInSameColumn(Coordinates const& coord1,
 }
 bool Board::areInSameDiagonal(Coordinates const& coord1,
                                    Coordinates const& coord2) {
-  return (abs(coord1.column - coord2.column) ==
-                             abs(coord1.row - coord2.row));
+  return (abs(coord1.column - coord2.column) == abs(coord1.row - coord2.row));
 }
 
 Colour Board::currentPlayer() const {

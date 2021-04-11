@@ -1,6 +1,7 @@
 #include "MoveResult.hpp"
 
 namespace Chess {
+
 MoveResult::MoveResult(GameState state): m_gameState(state) {}
 
 MoveResult::MoveResult(GameState gameState,

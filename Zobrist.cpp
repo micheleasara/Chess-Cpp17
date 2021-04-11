@@ -4,6 +4,7 @@
 #include <ctime>
 
 namespace Chess {
+
 enum class ZobristHasher::PieceIndex : int {
   WhitePawn = 0, WhitePawnMoved, WhitePawnCanEnPassant,
   BlackPawn, BlackPawnMoved, BlackPawnCanEnPassant,

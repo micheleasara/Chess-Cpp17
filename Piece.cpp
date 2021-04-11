@@ -3,8 +3,8 @@
 #include <iostream>
 
 namespace Chess {
-Piece::Piece(Colour colour, Board& board) : m_colour(colour),
-                                                       m_board(board) {};
+
+Piece::Piece(Colour colour, Board& board): m_colour(colour), m_board(board) {};
 
 Colour Piece::getColour() const {
   return m_colour;
@@ -21,8 +21,7 @@ std::ostream& operator<<(std::ostream& out, const Piece& piece) {
 
 bool Piece::isMovePlausible(Coordinates const& source,
                             Coordinates const& destination) const {
-  if (!Board::areWithinLimits(source) ||
-      !Board::areWithinLimits(destination)) {
+  if (!Board::areWithinLimits(source) || !Board::areWithinLimits(destination)) {
     return false;
   }
 

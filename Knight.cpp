@@ -3,8 +3,8 @@
 #include <cmath>
 
 namespace Chess {
-Knight::Knight(Colour colour, Board& board) :
-                                                PromotionPiece(colour, board){}
+
+Knight::Knight(Colour colour, Board& board): PromotionPiece(colour, board) {}
 
 bool Knight::isMovePlausibleSpecific(Coordinates const& source,
                                Coordinates const& destination) const {
@@ -15,7 +15,7 @@ bool Knight::isMovePlausibleSpecific(Coordinates const& source,
   return (rowDiff == 2 && colDiff == 1) || (rowDiff == 1 && colDiff == 2);
 }
 
-std::string Knight::getName() const{
+std::string Knight::getName() const {
   return "Knight";
 }
 

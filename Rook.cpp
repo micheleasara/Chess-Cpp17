@@ -3,23 +3,21 @@
 
 namespace Chess {
 
-
-Rook::Rook(Colour colour, Board& board) :
-                                              PromotionPiece(colour, board){}
+Rook::Rook(Colour colour, Board& board): PromotionPiece(colour, board) {}
 
 bool Rook::isMovePlausibleSpecific(Coordinates const& source,
-                               Coordinates const& destination) const {
-
-  if (Board::areInSameRow(source, destination))
+                                   Coordinates const& destination) const {
+  if (Board::areInSameRow(source, destination)) {
       return getBoard().isRowFree(source, destination.column);
-  else if (Board::areInSameColumn(source, destination))
+  }
+  else if (Board::areInSameColumn(source, destination)) {
       return getBoard().isColumnFree(source, destination.row);
+  }
 
-  // return false if destination is not in same row or column
   return false;
 }
 
-std::string Rook::getName() const{
+std::string Rook::getName() const {
   return "Rook";
 }
 

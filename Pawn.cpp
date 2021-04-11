@@ -3,7 +3,8 @@
 #include <iostream>
 
 namespace Chess {
-Pawn::Pawn(Colour colour, Board& board) : Piece(colour, board){}
+
+Pawn::Pawn(Colour colour, Board& board): Piece(colour, board) {}
 
 std::string Pawn::getName() const {
   return "Pawn";
@@ -41,4 +42,5 @@ MoveResult Pawn::move(Coordinates const& source,
                       Coordinates const& destination) {
   return getBoard().move(*this, source, destination);
 }
+
 }
