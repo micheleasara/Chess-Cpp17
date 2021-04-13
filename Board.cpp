@@ -799,8 +799,7 @@ bool Board::isDiagonalFree(Coordinates const& source,
   return true;
 }
 
-OptionalRef<const Piece> Board::at(
-                                               Coordinates const& coord) const {
+OptionalRef<const Piece> Board::at(Coordinates const& coord) const {
   if (board.count(coord) > 0) {
     return *(board.at(coord).get());
   }
