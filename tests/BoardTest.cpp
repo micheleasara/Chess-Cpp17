@@ -302,27 +302,27 @@ TEST_F(BoardTest, canCastleKingSide) {
   board.move("G2", "G3"); board.move("G7", "G6");
   board.move("F1", "G2"); board.move("F8", "G7");
 
-  auto& whiteK = board.getPieceAtCoordinates(Coordinates(4, 0))->get();
-  auto& whiteR = board.getPieceAtCoordinates(Coordinates(7, 0))->get();
+  auto& whiteK = board.at(Coordinates(4, 0))->get();
+  auto& whiteR = board.at(Coordinates(7, 0))->get();
   auto result = board.move("E1", "G1");
   ASSERT_TRUE(result.castlingType().has_value());
   auto castlingType = *result.castlingType();
   EXPECT_EQ(result.gameState(), MoveResult::GameState::NORMAL);
   EXPECT_EQ(castlingType, CastlingType::KingSide);
-  auto& expectedWhiteK = board.getPieceAtCoordinates(Coordinates(6, 0))->get();
-  auto& expectedWhiteR = board.getPieceAtCoordinates(Coordinates(5, 0))->get();
+  auto& expectedWhiteK = board.at(Coordinates(6, 0))->get();
+  auto& expectedWhiteR = board.at(Coordinates(5, 0))->get();
   EXPECT_EQ(&whiteK, &expectedWhiteK);
   EXPECT_EQ(&whiteR, &expectedWhiteR);
 
-  auto& blackK = board.getPieceAtCoordinates(Coordinates(4, 7))->get();
-  auto& blackR = board.getPieceAtCoordinates(Coordinates(7, 7))->get();
+  auto& blackK = board.at(Coordinates(4, 7))->get();
+  auto& blackR = board.at(Coordinates(7, 7))->get();
   result = board.move("E8", "G8");
   ASSERT_TRUE(result.castlingType().has_value());
   EXPECT_EQ(result.gameState(), MoveResult::GameState::NORMAL);
   castlingType = *result.castlingType();
   EXPECT_EQ(castlingType, CastlingType::KingSide);
-  auto& expectedBlackK = board.getPieceAtCoordinates(Coordinates(6, 7))->get();
-  auto& expectedBlackR = board.getPieceAtCoordinates(Coordinates(5, 7))->get();
+  auto& expectedBlackK = board.at(Coordinates(6, 7))->get();
+  auto& expectedBlackR = board.at(Coordinates(5, 7))->get();
   EXPECT_EQ(&blackK, &expectedBlackK);
   EXPECT_EQ(&blackR, &expectedBlackR);
 }
@@ -334,27 +334,27 @@ TEST_F(BoardTest, canCastleQueenSide) {
   board.move("B1", "A3"); board.move("B8", "A6");
   board.move("D1", "C2"); board.move("D8", "C7");
 
-  auto& whiteK = board.getPieceAtCoordinates(Coordinates(4, 0))->get();
-  auto& whiteR = board.getPieceAtCoordinates(Coordinates(0, 0))->get();
+  auto& whiteK = board.at(Coordinates(4, 0))->get();
+  auto& whiteR = board.at(Coordinates(0, 0))->get();
   auto result = board.move("E1", "C1");
   EXPECT_EQ(result.gameState(), MoveResult::GameState::NORMAL);
   ASSERT_TRUE(result.castlingType().has_value());
   auto castlingType = *result.castlingType();
   EXPECT_EQ(castlingType, CastlingType::QueenSide);
-  auto& expectedWhiteK = board.getPieceAtCoordinates(Coordinates(2, 0))->get();
-  auto& expectedWhiteR = board.getPieceAtCoordinates(Coordinates(3, 0))->get();
+  auto& expectedWhiteK = board.at(Coordinates(2, 0))->get();
+  auto& expectedWhiteR = board.at(Coordinates(3, 0))->get();
   EXPECT_EQ(&whiteK, &expectedWhiteK);
   EXPECT_EQ(&whiteR, &expectedWhiteR);
 
-  auto& blackK = board.getPieceAtCoordinates(Coordinates(4, 7))->get();
-  auto& blackR = board.getPieceAtCoordinates(Coordinates(0, 7))->get();
+  auto& blackK = board.at(Coordinates(4, 7))->get();
+  auto& blackR = board.at(Coordinates(0, 7))->get();
   result = board.move("E8", "C8");
   ASSERT_TRUE(result.castlingType().has_value());
   EXPECT_EQ(result.gameState(), MoveResult::GameState::NORMAL);
   castlingType = *result.castlingType();
   EXPECT_EQ(castlingType, CastlingType::QueenSide);
-  auto& expectedBlackK = board.getPieceAtCoordinates(Coordinates(2, 7))->get();
-  auto& expectedBlackR = board.getPieceAtCoordinates(Coordinates(3, 7))->get();
+  auto& expectedBlackK = board.at(Coordinates(2, 7))->get();
+  auto& expectedBlackR = board.at(Coordinates(3, 7))->get();
   EXPECT_EQ(&blackK, &expectedBlackK);
   EXPECT_EQ(&blackR, &expectedBlackR);
 }
@@ -366,7 +366,7 @@ TEST_F(BoardTest, cannotCastleIfKingHasMoved) {
   board.move("E1", "F1"); board.move("E8", "F8");
   board.move("F1", "E1"); board.move("F8", "E8");
 
-  auto& whiteK = board.getPieceAtCoordinates(Coordinates(4, 0))->get();
+  auto& whiteK = board.at(Coordinates(4, 0))->get();
   moveAndTestThrow("E1", "G1", InvalidMove::ErrorCode::PIECE_LOGIC_ERROR);
 }
 
@@ -377,7 +377,7 @@ TEST_F(BoardTest, cannotCastleIfRookHasMoved) {
   board.move("H1", "G1"); board.move("H8", "G8");
   board.move("G1", "H1"); board.move("G8", "H8");
 
-  auto& whiteK = board.getPieceAtCoordinates(Coordinates(4, 0))->get();
+  auto& whiteK = board.at(Coordinates(4, 0))->get();
   moveAndTestThrow("E1", "G1", InvalidMove::ErrorCode::PIECE_LOGIC_ERROR);
 }
 
@@ -386,30 +386,30 @@ TEST_F(BoardTest, undoingWithNoRecordedMovesDoesNothing) {
 }
 
 TEST_F(BoardTest, canUndoNonCapturingMove) {
-  auto& piece = board.getPieceAtCoordinates(Coordinates(6, 0))->get();
+  auto& piece = board.at(Coordinates(6, 0))->get();
   auto hasMoved = piece.getMovedStatus();
   board.move("G1", "F3");
 
   board.undoLastMove();
-  auto& expectedPieceOpt = board.getPieceAtCoordinates(Coordinates(6, 0));
+  auto& expectedPieceOpt = board.at(Coordinates(6, 0));
   ASSERT_TRUE(expectedPieceOpt.has_value());
   EXPECT_EQ(&(expectedPieceOpt->get()), &piece);
   EXPECT_EQ(hasMoved, piece.getMovedStatus());
-  EXPECT_FALSE(board.getPieceAtCoordinates(Coordinates(5, 2)).has_value());
+  EXPECT_FALSE(board.at(Coordinates(5, 2)).has_value());
 }
 
 TEST_F(BoardTest, canUndoCapturingMove) {
   board.move("A2", "A4"); board.move("B7", "B5");
-  auto& capturingPiece = board.getPieceAtCoordinates(Coordinates(0, 3))->get();
-  auto& capturedPiece = board.getPieceAtCoordinates(Coordinates(1, 4))->get();
+  auto& capturingPiece = board.at(Coordinates(0, 3))->get();
+  auto& capturedPiece = board.at(Coordinates(1, 4))->get();
   board.move("A4", "B5");
 
   board.undoLastMove();
-  auto& expectedCaptured = board.getPieceAtCoordinates(Coordinates(1, 4));
+  auto& expectedCaptured = board.at(Coordinates(1, 4));
   ASSERT_TRUE(expectedCaptured.has_value());
   EXPECT_EQ(&(expectedCaptured->get()), &capturedPiece);
 
-  auto& expectedCapturing = board.getPieceAtCoordinates(Coordinates(0, 3));
+  auto& expectedCapturing = board.at(Coordinates(0, 3));
   ASSERT_TRUE(expectedCapturing.has_value());
   EXPECT_EQ(&(expectedCapturing->get()), &capturingPiece);
 }
@@ -417,18 +417,18 @@ TEST_F(BoardTest, canUndoCapturingMove) {
 TEST_F(BoardTest, canUndoEnPassant) {
   board.move("E2", "E4"); board.move("H7", "H5");
   board.move("E4", "E5"); board.move("D7", "D5");
-  auto& wPawn = board.getPieceAtCoordinates(Coordinates(4, 4))->get();
-  auto& bPawn = board.getPieceAtCoordinates(Coordinates(3, 4))->get();
+  auto& wPawn = board.at(Coordinates(4, 4))->get();
+  auto& bPawn = board.at(Coordinates(3, 4))->get();
   board.move("E5", "D6");
 
   board.undoLastMove();
-  auto& expectedWPawnOpt = board.getPieceAtCoordinates(Coordinates(4, 4));
-  auto& expectedBPawnOpt = board.getPieceAtCoordinates(Coordinates(3, 4));
+  auto& expectedWPawnOpt = board.at(Coordinates(4, 4));
+  auto& expectedBPawnOpt = board.at(Coordinates(3, 4));
   ASSERT_TRUE(expectedBPawnOpt.has_value());
   ASSERT_TRUE(expectedWPawnOpt.has_value());
   EXPECT_EQ(&(expectedBPawnOpt->get()), &bPawn);
   EXPECT_EQ(&(expectedWPawnOpt->get()), &wPawn);
-  EXPECT_FALSE(board.getPieceAtCoordinates(Coordinates(3, 5)).has_value());
+  EXPECT_FALSE(board.at(Coordinates(3, 5)).has_value());
 
 }
 
@@ -437,12 +437,12 @@ TEST_F(BoardTest, canUndoCastlingKingSide) {
   board.move("G2", "G3"); board.move("G7", "G6");
   board.move("F1", "G2"); board.move("F8", "G7");
   board.move("E1", "G1");
-  auto& whiteK = board.getPieceAtCoordinates(Coordinates(6, 0))->get();
-  auto& whiteR = board.getPieceAtCoordinates(Coordinates(5, 0))->get();
+  auto& whiteK = board.at(Coordinates(6, 0))->get();
+  auto& whiteR = board.at(Coordinates(5, 0))->get();
 
   board.undoLastMove();
-  auto& expectedWhiteK = board.getPieceAtCoordinates(Coordinates(4, 0))->get();
-  auto& expectedWhiteR = board.getPieceAtCoordinates(Coordinates(7, 0))->get();
+  auto& expectedWhiteK = board.at(Coordinates(4, 0))->get();
+  auto& expectedWhiteR = board.at(Coordinates(7, 0))->get();
   EXPECT_EQ(&whiteK, &expectedWhiteK);
   EXPECT_EQ(&whiteR, &expectedWhiteR);
   EXPECT_FALSE(whiteK.getMovedStatus());
@@ -456,12 +456,12 @@ TEST_F(BoardTest, canUndoCastlingQueenSide) {
   board.move("B1", "A3"); board.move("B8", "A6");
   board.move("D1", "C2"); board.move("D8", "C7");
   board.move("E1", "C1");
-  auto& whiteK = board.getPieceAtCoordinates(Coordinates(2, 0))->get();
-  auto& whiteR = board.getPieceAtCoordinates(Coordinates(3, 0))->get();
+  auto& whiteK = board.at(Coordinates(2, 0))->get();
+  auto& whiteR = board.at(Coordinates(3, 0))->get();
 
   board.undoLastMove();
-  auto& expectedWhiteK = board.getPieceAtCoordinates(Coordinates(4, 0))->get();
-  auto& expectedWhiteR = board.getPieceAtCoordinates(Coordinates(0, 0))->get();
+  auto& expectedWhiteK = board.at(Coordinates(4, 0))->get();
+  auto& expectedWhiteR = board.at(Coordinates(0, 0))->get();
   EXPECT_EQ(&whiteK, &expectedWhiteK);
   EXPECT_EQ(&whiteR, &expectedWhiteR);
   EXPECT_FALSE(whiteK.getMovedStatus());
@@ -473,15 +473,15 @@ TEST_F(BoardTest, canUndoPromotion) {
   board.move("E2", "E3"); board.move("B7", "B6");
   board.move("G1", "H3"); board.move("C8", "B7");
   board.move("C7", "C8");
-  auto& pawn = board.getPieceAtCoordinates(Coordinates(2, 7))->get();
+  auto& pawn = board.at(Coordinates(2, 7))->get();
   board.promote(PromotionOption::Queen);
 
   board.undoLastMove();
   EXPECT_FALSE(board.isPromotionPending());
-  auto& expectedPawnOpt = board.getPieceAtCoordinates(Coordinates(2, 6));
+  auto& expectedPawnOpt = board.at(Coordinates(2, 6));
   ASSERT_TRUE(expectedPawnOpt.has_value());
   EXPECT_EQ(&(expectedPawnOpt->get()), &pawn);
-  EXPECT_FALSE(board.getPieceAtCoordinates(Coordinates(2, 7)).has_value());
+  EXPECT_FALSE(board.at(Coordinates(2, 7)).has_value());
 }
 
 TEST_F(BoardTest, canUndoStalemate) {
@@ -724,16 +724,16 @@ TEST_F(BoardTest, boardCanBeInstantiatedWithANonStandardInitialConfiguration) {
     Coordinates(2, 2)}, {}, {}, {}, Coordinates(1,1), {}, {}, {}, {},
     {}, Coordinates(7,7));
 
-  EXPECT_FALSE(board.getPieceAtCoordinates(Coordinates(0, 0)).has_value());
-  auto whiteRook = board.getPieceAtCoordinates(Coordinates(2, 3));
+  EXPECT_FALSE(board.at(Coordinates(0, 0)).has_value());
+  auto whiteRook = board.at(Coordinates(2, 3));
   ASSERT_TRUE(whiteRook.has_value());
-  auto anotherWhiteRook = board.getPieceAtCoordinates(Coordinates(1, 2));
+  auto anotherWhiteRook = board.at(Coordinates(1, 2));
   ASSERT_TRUE(anotherWhiteRook.has_value());
   EXPECT_TRUE(whiteRook->get().getName() == whiteRook->get().getName());
 
-  ASSERT_TRUE(board.getPieceAtCoordinates(Coordinates(2, 2)).has_value());
-  EXPECT_TRUE(board.getPieceAtCoordinates(Coordinates(1, 1)).has_value());
-  EXPECT_TRUE(board.getPieceAtCoordinates(Coordinates(7, 7)).has_value());
+  ASSERT_TRUE(board.at(Coordinates(2, 2)).has_value());
+  EXPECT_TRUE(board.at(Coordinates(1, 1)).has_value());
+  EXPECT_TRUE(board.at(Coordinates(7, 7)).has_value());
 
   EXPECT_FALSE(board.isGameOver());
 }
@@ -779,11 +779,11 @@ TEST_F(BoardTest, throwsIfMoreThanOnePromotionWhenNonStandardInitialised) {
 TEST_F(BoardTest, rooksInitialisedInNonStandardPositionHaveMovedStatusTrue) {
   board = Board({}, {Coordinates(2, 3)}, {}, {}, {}, Coordinates(1,1),
     {}, {Coordinates(7,6)}, {}, {}, {}, Coordinates(7,7));
-  auto whiteRook = board.getPieceAtCoordinates(Coordinates(2, 3));
+  auto whiteRook = board.at(Coordinates(2, 3));
   ASSERT_TRUE(whiteRook.has_value());
   EXPECT_TRUE(whiteRook->get().getMovedStatus());
 
-  auto blackRook = board.getPieceAtCoordinates(Coordinates(7, 6));
+  auto blackRook = board.at(Coordinates(7, 6));
   ASSERT_TRUE(blackRook.has_value());
   EXPECT_TRUE(blackRook->get().getMovedStatus());
 }
@@ -791,11 +791,11 @@ TEST_F(BoardTest, rooksInitialisedInNonStandardPositionHaveMovedStatusTrue) {
 TEST_F(BoardTest, rooksInitialisedInStandardPositionHaveMovedStatusFalse) {
   board = Board({}, {Coordinates(0, 0)}, {}, {}, {}, Coordinates(1, 1),
     {}, {Coordinates(7, 7)}, {}, {}, {}, Coordinates(7, 4));
-  auto whiteRook = board.getPieceAtCoordinates(Coordinates(0, 0));
+  auto whiteRook = board.at(Coordinates(0, 0));
   ASSERT_TRUE(whiteRook.has_value());
   EXPECT_FALSE(whiteRook->get().getMovedStatus());
 
-  auto blackRook = board.getPieceAtCoordinates(Coordinates(7, 7));
+  auto blackRook = board.at(Coordinates(7, 7));
   ASSERT_TRUE(blackRook.has_value());
   EXPECT_FALSE(blackRook->get().getMovedStatus());
 }
@@ -803,11 +803,11 @@ TEST_F(BoardTest, rooksInitialisedInStandardPositionHaveMovedStatusFalse) {
 TEST_F(BoardTest, pawnsInitialisedInNonStandardPositionHaveMovedStatusTrue) {
   board = Board({Coordinates(2, 3)}, {}, {}, {}, {}, Coordinates(1,1),
     {Coordinates(7,5)}, {}, {}, {}, {}, Coordinates(7,7));
-  auto whitePawn = board.getPieceAtCoordinates(Coordinates(2, 3));
+  auto whitePawn = board.at(Coordinates(2, 3));
   ASSERT_TRUE(whitePawn.has_value());
   EXPECT_TRUE(whitePawn->get().getMovedStatus());
 
-  auto blackPawn = board.getPieceAtCoordinates(Coordinates(7, 5));
+  auto blackPawn = board.at(Coordinates(7, 5));
   ASSERT_TRUE(blackPawn.has_value());
   EXPECT_TRUE(blackPawn->get().getMovedStatus());
 }
@@ -815,11 +815,11 @@ TEST_F(BoardTest, pawnsInitialisedInNonStandardPositionHaveMovedStatusTrue) {
 TEST_F(BoardTest, pawnsInitialisedInStandardPositionHaveMovedStatusFalse) {
   board = Board({Coordinates(0, 1)}, {}, {}, {}, {}, Coordinates(1,1),
     {Coordinates(7,6)}, {}, {}, {}, {}, Coordinates(7,7));
-  auto whitePawn = board.getPieceAtCoordinates(Coordinates(0, 1));
+  auto whitePawn = board.at(Coordinates(0, 1));
   ASSERT_TRUE(whitePawn.has_value());
   EXPECT_FALSE(whitePawn->get().getMovedStatus());
 
-  auto blackPawn = board.getPieceAtCoordinates(Coordinates(7, 6));
+  auto blackPawn = board.at(Coordinates(7, 6));
   ASSERT_TRUE(blackPawn.has_value());
   EXPECT_FALSE(blackPawn->get().getMovedStatus());
 }
@@ -827,11 +827,11 @@ TEST_F(BoardTest, pawnsInitialisedInStandardPositionHaveMovedStatusFalse) {
 TEST_F(BoardTest, kingsInitialisedInNonStandardPositionHaveMovedStatusTrue) {
   board = Board({Coordinates(2, 3)}, {}, {}, {}, {}, Coordinates(1,1),
     {Coordinates(7,6)}, {}, {}, {}, {}, Coordinates(7,7));
-  auto whiteKing = board.getPieceAtCoordinates(Coordinates(1, 1));
+  auto whiteKing = board.at(Coordinates(1, 1));
   ASSERT_TRUE(whiteKing.has_value());
   EXPECT_TRUE(whiteKing->get().getMovedStatus());
 
-  auto blackKing = board.getPieceAtCoordinates(Coordinates(7, 7));
+  auto blackKing = board.at(Coordinates(7, 7));
   ASSERT_TRUE(blackKing.has_value());
   EXPECT_TRUE(blackKing->get().getMovedStatus());
 }
@@ -839,11 +839,11 @@ TEST_F(BoardTest, kingsInitialisedInNonStandardPositionHaveMovedStatusTrue) {
 TEST_F(BoardTest, kingsInitialisedInStandardPositionHaveMovedStatusFalse) {
   board = Board({Coordinates(2, 3)}, {}, {}, {}, {}, Coordinates(4,0),
     {Coordinates(7,6)}, {}, {}, {}, {}, Coordinates(4,7));
-  auto whiteKing = board.getPieceAtCoordinates(Coordinates(4, 0));
+  auto whiteKing = board.at(Coordinates(4, 0));
   ASSERT_TRUE(whiteKing.has_value());
   EXPECT_FALSE(whiteKing->get().getMovedStatus());
 
-  auto blackKing = board.getPieceAtCoordinates(Coordinates(4, 7));
+  auto blackKing = board.at(Coordinates(4, 7));
   ASSERT_TRUE(blackKing.has_value());
   EXPECT_FALSE(blackKing->get().getMovedStatus());
 }
@@ -851,7 +851,7 @@ TEST_F(BoardTest, kingsInitialisedInStandardPositionHaveMovedStatusFalse) {
 TEST_F(BoardTest, pawnsInitialisedInEnPassantCannotExecuteIt) {
   board = Board({Coordinates(2, 4)}, {}, {}, {}, {}, Coordinates(1, 1),
   {Coordinates(3, 4)}, {}, {}, {}, {}, Coordinates(7, 7));
-  auto whitePawnOpt = board.getPieceAtCoordinates(Coordinates(2, 4));
+  auto whitePawnOpt = board.at(Coordinates(2, 4));
   ASSERT_TRUE(whitePawnOpt.has_value());
   auto& whitePawn = whitePawnOpt->get();
   EXPECT_FALSE(whitePawn.isMovePlausible(Coordinates(2,4), Coordinates(3,5)));

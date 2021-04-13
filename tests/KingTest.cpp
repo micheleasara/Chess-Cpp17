@@ -16,7 +16,7 @@ protected:
   Piece const* king = nullptr;
 
   void SetUp() {
-    auto kingOpt = board.getPieceAtCoordinates(KING_COORD);
+    auto kingOpt = board.at(KING_COORD);
     ASSERT_TRUE(kingOpt.has_value());
     king = &(kingOpt->get());
     ASSERT_FALSE(board.isGameOver());

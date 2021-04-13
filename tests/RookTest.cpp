@@ -16,7 +16,7 @@ protected:
   Piece const* rook = nullptr;
 
   void SetUp() {
-    auto rookOpt = board.getPieceAtCoordinates(ROOK_COORD);
+    auto rookOpt = board.at(ROOK_COORD);
     ASSERT_TRUE(rookOpt.has_value());
     rook = &(rookOpt->get());
     ASSERT_FALSE(board.isGameOver());

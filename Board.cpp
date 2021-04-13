@@ -413,7 +413,7 @@ MoveResult Board::move(Coordinates const& src, Coordinates const& destination) {
 
 bool Board::isPieceAtSource(Piece const& piece,
                                   Coordinates const& source) const {
-  if (auto pieceOpt = getPieceAtCoordinates(source)) {
+  if (auto pieceOpt = at(source)) {
     auto& pieceAtSrc = pieceOpt->get();
     if (&piece == &pieceAtSrc) {
       return true;
@@ -483,7 +483,7 @@ MoveResult Board::move(Coordinates const& source,
                        Coordinates const& destination, Callable&& mover) {
   ensureGameNotOver();
   ensureNoPromotionNeeded();
-  auto& piece = getPieceAtCoordinates(source)->get();
+  auto& piece = at(source)->get();
   ensurePlayerCanMovePiece(piece);
   auto gameState = MoveResult::GameState::NORMAL;
 
@@ -744,7 +744,7 @@ bool Board::isColumnFree(Coordinates const& source, int limitRow) const {
     if (!areWithinLimits(src)) {
       throw std::invalid_argument("Coordinates go beyond the board limits");
     }
-    if (getPieceAtCoordinates(src)) {
+    if (at(src)) {
       return false;
     }
   }
@@ -764,7 +764,7 @@ bool Board::isRowFree(Coordinates const& source, int limitCol) const {
     if (!areWithinLimits(src)) {
       throw std::invalid_argument("Coordinates go beyond the board limits");
     }
-    if (getPieceAtCoordinates(src)) {
+    if (at(src)) {
       return false;
     }
   }
@@ -791,7 +791,7 @@ bool Board::isDiagonalFree(Coordinates const& source,
     if (!areWithinLimits(src)) {
       throw std::invalid_argument("Coordinates go beyond the board limits");
     }
-    if (getPieceAtCoordinates(src)) {
+    if (at(src)) {
       return false;
     }
   }
@@ -799,7 +799,7 @@ bool Board::isDiagonalFree(Coordinates const& source,
   return true;
 }
 
-OptionalRef<const Piece> Board::getPieceAtCoordinates(
+OptionalRef<const Piece> Board::at(
                                                Coordinates const& coord) const {
   if (board.count(coord) > 0) {
     return *(board.at(coord).get());
@@ -1050,7 +1050,7 @@ std::ostream& operator<<(std::ostream& out, Board const& board) {
 
     for (int c = 0; c <= board.MAX_ROW_NUM; c++) {
       Coordinates iterCoord(c, r);
-      if (auto pieceOptional = board.getPieceAtCoordinates(iterCoord)) {
+      if (auto pieceOptional = board.at(iterCoord)) {
         out << std::right;
         out << std::setw((std::streamsize)H_PRINT_SIZE - 1);
         out << *pieceOptional << '|';

@@ -78,7 +78,7 @@ int main() {
           printCastlingMessage(*castlingType, currentPlayer);
         } else {
           auto destCoord = Board::stringToCoordinates(dest);
-          if (auto movedPiece = cb.getPieceAtCoordinates(destCoord)) {
+          if (auto movedPiece = cb.at(destCoord)) {
             cout << *movedPiece << " moves from " << source << " to " << dest;
             if (auto capturedName = result.capturedPieceName()) {
               cout << " taking " << opponent << "'s " << *capturedName;
@@ -164,21 +164,20 @@ std::optional<PromotionOption> strToPromotionPiece(std::string_view piece) {
 }
 
 void printIfSpecialState(MoveResult::GameState state,
-  std::string_view opponent) {
-  using namespace std;
+                         std::string_view opponent) {
   switch (state) {
   case MoveResult::GameState::OPPONENT_IN_CHECK:
-    cout << opponent << " is in check.\n"; break;
+    std::cout << opponent << " is in check.\n"; break;
   case MoveResult::GameState::OPPONENT_IN_CHECKMATE:
-    cout << opponent << " is in checkmate.\n"; break;
+    std::cout << opponent << " is in checkmate.\n"; break;
   case MoveResult::GameState::INSUFFICIENT_MATERIAL_DRAW:
-    cout << "Game ends as a draw due to insufficient material.\n"; break;
+    std::cout << "Game ends as a draw due to insufficient material.\n"; break;
   case MoveResult::GameState::FIVEFOLD_REPETITION_DRAW:
-    cout << "Game ends as a draw due to five-fold repetition.\n"; break;
+    std::cout << "Game ends as a draw due to five-fold repetition.\n"; break;
   case MoveResult::GameState::STALEMATE:
-    cout << "Game ends as a draw due to stalemate.\n"; break;
+    std::cout << "Game ends as a draw due to stalemate.\n"; break;
   case MoveResult::GameState::SEVENTYFIVE_MOVES_DRAW:
-    cout << "Game ends as a draw due to the 75 moves rule.\n"; break;
+    std::cout << "Game ends as a draw due to the 75 moves rule.\n"; break;
   default:
     break;
   }

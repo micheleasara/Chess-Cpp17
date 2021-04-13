@@ -18,7 +18,7 @@ bool Pawn::isMovePlausibleSpecific(Coordinates const& source,
   // white only moves in increasing row direction, black the opposite
   // therefore, 'forward' is relative to the colour
   forwardSteps *= (getColour() == Colour::White) ? 1 : -1;
-  auto piece = getBoard().getPieceAtCoordinates(destination);
+  auto piece = getBoard().at(destination);
 
   // return true only for: normal pawn step, capturing one step diagonally,
   // double step as first move and en passant

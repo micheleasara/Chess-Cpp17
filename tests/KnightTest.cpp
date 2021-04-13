@@ -16,7 +16,7 @@ protected:
   Piece const* knight = nullptr;
 
   void SetUp() {
-    auto knightOpt = board.getPieceAtCoordinates(KNIGHT_COORD);
+    auto knightOpt = board.at(KNIGHT_COORD);
     ASSERT_TRUE(knightOpt.has_value());
     knight = &(knightOpt->get());
     ASSERT_FALSE(board.isGameOver());
@@ -79,7 +79,7 @@ TEST_F(KnightTest, cannotMoveInStraightLines) {
 
 TEST_F(KnightTest, canMoveInLShapeWhileSteppingOverOtherPieces) {
   board = Board();
-  auto& wKnight = board.getPieceAtCoordinates(Coordinates(1, 0))->get();
+  auto& wKnight = board.at(Coordinates(1, 0))->get();
   EXPECT_TRUE(wKnight.isMovePlausible(Coordinates(1, 0), Coordinates(2, 2)));
   EXPECT_TRUE(wKnight.isMovePlausible(Coordinates(1, 0), Coordinates(0, 2)));
 
