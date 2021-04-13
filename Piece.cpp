@@ -29,12 +29,12 @@ bool Piece::isMovePlausible(Coordinates const& source,
     return false;
   }
 
-  OptionalRef<Piece> target = getBoard().getPieceAtCoordinates(destination);
+  auto target = getBoard().getPieceAtCoordinates(destination);
   if (target && target->get().getColour() == getColour()) {
     return false;
   }
 
-  OptionalRef<Piece> thisPiece = getBoard().getPieceAtCoordinates(source);
+  auto thisPiece = getBoard().getPieceAtCoordinates(source);
   if (!thisPiece || &(thisPiece->get()) != this) {
     return false;
   }

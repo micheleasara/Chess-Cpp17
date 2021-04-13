@@ -395,9 +395,7 @@ MoveResult Board::move(std::string_view src, std::string_view destination) {
 }
 
 MoveResult Board::move(Coordinates const& src, Coordinates const& destination) {
-  auto pieceOptional = getPieceAtCoordinates(src);
-
-  if (!pieceOptional) {
+  if (board.count(src) <= 0) {
     std::string sourceStr;
     try {
       sourceStr = Board::coordinatesToString(src);
@@ -410,8 +408,7 @@ MoveResult Board::move(Coordinates const& src, Coordinates const& destination) {
     throw InvalidMove(ss.str(), InvalidMove::ErrorCode::NO_SOURCE_PIECE);
   }
 
-  auto& piece = pieceOptional->get();
-  return piece.move(src, destination);
+  return board[src]->move(src, destination);
 }
 
 bool Board::isPieceAtSource(Piece const& piece,
@@ -802,7 +799,7 @@ bool Board::isDiagonalFree(Coordinates const& source,
   return true;
 }
 
-OptionalRef<Piece> Board::getPieceAtCoordinates(
+OptionalRef<const Piece> Board::getPieceAtCoordinates(
                                                Coordinates const& coord) const {
   if (board.count(coord) > 0) {
     return *(board.at(coord).get());
