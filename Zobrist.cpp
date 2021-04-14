@@ -1,4 +1,10 @@
 #include "Zobrist.hpp"
+#include "Rook.hpp"
+#include "Bishop.hpp"
+#include "Queen.hpp"
+#include "Knight.hpp"
+#include "King.hpp"
+#include "Pawn.hpp"
 #include <cstdlib>
 #include <unordered_set>
 #include <ctime>
@@ -70,45 +76,17 @@ ZobristHasher::ZobristHasher(size_t width, size_t height,
         Coordinates const& blackKing):
           CHESSBOARD_AREA(width*height),
           MAX_ROW_NUM(height-1), MAX_COL_NUM(width-1),
-          table(CHESSBOARD_AREA, std::vector<int>(PIECE_INDEXES_COUNT, EMPTY)),
-          board(CHESSBOARD_AREA, EMPTY) {
+          table(CHESSBOARD_AREA, std::vector<int>(PIECE_INDEXES_COUNT, EMPTY)) {
   initializeTableAndWhitePlayer();
-  initializePieces(whitePawns, PieceIndex::WhitePawn,
-    [=](Coordinates const& c) {return c.row == 1 && c.column <= MAX_COL_NUM; });
-
-  initializePieces(whiteRooks, PieceIndex::WhiteRook,
-    [](Coordinates const& c) {
-       return c.row == 0 && (c.column == 0 || c.column == 7); });
-
-  // not all pieces have a moved equivalent in the hasher
-  // return true for them as to avoid useless branching
-  auto returnTrue = [](Coordinates const&) { return true; };
-  initializePieces(whiteKnights, PieceIndex::WhiteKnight, returnTrue);
-  initializePieces(whiteBishops, PieceIndex::WhiteBishop, returnTrue);
-  initializePieces(whiteQueens, PieceIndex::WhiteQueen, returnTrue);
-
-  initializePieces({whiteKing}, PieceIndex::WhiteKing,
-    [](Coordinates const& c) { return c.row == 0 && c.column == 3; });
-  
-  initializePieces(blackPawns, PieceIndex::BlackPawn,
-    [=](Coordinates const& c) {return c.row == 6 && c.column <= MAX_COL_NUM; });
-  
-  initializePieces(blackRooks, PieceIndex::BlackRook,
-    [](Coordinates const& c) {
-       return c.row == 0 && (c.column == 0 || c.column == 7); });
-  
-  initializePieces(blackKnights, PieceIndex::BlackKnight, returnTrue);
-  initializePieces(blackBishops, PieceIndex::BlackBishop, returnTrue);
-  initializePieces(blackQueens, PieceIndex::BlackQueen, returnTrue);
-  
-  initializePieces({blackKing}, PieceIndex::BlackKing,
-    [](Coordinates const& c) { return c.row == 0 && c.column == 3; });
+  initializePieces(whitePawns, whiteRooks, whiteKnights, whiteBishops,
+                  whiteQueens, whiteKing, blackPawns, blackRooks, blackKnights,
+                  blackBishops, blackQueens, blackKing);
 }
 
 void ZobristHasher::reset() {
   movesHistory.clear();
   initializeTableAndWhitePlayer();
-  fillInitialBoard();
+  standardInitBoard();
   currentHash = computeHashFromBoard();
 }
 
@@ -222,34 +200,16 @@ void ZobristHasher::initializePieces(std::vector<Coordinates> const& coords,
   }
 }
 
-void ZobristHasher::fillInitialBoard() {
-    // make white and then black pieces
-  for (int i = 0; i <= 1; i++) {
-    bool isBlack = static_cast<bool>(i);
-    int row = MAX_ROW_NUM % (MAX_ROW_NUM+i); // can give 0 or MAX_ROW_NUM
-    board[to1D(Coordinates(0, row))] =
-          (int)(isBlack ? PieceIndex::BlackRook : PieceIndex::WhiteRook);
-    board[to1D(Coordinates(1, row))] =
-         (int)(isBlack ? PieceIndex::BlackKnight : PieceIndex::WhiteKnight);
-    board[to1D(Coordinates(2, row))] =
-         (int)(isBlack ? PieceIndex::BlackBishop : PieceIndex::WhiteBishop);
-    board[to1D(Coordinates(3, row))] =
-         (int)(isBlack ? PieceIndex::BlackQueen : PieceIndex::WhiteQueen);
-    board[to1D(Coordinates(4, row))] =
-         (int)(isBlack ? PieceIndex::BlackKing : PieceIndex::WhiteKing);
-    board[to1D(Coordinates(5, row))] =
-         (int)(isBlack ? PieceIndex::BlackBishop : PieceIndex::WhiteBishop);
-    board[to1D(Coordinates(6, row))] =
-         (int)(isBlack ? PieceIndex::BlackKnight : PieceIndex::WhiteKnight);
-    board[to1D(Coordinates(7, row))] =
-         (int)(isBlack ? PieceIndex::BlackRook : PieceIndex::WhiteRook);
-
-    row = (row == 0)? 1 : MAX_ROW_NUM - 1;
-    for (int c = 0; c <= MAX_COL_NUM; c++) {
-        board[to1D(Coordinates(c, row))] =
-           (int)(isBlack ? PieceIndex::BlackPawn : PieceIndex::WhitePawn);
-    }
+void ZobristHasher::standardInitBoard() {
+  std::vector<Coordinates> whitePawns, blackPawns;
+  for (int i = 0; i <= MAX_COL_NUM; i++) {
+    whitePawns.emplace_back(i, 1);
+    blackPawns.emplace_back(i, MAX_ROW_NUM - 1);
   }
+  initializePieces(whitePawns, Rook::WHITE_STD_INIT, Knight::WHITE_STD_INIT,
+    Bishop::WHITE_STD_INIT, {Queen::WHITE_STD_INIT}, King::WHITE_STD_INIT,
+    blackPawns, Rook::BLACK_STD_INIT, Knight::BLACK_STD_INIT,
+    Bishop::BLACK_STD_INIT, {Queen::BLACK_STD_INIT}, King::BLACK_STD_INIT);
 }
 
 int ZobristHasher::to1D(Coordinates const& coords) {
@@ -344,6 +304,57 @@ std::optional<ZobristHasher::PieceIndex>
     default:
       return std::nullopt;
   }
+}
+
+void ZobristHasher::initializePieces(std::vector<Coordinates> const& whitePawns,
+                                  std::vector<Coordinates> const& whiteRooks,
+                                  std::vector<Coordinates> const& whiteKnights,
+                                  std::vector<Coordinates> const& whiteBishops,
+                                  std::vector<Coordinates> const& whiteQueens,
+                                  Coordinates const& whiteKing,
+                                  std::vector<Coordinates> const& blackPawns,
+                                  std::vector<Coordinates> const& blackRooks,
+                                  std::vector<Coordinates> const& blackKnights,
+                                  std::vector<Coordinates> const& blackBishops,
+                                  std::vector<Coordinates> const& blackQueens,
+                                  Coordinates const& blackKing) {
+  board.assign(CHESSBOARD_AREA, EMPTY);
+
+  initializePieces(whitePawns, PieceIndex::WhitePawn,
+    [=](Coordinates const& c) {return c.row == 1 && c.column <= MAX_COL_NUM; });
+
+  initializePieces(whiteRooks, PieceIndex::WhiteRook,
+    [](Coordinates const& c) {
+        return std::find(Rook::WHITE_STD_INIT.begin(),
+              Rook::WHITE_STD_INIT.end(), c) != Rook::WHITE_STD_INIT.end();
+    });
+
+  // not all pieces have a moved equivalent in the hasher
+  // return true for them as to avoid useless branching
+  auto returnTrue = [](Coordinates const&) { return true; };
+  initializePieces(whiteKnights, PieceIndex::WhiteKnight, returnTrue);
+  initializePieces(whiteBishops, PieceIndex::WhiteBishop, returnTrue);
+  initializePieces(whiteQueens, PieceIndex::WhiteQueen, returnTrue);
+  initializePieces(blackKnights, PieceIndex::BlackKnight, returnTrue);
+  initializePieces(blackBishops, PieceIndex::BlackBishop, returnTrue);
+  initializePieces(blackQueens, PieceIndex::BlackQueen, returnTrue);
+
+  initializePieces({whiteKing}, PieceIndex::WhiteKing,
+    [](Coordinates const& c) { return c == King::WHITE_STD_INIT; });
+  
+  initializePieces(blackPawns, PieceIndex::BlackPawn,
+    [=](Coordinates const& c) {
+      return c.row == (MAX_ROW_NUM - 1) && c.column <= MAX_COL_NUM;
+    });
+  
+  initializePieces(blackRooks, PieceIndex::BlackRook,
+    [](Coordinates const& c) {
+       return std::find(Rook::BLACK_STD_INIT.begin(),
+                   Rook::BLACK_STD_INIT.end(), c) != Rook::BLACK_STD_INIT.end();
+    });
+  
+  initializePieces({blackKing}, PieceIndex::BlackKing,
+    [](Coordinates const& c) { return c == King::BLACK_STD_INIT; });
 }
 
 void ZobristHasher::restorePreviousHash() {

@@ -81,7 +81,7 @@ private:
   template <typename Predicate>
   void initializePieces(std::vector<Coordinates> const& coords, PieceIndex piece,
                         Predicate&& isNormalStartingCoord);
-  void fillInitialBoard();
+  void standardInitBoard();
   int computeHashFromBoard();
   int to1D(Coordinates const& coords);
   bool areWithinLimits(Coordinates const& coords);
@@ -92,6 +92,19 @@ private:
   PieceIndex constexpr movedEquivalent(PieceIndex idx);
   std::optional<PieceIndex> getEnemyMovedPawn(PieceIndex pawn);
   std::optional<PieceIndex> getEnPassantPawn(PieceIndex pawn);
+
+  void initializePieces(std::vector<Coordinates> const& whitePawns,
+      std::vector<Coordinates> const& whiteRooks,
+      std::vector<Coordinates> const& whiteKnights,
+      std::vector<Coordinates> const& whiteBishops,
+      std::vector<Coordinates> const& whiteQueens,
+      Coordinates const& whiteKing,
+      std::vector<Coordinates> const& blackPawns,
+      std::vector<Coordinates> const& blackRooks,
+      std::vector<Coordinates> const& blackKnights,
+      std::vector<Coordinates> const& blackBishops,
+      std::vector<Coordinates> const& blackQueens,
+      Coordinates const& blackKing);
 
   size_t CHESSBOARD_AREA;
   int MAX_ROW_NUM, MAX_COL_NUM;
