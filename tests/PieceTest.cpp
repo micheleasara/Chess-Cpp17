@@ -15,7 +15,7 @@ public:
     return Chess::MoveResult(Chess::MoveResult::GameState::NORMAL);
   }
 
-  std::string getName() const { return ""; }
+  std::string name() const { return ""; }
 
 private:
   virtual bool isMovePlausibleSpecific(Coordinates const& source,

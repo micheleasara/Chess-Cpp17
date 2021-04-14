@@ -6,7 +6,7 @@ namespace Chess {
 
 Pawn::Pawn(Colour colour, Board& board): Piece(colour, board) {}
 
-std::string Pawn::getName() const {
+std::string Pawn::name() const {
   return "Pawn";
 }
 

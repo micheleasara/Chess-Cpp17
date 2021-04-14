@@ -16,7 +16,7 @@ void Piece::setBoard(Board& board) noexcept {
 
 std::ostream& operator<<(std::ostream& out, const Piece& piece) {
   std::string owner = (piece.m_colour == Colour::White)? "White" : "Black";
-  return out << (owner + "'s " + piece.getName());
+  return out << (owner + "'s " + piece.name());
 }
 
 bool Piece::isMovePlausible(Coordinates const& source,

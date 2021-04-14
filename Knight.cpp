@@ -20,7 +20,7 @@ bool Knight::isMovePlausibleSpecific(Coordinates const& source,
   return (rowDiff == 2 && colDiff == 1) || (rowDiff == 1 && colDiff == 2);
 }
 
-std::string Knight::getName() const {
+std::string Knight::name() const {
   return "Knight";
 }
 

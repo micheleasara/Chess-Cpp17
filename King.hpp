@@ -21,7 +21,7 @@ class King: public Piece {
                           Coordinates const& destination) override;
 
   /// Returns "King".
-  std::string getName() const override;
+  std::string name() const override;
 
   private:
 

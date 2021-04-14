@@ -15,7 +15,7 @@ class Pawn: public Piece {
                           Coordinates const& destination) override;
 
   /// Returns "Pawn".
-  std::string getName() const override;
+  std::string name() const override;
 
   private:
   /**

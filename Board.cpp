@@ -503,7 +503,7 @@ MoveResult Board::move(Coordinates const& source,
   std::optional<std::string> capturedPieceName;
   if (lastMove.removedPiece != nullptr) {
     countSincePawnMoveOrCapture = 0;
-    capturedPieceName = lastMove.removedPiece->getName();
+    capturedPieceName = lastMove.removedPiece->name();
   }
 
   if (isPromotionPending()) {

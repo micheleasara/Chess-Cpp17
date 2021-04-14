@@ -22,7 +22,7 @@ bool Rook::isMovePlausibleSpecific(Coordinates const& source,
   return false;
 }
 
-std::string Rook::getName() const {
+std::string Rook::name() const {
   return "Rook";
 }
 

@@ -5,7 +5,7 @@ namespace Chess {
 
 Queen::Queen(Colour colour, Board& board): PromotionPiece(colour, board) {}
 
-std::string Queen::getName() const {
+std::string Queen::name() const {
   return "Queen";
 }
 

@@ -729,7 +729,7 @@ TEST_F(BoardTest, boardCanBeInstantiatedWithANonStandardInitialConfiguration) {
   ASSERT_TRUE(whiteRook.has_value());
   auto anotherWhiteRook = board.at(Coordinates(1, 2));
   ASSERT_TRUE(anotherWhiteRook.has_value());
-  EXPECT_TRUE(whiteRook->get().getName() == whiteRook->get().getName());
+  EXPECT_TRUE(whiteRook->get().name() == whiteRook->get().name());
 
   ASSERT_TRUE(board.at(Coordinates(2, 2)).has_value());
   EXPECT_TRUE(board.at(Coordinates(1, 1)).has_value());

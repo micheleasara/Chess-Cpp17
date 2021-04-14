@@ -53,11 +53,11 @@ public:
   Board& getBoard() const;
 
   /// Returns the name of the piece (e.g. "Rook").
-  virtual std::string getName() const = 0;
+  virtual std::string name() const = 0;
 
   /**
    Prints the colour (owner) and the piece name as "Colour's PieceName".
-   It requires getName() to be overriden to return a piece name.
+   It requires name() to be overriden to return a piece name.
   */
   friend std::ostream& operator<<(std::ostream& out, Piece const& piece);
 

@@ -21,7 +21,7 @@ class Queen: public PromotionPiece {
                           Coordinates const& destination) override;
 
   /// Returns "Queen".
-  std::string getName() const override;
+  std::string name() const override;
 
   private:
   /**

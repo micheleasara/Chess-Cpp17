@@ -10,7 +10,7 @@ std::vector<Coordinates> const Bishop::BLACK_STD_INIT =
 
 Bishop::Bishop(Colour colour, Board& board): PromotionPiece(colour, board) {}
 
-std::string Bishop::getName() const {
+std::string Bishop::name() const {
   return "Bishop";
 }
 
