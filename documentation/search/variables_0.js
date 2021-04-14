@@ -1,9 +1,4 @@
 var searchData=
 [
-  ['max_5fcol_5fnum_150',['MAX_COL_NUM',['../classChess_1_1Board.html#a6cee4fb673b3f5dd42b510cc48192a00',1,'Chess::Board']]],
-  ['max_5fcolumn_151',['MAX_COLUMN',['../classChess_1_1Board.html#af412bfedd2d88f3df86ca238ba99d6ec',1,'Chess::Board']]],
-  ['max_5frow_152',['MAX_ROW',['../classChess_1_1Board.html#afe19fb094fd903e396ec3706d389f838',1,'Chess::Board']]],
-  ['max_5frow_5fnum_153',['MAX_ROW_NUM',['../classChess_1_1Board.html#aeec21894c968ad9e7220da264dd3ec15',1,'Chess::Board']]],
-  ['min_5fcolumn_154',['MIN_COLUMN',['../classChess_1_1Board.html#a2c9488cdf97ffba1ed9b3b4b1dee98e1',1,'Chess::Board']]],
-  ['min_5frow_155',['MIN_ROW',['../classChess_1_1Board.html#aa3027584a94ec3b646217566353bca3d',1,'Chess::Board']]]
+  ['black_5fstd_5finit_152',['BLACK_STD_INIT',['../classChess_1_1Bishop.html#aaa798d60dda75331944a075544e80692',1,'Chess::Bishop::BLACK_STD_INIT()'],['../classChess_1_1King.html#a2e89b5d5b71addc55eba05df31c902c0',1,'Chess::King::BLACK_STD_INIT()'],['../classChess_1_1Knight.html#ae135726be180edc136c6a072f35619b5',1,'Chess::Knight::BLACK_STD_INIT()'],['../classChess_1_1Queen.html#ae90457f969127a198d72de67fb2af89f',1,'Chess::Queen::BLACK_STD_INIT()'],['../classChess_1_1Rook.html#a754c49988f5d858f7db7aa06a2f5f481',1,'Chess::Rook::BLACK_STD_INIT()']]]
 ];

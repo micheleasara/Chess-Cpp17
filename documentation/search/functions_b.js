@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['piece_136',['Piece',['../classChess_1_1Piece.html#a349d5ae518b3320e119f8da3a63f2e32',1,'Chess::Piece']]],
-  ['piecemoved_137',['pieceMoved',['../classChess_1_1BoardHasher.html#a698e27f1a3fd7160ff278de1050e998e',1,'Chess::BoardHasher::pieceMoved()'],['../classChess_1_1ZobristHasher.html#acf67288ea66d16f8dc9a469e0ebe08f6',1,'Chess::ZobristHasher::pieceMoved()']]],
-  ['promote_138',['promote',['../classChess_1_1Board.html#aa46df720e3eae85b80de7e31e1db165a',1,'Chess::Board']]]
+  ['operator_21_3d_135',['operator!=',['../structChess_1_1Coordinates.html#a05e64ff01ea04055f28e8b42be497de4',1,'Chess::Coordinates']]],
+  ['operator_3d_136',['operator=',['../classChess_1_1Board.html#adfc8903d068b8859849b9d1094116f2a',1,'Chess::Board']]],
+  ['operator_3d_3d_137',['operator==',['../structChess_1_1Coordinates.html#aca00bc798f064af9e5398b0848cff219',1,'Chess::Coordinates']]]
 ];

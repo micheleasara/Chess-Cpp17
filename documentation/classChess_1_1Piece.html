@@ -122,10 +122,10 @@ Colour&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 <a class="el" href="classChess_1_1Board.html">Board</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Piece.html#afc683ee16389b02fb8732b1b13e8ab01">getBoard</a> () const</td></tr>
 <tr class="memdesc:afc683ee16389b02fb8732b1b13e8ab01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the board currently associated with this piece. <br /></td></tr>
 <tr class="separator:afc683ee16389b02fb8732b1b13e8ab01"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a259b4dd4e1a75da67f904ac42d4f760b"><td class="memItemLeft" align="right" valign="top"><a id="a259b4dd4e1a75da67f904ac42d4f760b"></a>
-virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Piece.html#a259b4dd4e1a75da67f904ac42d4f760b">getName</a> () const =0</td></tr>
-<tr class="memdesc:a259b4dd4e1a75da67f904ac42d4f760b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the name of the piece (e.g. "Rook"). <br /></td></tr>
-<tr class="separator:a259b4dd4e1a75da67f904ac42d4f760b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb33a39889d5e4e0b0261dcd799d2305"><td class="memItemLeft" align="right" valign="top"><a id="adb33a39889d5e4e0b0261dcd799d2305"></a>
+virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Piece.html#adb33a39889d5e4e0b0261dcd799d2305">name</a> () const =0</td></tr>
+<tr class="memdesc:adb33a39889d5e4e0b0261dcd799d2305"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the name of the piece (e.g. "Rook"). <br /></td></tr>
+<tr class="separator:adb33a39889d5e4e0b0261dcd799d2305"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae6cbaef2e7763fdd6b40a22763635ae1"><td class="memItemLeft" align="right" valign="top"><a id="ae6cbaef2e7763fdd6b40a22763635ae1"></a>
 <a class="el" href="classChess_1_1Piece.html">Piece</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="classChess_1_1Piece.html">Piece</a> const &amp;)=delete</td></tr>
 <tr class="separator:ae6cbaef2e7763fdd6b40a22763635ae1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -141,8 +141,8 @@ virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class=
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
-<tr class="memitem:ade7873bfbd697893c93e281b00bce427"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Piece.html#ade7873bfbd697893c93e281b00bce427">operator&lt;&lt;</a> (std::ostream &amp;out, const <a class="el" href="classChess_1_1Piece.html">Piece</a> &amp;piece)</td></tr>
-<tr class="separator:ade7873bfbd697893c93e281b00bce427"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77fe0cd1a5ac86989e0b60a20f949b4e"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Piece.html#a77fe0cd1a5ac86989e0b60a20f949b4e">operator&lt;&lt;</a> (std::ostream &amp;out, <a class="el" href="classChess_1_1Piece.html">Piece</a> const &amp;piece)</td></tr>
+<tr class="separator:a77fe0cd1a5ac86989e0b60a20f949b4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Represents a generic piece. </p>
@@ -215,7 +215,7 @@ Friends</h2></td></tr>
 <p></p>
 <p>Moves the piece from the source to the destination provided, if the move is legitimate. </p>
 
-<p>Implemented in <a class="el" href="classChess_1_1Bishop.html#a51c8b315522ea35c3dcc539ab309b92b">Chess::Bishop</a>, <a class="el" href="classChess_1_1King.html#a7eac41feb4a2a1591a7b0affdea2d223">Chess::King</a>, <a class="el" href="classChess_1_1Knight.html#a29c0646e163dbd4cecb8e7f23f8296f7">Chess::Knight</a>, <a class="el" href="classChess_1_1Pawn.html#a43b014026ec4ff05743eab28ac043e67">Chess::Pawn</a>, <a class="el" href="classChess_1_1Queen.html#a3a5f27b36686718e825615b052d9e7ac">Chess::Queen</a>, and <a class="el" href="classChess_1_1Rook.html#aeb70bcbde43711466e76675ac6621278">Chess::Rook</a>.</p>
+<p>Implemented in <a class="el" href="classChess_1_1Bishop.html#a51c8b315522ea35c3dcc539ab309b92b">Chess::Bishop</a>, <a class="el" href="classChess_1_1Knight.html#a29c0646e163dbd4cecb8e7f23f8296f7">Chess::Knight</a>, <a class="el" href="classChess_1_1Rook.html#aeb70bcbde43711466e76675ac6621278">Chess::Rook</a>, <a class="el" href="classChess_1_1King.html#a7eac41feb4a2a1591a7b0affdea2d223">Chess::King</a>, <a class="el" href="classChess_1_1Queen.html#a3a5f27b36686718e825615b052d9e7ac">Chess::Queen</a>, and <a class="el" href="classChess_1_1Pawn.html#a43b014026ec4ff05743eab28ac043e67">Chess::Pawn</a>.</p>
 
 </div>
 </div>
@@ -247,8 +247,8 @@ Friends</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Friends And Related Function Documentation</h2>
-<a id="ade7873bfbd697893c93e281b00bce427"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ade7873bfbd697893c93e281b00bce427">&#9670;&nbsp;</a></span>operator&lt;&lt;</h2>
+<a id="a77fe0cd1a5ac86989e0b60a20f949b4e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a77fe0cd1a5ac86989e0b60a20f949b4e">&#9670;&nbsp;</a></span>operator&lt;&lt;</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -265,7 +265,7 @@ Friends</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classChess_1_1Piece.html">Piece</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classChess_1_1Piece.html">Piece</a> const &amp;&#160;</td>
           <td class="paramname"><em>piece</em>&#160;</td>
         </tr>
         <tr>
@@ -280,7 +280,7 @@ Friends</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Prints the colour (owner) and the piece name as "Colour's PieceName". It requires <a class="el" href="classChess_1_1Piece.html#a259b4dd4e1a75da67f904ac42d4f760b" title="Returns the name of the piece (e.g. &quot;Rook&quot;).">getName()</a> to be overriden to return a piece name. </p>
+<p>Prints the colour (owner) and the piece name as "Colour's PieceName". It requires <a class="el" href="classChess_1_1Piece.html#adb33a39889d5e4e0b0261dcd799d2305" title="Returns the name of the piece (e.g. &quot;Rook&quot;).">name()</a> to be overriden to return a piece name. </p>
 
 </div>
 </div>

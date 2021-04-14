@@ -4,7 +4,6 @@
 #include "Queen.hpp"
 #include "Knight.hpp"
 #include "King.hpp"
-#include "Pawn.hpp"
 #include <cstdlib>
 #include <unordered_set>
 #include <ctime>

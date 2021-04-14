@@ -67,6 +67,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="classChess_1_1Knight-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Chess::Knight Class Reference</div>  </div>
@@ -106,10 +107,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aeed5ff86dbcba017b1c73a4f156eaf6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a29c0646e163dbd4cecb8e7f23f8296f7"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classChess_1_1MoveResult.html">MoveResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Knight.html#a29c0646e163dbd4cecb8e7f23f8296f7">move</a> (<a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;source, <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;destination) override</td></tr>
 <tr class="separator:a29c0646e163dbd4cecb8e7f23f8296f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad133f496e324df1668e10a7a85fd5fc8"><td class="memItemLeft" align="right" valign="top"><a id="ad133f496e324df1668e10a7a85fd5fc8"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Knight.html#ad133f496e324df1668e10a7a85fd5fc8">getName</a> () const override</td></tr>
-<tr class="memdesc:ad133f496e324df1668e10a7a85fd5fc8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns "Knight". <br /></td></tr>
-<tr class="separator:ad133f496e324df1668e10a7a85fd5fc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b1252ead5771c111d72947141af863d"><td class="memItemLeft" align="right" valign="top"><a id="a4b1252ead5771c111d72947141af863d"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Knight.html#a4b1252ead5771c111d72947141af863d">name</a> () const override</td></tr>
+<tr class="memdesc:a4b1252ead5771c111d72947141af863d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns "Knight". <br /></td></tr>
+<tr class="separator:a4b1252ead5771c111d72947141af863d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classChess_1_1PromotionPiece"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classChess_1_1PromotionPiece')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classChess_1_1PromotionPiece.html">Chess::PromotionPiece</a></td></tr>
 <tr class="memitem:afc1ef26629498314c2057e17caeed24f inherit pub_methods_classChess_1_1PromotionPiece"><td class="memItemLeft" align="right" valign="top"><a id="afc1ef26629498314c2057e17caeed24f"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>PromotionPiece</b> (Colour colour, <a class="el" href="classChess_1_1Board.html">Board</a> &amp;board)</td></tr>
@@ -151,6 +152,13 @@ Colour&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 <tr class="memitem:aac36bffafc3f0a5d7cb3c09381b4c610 inherit pub_methods_classChess_1_1Piece"><td class="memItemLeft" align="right" valign="top"><a id="aac36bffafc3f0a5d7cb3c09381b4c610"></a>
 <a class="el" href="classChess_1_1Piece.html">Piece</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="classChess_1_1Piece.html">Piece</a> &amp;&amp;)=delete</td></tr>
 <tr class="separator:aac36bffafc3f0a5d7cb3c09381b4c610 inherit pub_methods_classChess_1_1Piece"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:a4e11ef124f611600d8c813c728eeb3b6"><td class="memItemLeft" align="right" valign="top">static const std::vector&lt; <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Knight.html#a4e11ef124f611600d8c813c728eeb3b6">WHITE_STD_INIT</a></td></tr>
+<tr class="separator:a4e11ef124f611600d8c813c728eeb3b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae135726be180edc136c6a072f35619b5"><td class="memItemLeft" align="right" valign="top">static const std::vector&lt; <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Knight.html#ae135726be180edc136c6a072f35619b5">BLACK_STD_INIT</a></td></tr>
+<tr class="separator:ae135726be180edc136c6a072f35619b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Represents a knight. </p>
@@ -193,6 +201,57 @@ Colour&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 <p>Moves the piece from the source to the destination provided, if the move is legitimate. </p>
 
 <p>Implements <a class="el" href="classChess_1_1Piece.html#a6a4a1123ceaa56b7563a724c8e008b0d">Chess::Piece</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="ae135726be180edc136c6a072f35619b5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae135726be180edc136c6a072f35619b5">&#9670;&nbsp;</a></span>BLACK_STD_INIT</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::vector&lt; <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> &gt; Chess::Knight::BLACK_STD_INIT</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= </div>
+<div class="line">                                        {Coordinates(1, 7), Coordinates(6, 7)}</div>
+</div><!-- fragment --><p>Defines the standard starting positions of the black knights. Each coordinate pair is given in order of increasing columns. </p>
+
+</div>
+</div>
+<a id="a4e11ef124f611600d8c813c728eeb3b6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4e11ef124f611600d8c813c728eeb3b6">&#9670;&nbsp;</a></span>WHITE_STD_INIT</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::vector&lt; <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> &gt; Chess::Knight::WHITE_STD_INIT</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= </div>
+<div class="line">                                        {Coordinates(1, 0), Coordinates(6, 0)}</div>
+</div><!-- fragment --><p>Defines the standard starting positions of the white knights. Each coordinate pair is given in order of increasing columns. </p>
 
 </div>
 </div>

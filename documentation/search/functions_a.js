@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['operator_21_3d_133',['operator!=',['../structChess_1_1Coordinates.html#a05e64ff01ea04055f28e8b42be497de4',1,'Chess::Coordinates']]],
-  ['operator_3d_134',['operator=',['../classChess_1_1Board.html#adfc8903d068b8859849b9d1094116f2a',1,'Chess::Board']]],
-  ['operator_3d_3d_135',['operator==',['../structChess_1_1Coordinates.html#aca00bc798f064af9e5398b0848cff219',1,'Chess::Coordinates']]]
+  ['name_134',['name',['../classChess_1_1Bishop.html#a70237e2640327a8befb143f539b0a255',1,'Chess::Bishop::name()'],['../classChess_1_1King.html#a0d798f32fdc40e6ddcd4c3f34a251175',1,'Chess::King::name()'],['../classChess_1_1Knight.html#a4b1252ead5771c111d72947141af863d',1,'Chess::Knight::name()'],['../classChess_1_1Pawn.html#aaf3347c7e99e5ce1509948bd35fc5d80',1,'Chess::Pawn::name()'],['../classChess_1_1Piece.html#adb33a39889d5e4e0b0261dcd799d2305',1,'Chess::Piece::name()'],['../classChess_1_1Queen.html#aa16fb0613d65801b739df3ca0c416a73',1,'Chess::Queen::name()'],['../classChess_1_1Rook.html#aa5f60f67e9d840fa3e89c79bbfe91875',1,'Chess::Rook::name()']]]
 ];

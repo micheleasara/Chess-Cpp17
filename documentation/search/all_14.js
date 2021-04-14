@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['zobristhasher_81',['ZobristHasher',['../classChess_1_1ZobristHasher.html',1,'Chess']]]
+  ['zobristhasher_83',['ZobristHasher',['../classChess_1_1ZobristHasher.html',1,'Chess']]]
 ];
