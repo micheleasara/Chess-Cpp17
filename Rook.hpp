@@ -7,6 +7,18 @@ namespace Chess {
 /// Represents a rook.
 class Rook: public PromotionPiece {
   public:
+  /**
+   Defines the standard starting positions of the white rooks on a board.
+   Each coordinate pair is given in order of increasing columns.
+  */
+  static std::vector<Coordinates> const WHITE_STD_INIT;
+
+  /**
+   Defines the standard starting positions of the black rooks on a board.
+   Each coordinate pair is given in order of increasing columns.
+  */
+  static std::vector<Coordinates> const BLACK_STD_INIT;
+
   /// Constructs a rook of the given colour and associated to a board.
   Rook(Colour colour, Board& board);
 

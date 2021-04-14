@@ -59,7 +59,7 @@ public:
    Prints the colour (owner) and the piece name as "Colour's PieceName".
    It requires getName() to be overriden to return a piece name.
   */
-  friend std::ostream& operator<<(std::ostream& out, const Piece& piece);
+  friend std::ostream& operator<<(std::ostream& out, Piece const& piece);
 
   virtual ~Piece() = default;
 

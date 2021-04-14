@@ -3,6 +3,11 @@
 
 namespace Chess {
 
+std::vector<Coordinates> const Rook::WHITE_STD_INIT = 
+                                         {Coordinates(0, 0), Coordinates(7, 0)};
+std::vector<Coordinates> const Rook::BLACK_STD_INIT = 
+                                         {Coordinates(0, 7), Coordinates(7, 7)};
+
 Rook::Rook(Colour colour, Board& board): PromotionPiece(colour, board) {}
 
 bool Rook::isMovePlausibleSpecific(Coordinates const& source,

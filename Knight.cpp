@@ -4,6 +4,11 @@
 
 namespace Chess {
 
+std::vector<Coordinates> const Knight::WHITE_STD_INIT = 
+                                        {Coordinates(1, 0), Coordinates(6, 0)};
+std::vector<Coordinates> const Knight::BLACK_STD_INIT = 
+                                        {Coordinates(1, 7), Coordinates(6, 7)};
+
 Knight::Knight(Colour colour, Board& board): PromotionPiece(colour, board) {}
 
 bool Knight::isMovePlausibleSpecific(Coordinates const& source,

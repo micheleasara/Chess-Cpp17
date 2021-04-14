@@ -6,6 +6,7 @@
 #include <functional>
 
 namespace Chess {
+
 class Piece;
 
 /// Defines the typical chess colours.
@@ -49,6 +50,7 @@ enum class CastlingType {
   KingSide,
   QueenSide,
 };
+
 }
 
 namespace std {

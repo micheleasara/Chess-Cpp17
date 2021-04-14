@@ -147,7 +147,7 @@ namespace Chess {
      Retrieves the piece corresponding to the coordinates given.
      Returns an empty optional if no piece is found at those coordinates.
     */
-    OptionalRef<const Piece> at(Coordinates const& coord) const;
+    OptionalRef<Piece const> at(Coordinates const& coord) const;
 
     /**
      Retrieves the coordinates corresponding to the piece given.

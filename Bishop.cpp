@@ -2,10 +2,15 @@
 #include "Board.hpp"
 
 namespace Chess {
-Bishop::Bishop(Colour colour, Board& board):
-                                                PromotionPiece(colour, board){}
 
-std::string Bishop::getName() const{
+std::vector<Coordinates> const Bishop::WHITE_STD_INIT = 
+                                         {Coordinates(2, 0), Coordinates(5, 0)};
+std::vector<Coordinates> const Bishop::BLACK_STD_INIT =
+                                         {Coordinates(2, 7), Coordinates(5, 7)};
+
+Bishop::Bishop(Colour colour, Board& board): PromotionPiece(colour, board) {}
+
+std::string Bishop::getName() const {
   return "Bishop";
 }
 
@@ -23,4 +28,5 @@ MoveResult Bishop::move(Coordinates const& source,
                         Coordinates const& destination) {
   return getBoard().move(*this, source, destination);
 }
+
 }

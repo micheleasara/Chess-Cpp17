@@ -11,35 +11,6 @@
 #include <sstream>
 #include <array>
 
-using Chess::Coordinates;
-
-/// Defines the standard starting position of the white king.
-auto constexpr WHITE_KING_INIT = Coordinates(4, 0);
-/// Defines the standard starting position of the black king.
-auto constexpr BLACK_KING_INIT = Coordinates(4, 7);
-/// Defines the standard starting position of the white rooks.
-std::vector<Coordinates> const WHITE_ROOKS_INIT = 
-                                         {Coordinates(0, 0), Coordinates(7, 0)};
-/// Defines the standard starting position of the black rooks.
-std::vector<Coordinates> const BLACK_ROOKS_INIT = 
-                                         {Coordinates(0, 7), Coordinates(7, 7)};
-/// Defines the standard starting position of the white knights.
-std::vector<Coordinates> const WHITE_KNIGHTS_INIT = 
-                                         {Coordinates(1, 0), Coordinates(6, 0)};
-/// Defines the standard starting position of the black knights.
-std::vector<Coordinates> const BLACK_KNIGHTS_INIT = 
-                                         {Coordinates(1, 7), Coordinates(6, 7)};
-/// Defines the standard starting position of the white bishops.
-std::vector<Coordinates> const WHITE_BISHOPS_INIT = 
-                                         {Coordinates(2, 0), Coordinates(5, 0)};
-/// Defines the standard starting position of the black bishops.
-std::vector<Coordinates> const BLACK_BISHOPS_INIT = 
-                                         {Coordinates(2, 7), Coordinates(5, 7)};
-/// Defines the standard starting position of the white queen.
-auto constexpr WHITE_QUEEN_INIT = Coordinates(3, 0);
-/// Defines the standard starting position of the black queen.
-auto constexpr BLACK_QUEEN_INIT = Coordinates(3, 7);
-
 /// Defines the number of squares the king travels to castle.
 int constexpr CASTLE_DISTANCE = 2;
 /// Defines the horizontal printing space used for a square of the board.
@@ -249,8 +220,8 @@ void Board::initializeRooks(std::vector<Coordinates> const& coords,
                             Colour colour) {
   initializePieces<Rook>(coords, colour,
     [&](Coordinates const& coord) {
-      auto& coords = (colour == Colour::White ? WHITE_ROOKS_INIT :
-                                                BLACK_ROOKS_INIT);
+      auto& coords = (colour == Colour::White ? Rook::WHITE_STD_INIT :
+                                                Rook::BLACK_STD_INIT);
       return std::find(coords.begin(), coords.end(), coord) != coords.end();
     });
 }
@@ -259,8 +230,8 @@ void Board::initializeKnights(std::vector<Coordinates> const& coords,
                               Colour colour) {
   initializePieces<Knight>(coords, colour,
     [&](Coordinates const& coord) {
-      auto& coords = (colour == Colour::White ? WHITE_KNIGHTS_INIT :
-                                                BLACK_KNIGHTS_INIT);
+      auto& coords = (colour == Colour::White ? Knight::WHITE_STD_INIT :
+                                                Knight::BLACK_STD_INIT);
       return std::find(coords.begin(), coords.end(), coord) != coords.end();
     },
     [this](auto& piece) { insufficientMaterial.emplace(piece); }
@@ -271,8 +242,8 @@ void Board::initializeBishops(std::vector<Coordinates> const& coords,
                               Colour colour) {
   initializePieces<Bishop>(coords, colour,
     [&](Coordinates const& coord) {
-        auto& coords = (colour == Colour::White ? WHITE_BISHOPS_INIT :
-                                                  BLACK_BISHOPS_INIT);
+        auto& coords = (colour == Colour::White ? Bishop::WHITE_STD_INIT :
+                                                  Bishop::BLACK_STD_INIT);
         return std::find(coords.begin(), coords.end(), coord) != coords.end();
     },
     [this](auto& piece) { insufficientMaterial.emplace(piece); }
@@ -282,17 +253,17 @@ void Board::initializeBishops(std::vector<Coordinates> const& coords,
 void Board::initializeQueens(std::vector<Coordinates> const& coords,
                              Colour colour) {
   initializePieces<Queen>(coords, colour,
-            [&](Coordinates const& coord) { 
-                return coord == (colour == Colour::White ? WHITE_QUEEN_INIT :
-                                                           BLACK_QUEEN_INIT);
-            });
+      [&](Coordinates const& coord) { 
+          return coord == (colour == Colour::White ? Queen::WHITE_STD_INIT :
+                                                     Queen::BLACK_STD_INIT);
+      });
 }
 
 void Board::initializeKing(Coordinates const& coords, Colour colour) {
   initializePieces<King>({coords}, colour,
         [&](Coordinates const& coord) { 
-            return coord == (colour == Colour::White ? WHITE_KING_INIT :
-                                                       BLACK_KING_INIT);
+            return coord == (colour == Colour::White ? King::WHITE_STD_INIT :
+                                                       King::BLACK_STD_INIT);
         },
         [&](King& king) {
             insufficientMaterial.emplace(king);
@@ -354,15 +325,15 @@ void Board::initializePiecesInStandardPos() {
   for (auto const& colour : colours) {
     initializePawns(colour == Colour::White ? whitePawns : blackPawns, colour);
     initializeRooks(colour == Colour::White ? 
-                              WHITE_ROOKS_INIT : BLACK_ROOKS_INIT, colour);
+               Rook::WHITE_STD_INIT : Rook::BLACK_STD_INIT, colour);
     initializeKnights(colour == Colour::White ? 
-                              WHITE_KNIGHTS_INIT : BLACK_KNIGHTS_INIT, colour);
+               Knight::WHITE_STD_INIT : Knight::BLACK_STD_INIT, colour);
     initializeBishops(colour == Colour::White ?
-                              WHITE_BISHOPS_INIT : BLACK_BISHOPS_INIT, colour);
+               Bishop::WHITE_STD_INIT : Bishop::BLACK_STD_INIT, colour);
     initializeQueens({colour == Colour::White ? 
-                              WHITE_QUEEN_INIT : BLACK_QUEEN_INIT}, colour);
+               Queen::WHITE_STD_INIT : Queen::BLACK_STD_INIT}, colour);
     initializeKing(colour == Colour::White ?
-                              WHITE_KING_INIT : BLACK_KING_INIT, colour);
+               King::WHITE_STD_INIT : King::BLACK_STD_INIT, colour);
   }
 }
 
@@ -617,7 +588,7 @@ void Board::togglePlayer() {
 
 std::optional<CastlingType> getCastlingType(Coordinates const& source,
                                             Coordinates const& target) {
-  if (source != WHITE_KING_INIT && source != BLACK_KING_INIT) {
+  if (source != King::WHITE_STD_INIT && source != King::BLACK_STD_INIT) {
     return std::nullopt;
   }
 
@@ -799,7 +770,7 @@ bool Board::isDiagonalFree(Coordinates const& source,
   return true;
 }
 
-OptionalRef<const Piece> Board::at(Coordinates const& coord) const {
+OptionalRef<Piece const> Board::at(Coordinates const& coord) const {
   if (board.count(coord) > 0) {
     return *(board.at(coord).get());
   }
