@@ -52,8 +52,7 @@ struct ZobristHasher::PastMove {
 
 ZobristHasher::ZobristHasher(size_t width, size_t height):
     CHESSBOARD_AREA(width*height), MAX_ROW_NUM(height-1), MAX_COL_NUM(width-1),
-    table(CHESSBOARD_AREA, std::vector<int>(PIECE_INDEXES_COUNT, EMPTY)),
-    board(CHESSBOARD_AREA, EMPTY) {
+    table(CHESSBOARD_AREA, std::vector<int>(PIECE_INDEXES_COUNT, EMPTY)) {
   if (width <= 0 || height <= 0) {
     throw std::invalid_argument("Width and height must be positive");
   }

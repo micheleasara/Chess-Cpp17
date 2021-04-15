@@ -7,10 +7,10 @@ namespace Chess {
 // Represents a queen.
 class Queen: public PromotionPiece {
   public:
-  /// Defines the standard starting position of the white queen.
+  /// Defines the standard starting position of the white queen on a board.
   static auto constexpr WHITE_STD_INIT = Coordinates(3, 0);
 
-  /// Defines the standard starting position of the black queen.
+  /// Defines the standard starting position of the black queen on a board.
   static auto constexpr BLACK_STD_INIT = Coordinates(3, 7);
 
   /// Constructs a queen of the given colour and associated to a board.

@@ -7,10 +7,10 @@ namespace Chess {
 /// Represents a king.
 class King: public Piece {
   public:
-  /// Defines the standard starting position of the white king.
+  /// Defines the standard starting position of the white king on a board.
   static auto constexpr WHITE_STD_INIT = Coordinates(4, 0);
 
-  /// Defines the standard starting position of the black king.
+  /// Defines the standard starting position of the black king on a board.
   static auto constexpr BLACK_STD_INIT = Coordinates(4, 7);
 
   /// Constructs a king of the given colour and associated to a board.

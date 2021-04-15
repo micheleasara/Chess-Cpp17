@@ -8,13 +8,13 @@ namespace Chess {
 class Knight: public PromotionPiece {
   public:
   /**
-   Defines the standard starting positions of the white knights.
+   Defines the standard starting positions of the white knights on a board.
    Each coordinate pair is given in order of increasing columns.
   */
   static std::vector<Coordinates> const WHITE_STD_INIT;
 
   /**
-   Defines the standard starting positions of the black knights.
+   Defines the standard starting positions of the black knights on a board.
    Each coordinate pair is given in order of increasing columns.
   */
   static std::vector<Coordinates> const BLACK_STD_INIT;
