@@ -72,7 +72,7 @@ $(function() {
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">namespace </span>Chess {</div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
-<div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="classChess_1_1Bishop.html">    9</a></span>&#160;<span class="keyword">class </span><a class="code" href="classChess_1_1Bishop.html">Bishop</a>: <span class="keyword">public</span> <a class="code" href="classChess_1_1PromotionPiece.html">PromotionPiece</a> {</div>
+<div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="classChess_1_1Bishop.html">    9</a></span>&#160;<span class="keyword">class </span><a class="code" href="classChess_1_1Bishop.html">Bishop</a> final: <span class="keyword">public</span> <a class="code" href="classChess_1_1PromotionPiece.html">PromotionPiece</a> {</div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;  <span class="keyword">public</span>:</div>
 <div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="classChess_1_1Bishop.html#a712024cfa82ffd7b4ae5c6c08bc23182">   15</a></span>&#160;  <span class="keyword">static</span> std::vector&lt;Coordinates&gt; <span class="keyword">const</span> <a class="code" href="classChess_1_1Bishop.html#a712024cfa82ffd7b4ae5c6c08bc23182">WHITE_STD_INIT</a>;</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
@@ -80,20 +80,21 @@ $(function() {
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;  <a class="code" href="classChess_1_1Bishop.html#aed1bbf4484747a3ea041a9a9912c19fc">Bishop</a>(Colour colour, <a class="code" href="classChess_1_1Board.html">Board</a>&amp; board);</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classChess_1_1MoveResult.html">MoveResult</a> <a class="code" href="classChess_1_1Bishop.html#a51c8b315522ea35c3dcc539ab309b92b">move</a>(<a class="code" href="structChess_1_1Coordinates.html">Coordinates</a> <span class="keyword">const</span>&amp; source, </div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;  <a class="code" href="classChess_1_1MoveResult.html">MoveResult</a> <a class="code" href="classChess_1_1Bishop.html#a51c8b315522ea35c3dcc539ab309b92b">move</a>(<a class="code" href="structChess_1_1Coordinates.html">Coordinates</a> <span class="keyword">const</span>&amp; source, </div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;                          <a class="code" href="structChess_1_1Coordinates.html">Coordinates</a> <span class="keyword">const</span>&amp; destination) <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;  std::string <a class="code" href="classChess_1_1Bishop.html#a70237e2640327a8befb143f539b0a255">name</a>() <span class="keyword">const override</span>;</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  <span class="keyword">private</span>:</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <span class="keywordtype">bool</span> isMovePlausibleSpecific(<a class="code" href="structChess_1_1Coordinates.html">Coordinates</a> <span class="keyword">const</span>&amp; source,</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;                           <a class="code" href="structChess_1_1Coordinates.html">Coordinates</a> <span class="keyword">const</span>&amp; destination) <span class="keyword">const</span> <span class="keyword">override</span> <span class="keyword">final</span>;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;                           <a class="code" href="structChess_1_1Coordinates.html">Coordinates</a> <span class="keyword">const</span>&amp; destination) <span class="keyword">const override</span>;</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;};</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;}</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;}</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="aclassChess_1_1Bishop_html_a51c8b315522ea35c3dcc539ab309b92b"><div class="ttname"><a href="classChess_1_1Bishop.html#a51c8b315522ea35c3dcc539ab309b92b">Chess::Bishop::move</a></div><div class="ttdeci">virtual MoveResult move(Coordinates const &amp;source, Coordinates const &amp;destination) override</div><div class="ttdef"><b>Definition:</b> Bishop.cpp:27</div></div>
+<div class="ttc" id="aclassChess_1_1Bishop_html_a51c8b315522ea35c3dcc539ab309b92b"><div class="ttname"><a href="classChess_1_1Bishop.html#a51c8b315522ea35c3dcc539ab309b92b">Chess::Bishop::move</a></div><div class="ttdeci">MoveResult move(Coordinates const &amp;source, Coordinates const &amp;destination) override</div><div class="ttdef"><b>Definition:</b> Bishop.cpp:27</div></div>
 <div class="ttc" id="aclassChess_1_1Bishop_html_a712024cfa82ffd7b4ae5c6c08bc23182"><div class="ttname"><a href="classChess_1_1Bishop.html#a712024cfa82ffd7b4ae5c6c08bc23182">Chess::Bishop::WHITE_STD_INIT</a></div><div class="ttdeci">static const std::vector&lt; Coordinates &gt; WHITE_STD_INIT</div><div class="ttdef"><b>Definition:</b> Bishop.hpp:15</div></div>
 <div class="ttc" id="astructChess_1_1Coordinates_html"><div class="ttname"><a href="structChess_1_1Coordinates.html">Chess::Coordinates</a></div><div class="ttdoc">Represents a pair of coordinates.</div><div class="ttdef"><b>Definition:</b> Utils.hpp:20</div></div>
 <div class="ttc" id="aclassChess_1_1Bishop_html_aaa798d60dda75331944a075544e80692"><div class="ttname"><a href="classChess_1_1Bishop.html#aaa798d60dda75331944a075544e80692">Chess::Bishop::BLACK_STD_INIT</a></div><div class="ttdeci">static const std::vector&lt; Coordinates &gt; BLACK_STD_INIT</div><div class="ttdef"><b>Definition:</b> Bishop.hpp:21</div></div>
@@ -101,7 +102,7 @@ $(function() {
 <div class="ttc" id="aclassChess_1_1PromotionPiece_html"><div class="ttname"><a href="classChess_1_1PromotionPiece.html">Chess::PromotionPiece</a></div><div class="ttdoc">Represents a piece that can be used to promote a pawn.</div><div class="ttdef"><b>Definition:</b> Piece.hpp:82</div></div>
 <div class="ttc" id="aclassChess_1_1MoveResult_html"><div class="ttname"><a href="classChess_1_1MoveResult.html">Chess::MoveResult</a></div><div class="ttdoc">Represents the outcome of a valid move.</div><div class="ttdef"><b>Definition:</b> MoveResult.hpp:11</div></div>
 <div class="ttc" id="aclassChess_1_1Bishop_html_aed1bbf4484747a3ea041a9a9912c19fc"><div class="ttname"><a href="classChess_1_1Bishop.html#aed1bbf4484747a3ea041a9a9912c19fc">Chess::Bishop::Bishop</a></div><div class="ttdeci">Bishop(Colour colour, Board &amp;board)</div><div class="ttdoc">Constructs a bishop of the given colour and associated to a board.</div><div class="ttdef"><b>Definition:</b> Bishop.cpp:11</div></div>
-<div class="ttc" id="aclassChess_1_1Board_html"><div class="ttname"><a href="classChess_1_1Board.html">Chess::Board</a></div><div class="ttdef"><b>Definition:</b> Board.hpp:23</div></div>
+<div class="ttc" id="aclassChess_1_1Board_html"><div class="ttname"><a href="classChess_1_1Board.html">Chess::Board</a></div><div class="ttdef"><b>Definition:</b> Board.hpp:24</div></div>
 <div class="ttc" id="aclassChess_1_1Bishop_html_a70237e2640327a8befb143f539b0a255"><div class="ttname"><a href="classChess_1_1Bishop.html#a70237e2640327a8befb143f539b0a255">Chess::Bishop::name</a></div><div class="ttdeci">std::string name() const override</div><div class="ttdoc">Returns &quot;Bishop&quot;.</div><div class="ttdef"><b>Definition:</b> Bishop.cpp:13</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

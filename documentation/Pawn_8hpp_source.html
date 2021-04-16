@@ -71,31 +71,33 @@ $(function() {
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;Piece.hpp&quot;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">namespace </span>Chess {</div>
-<div class="line"><a name="l00008"></a><span class="lineno"><a class="line" href="classChess_1_1Pawn.html">    8</a></span>&#160;<span class="keyword">class </span><a class="code" href="classChess_1_1Pawn.html">Pawn</a>: <span class="keyword">public</span> <a class="code" href="classChess_1_1Piece.html">Piece</a> {</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;  <span class="comment">// Constructs a pawn of the specified colour and associated to a board.</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;  <a class="code" href="classChess_1_1Pawn.html">Pawn</a>(Colour colour, <a class="code" href="classChess_1_1Board.html">Board</a>&amp; board);</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classChess_1_1MoveResult.html">MoveResult</a> <a class="code" href="classChess_1_1Pawn.html#a43b014026ec4ff05743eab28ac043e67">move</a>(<a class="code" href="structChess_1_1Coordinates.html">Coordinates</a> <span class="keyword">const</span>&amp; source,</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;                          <a class="code" href="structChess_1_1Coordinates.html">Coordinates</a> <span class="keyword">const</span>&amp; destination) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;  std::string <a class="code" href="classChess_1_1Pawn.html#aaf3347c7e99e5ce1509948bd35fc5d80">name</a>() <span class="keyword">const override</span>;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;  <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;  <span class="keywordtype">bool</span> isMovePlausibleSpecific(<a class="code" href="structChess_1_1Coordinates.html">Coordinates</a> <span class="keyword">const</span>&amp; source,</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;                           <a class="code" href="structChess_1_1Coordinates.html">Coordinates</a> <span class="keyword">const</span>&amp; destination) <span class="keyword">const</span> <span class="keyword">override</span> <span class="keyword">final</span>;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;};</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;}</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
+<div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="classChess_1_1Pawn.html">    9</a></span>&#160;<span class="keyword">class </span><a class="code" href="classChess_1_1Pawn.html">Pawn</a> final: <span class="keyword">public</span> <a class="code" href="classChess_1_1Piece.html">Piece</a> {</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;  <span class="comment">// Constructs a pawn of the specified colour and associated to a board.</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;  <a class="code" href="classChess_1_1Pawn.html">Pawn</a>(Colour colour, <a class="code" href="classChess_1_1Board.html">Board</a>&amp; board);</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;  <a class="code" href="classChess_1_1MoveResult.html">MoveResult</a> <a class="code" href="classChess_1_1Pawn.html#a43b014026ec4ff05743eab28ac043e67">move</a>(<a class="code" href="structChess_1_1Coordinates.html">Coordinates</a> <span class="keyword">const</span>&amp; source,</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;                          <a class="code" href="structChess_1_1Coordinates.html">Coordinates</a> <span class="keyword">const</span>&amp; destination) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;  std::string <a class="code" href="classChess_1_1Pawn.html#aaf3347c7e99e5ce1509948bd35fc5d80">name</a>() <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;  <span class="keywordtype">bool</span> isMovePlausibleSpecific(<a class="code" href="structChess_1_1Coordinates.html">Coordinates</a> <span class="keyword">const</span>&amp; source,</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;                           <a class="code" href="structChess_1_1Coordinates.html">Coordinates</a> <span class="keyword">const</span>&amp; destination) <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;};</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;}</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="aclassChess_1_1Piece_html"><div class="ttname"><a href="classChess_1_1Piece.html">Chess::Piece</a></div><div class="ttdoc">Represents a generic piece.</div><div class="ttdef"><b>Definition:</b> Piece.hpp:12</div></div>
 <div class="ttc" id="aclassChess_1_1Pawn_html_aaf3347c7e99e5ce1509948bd35fc5d80"><div class="ttname"><a href="classChess_1_1Pawn.html#aaf3347c7e99e5ce1509948bd35fc5d80">Chess::Pawn::name</a></div><div class="ttdeci">std::string name() const override</div><div class="ttdoc">Returns &quot;Pawn&quot;.</div><div class="ttdef"><b>Definition:</b> Pawn.cpp:9</div></div>
 <div class="ttc" id="astructChess_1_1Coordinates_html"><div class="ttname"><a href="structChess_1_1Coordinates.html">Chess::Coordinates</a></div><div class="ttdoc">Represents a pair of coordinates.</div><div class="ttdef"><b>Definition:</b> Utils.hpp:20</div></div>
 <div class="ttc" id="aclassChess_1_1MoveResult_html"><div class="ttname"><a href="classChess_1_1MoveResult.html">Chess::MoveResult</a></div><div class="ttdoc">Represents the outcome of a valid move.</div><div class="ttdef"><b>Definition:</b> MoveResult.hpp:11</div></div>
-<div class="ttc" id="aclassChess_1_1Pawn_html"><div class="ttname"><a href="classChess_1_1Pawn.html">Chess::Pawn</a></div><div class="ttdoc">Represents a pawn.</div><div class="ttdef"><b>Definition:</b> Pawn.hpp:8</div></div>
-<div class="ttc" id="aclassChess_1_1Board_html"><div class="ttname"><a href="classChess_1_1Board.html">Chess::Board</a></div><div class="ttdef"><b>Definition:</b> Board.hpp:23</div></div>
-<div class="ttc" id="aclassChess_1_1Pawn_html_a43b014026ec4ff05743eab28ac043e67"><div class="ttname"><a href="classChess_1_1Pawn.html#a43b014026ec4ff05743eab28ac043e67">Chess::Pawn::move</a></div><div class="ttdeci">virtual MoveResult move(Coordinates const &amp;source, Coordinates const &amp;destination) override</div><div class="ttdef"><b>Definition:</b> Pawn.cpp:41</div></div>
+<div class="ttc" id="aclassChess_1_1Pawn_html"><div class="ttname"><a href="classChess_1_1Pawn.html">Chess::Pawn</a></div><div class="ttdoc">Represents a pawn.</div><div class="ttdef"><b>Definition:</b> Pawn.hpp:9</div></div>
+<div class="ttc" id="aclassChess_1_1Board_html"><div class="ttname"><a href="classChess_1_1Board.html">Chess::Board</a></div><div class="ttdef"><b>Definition:</b> Board.hpp:24</div></div>
+<div class="ttc" id="aclassChess_1_1Pawn_html_a43b014026ec4ff05743eab28ac043e67"><div class="ttname"><a href="classChess_1_1Pawn.html#a43b014026ec4ff05743eab28ac043e67">Chess::Pawn::move</a></div><div class="ttdeci">MoveResult move(Coordinates const &amp;source, Coordinates const &amp;destination) override</div><div class="ttdef"><b>Definition:</b> Pawn.cpp:41</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">
