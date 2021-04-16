@@ -83,6 +83,7 @@ class PromotionPiece: public Piece {
 public:
   PromotionPiece(Colour colour, Board& board): Piece(colour, board) {};
 };
+
 }
 
 #endif // PIECE_H

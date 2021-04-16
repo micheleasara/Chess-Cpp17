@@ -6,7 +6,7 @@
 namespace Chess {
 
 /// Represents a bishop.
-class Bishop: public PromotionPiece {
+class Bishop final: public PromotionPiece {
   public:
   /**
    Defines the standard starting positions of the white bishops on a board.
@@ -24,7 +24,7 @@ class Bishop: public PromotionPiece {
   Bishop(Colour colour, Board& board);
 
   //! @copydoc Board::move(Pawn&,Coordinates const&,Coordinates const&)
-  virtual MoveResult move(Coordinates const& source, 
+  MoveResult move(Coordinates const& source, 
                           Coordinates const& destination) override;
 
   /// Returns "Bishop".
@@ -36,8 +36,9 @@ class Bishop: public PromotionPiece {
    is valid in the associated board.
   */
   bool isMovePlausibleSpecific(Coordinates const& source,
-                           Coordinates const& destination) const override final;
+                           Coordinates const& destination) const override;
 };
+
 }
 
 #endif

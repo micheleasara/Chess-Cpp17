@@ -454,7 +454,7 @@ MoveResult Board::move(Coordinates const& source,
                        Coordinates const& destination, Callable&& mover) {
   ensureGameNotOver();
   ensureNoPromotionNeeded();
-  auto& piece = at(source)->get();
+  auto& piece = *(board.at(source));
   ensurePlayerCanMovePiece(piece);
   auto gameState = MoveResult::GameState::NORMAL;
 
@@ -852,8 +852,8 @@ void Board::recordAndMove(Coordinates const& source,
    board.erase(source);
 }
 
-bool Board::isMoveSuicide(Coordinates source,
-                             Coordinates destination) {
+bool Board::isMoveSuicide(Coordinates const& source,
+                          Coordinates const& destination) {
   recordAndMove(source, destination);
   bool check = isKingInCheck(board[destination]->getColour());
   revertLastPieceMovement();

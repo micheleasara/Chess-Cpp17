@@ -4,9 +4,10 @@
 #include "Piece.hpp"
 
 namespace Chess {
+
 /// Represents a knight.
-class Knight: public PromotionPiece {
-  public:
+class Knight final: public PromotionPiece {
+public:
   /**
    Defines the standard starting positions of the white knights on a board.
    Each coordinate pair is given in order of increasing columns.
@@ -23,19 +24,20 @@ class Knight: public PromotionPiece {
   Knight(Colour colour, Board& board);
 
   //! @copydoc Board::move(Pawn&,Coordinates const&,Coordinates const&)
-  virtual MoveResult move(Coordinates const& source,
+  MoveResult move(Coordinates const& source,
                           Coordinates const& destination) override;
 
   /// Returns "Knight"
   std::string name() const override;
 
-  private:
+private:
   /**
    Checks for knight-specific moves and returns true if the given move
    is valid, false otherwise.
   */
   bool isMovePlausibleSpecific(Coordinates const& source,
-                           Coordinates const& destination) const override final;
+                           Coordinates const& destination) const override;
 };
+
 }
 #endif

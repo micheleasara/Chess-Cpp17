@@ -4,9 +4,10 @@
 #include "Piece.hpp"
 
 namespace Chess {
+
 /// Represents a king.
-class King: public Piece {
-  public:
+class King final: public Piece {
+public:
   /// Defines the standard starting position of the white king on a board.
   static auto constexpr WHITE_STD_INIT = Coordinates(4, 0);
 
@@ -17,14 +18,13 @@ class King: public Piece {
   King(Colour colour, Board& board);
 
   //! @copydoc Board::move(Pawn&,Coordinates const&,Coordinates const&)
-  virtual MoveResult move(Coordinates const& source, 
+  MoveResult move(Coordinates const& source, 
                           Coordinates const& destination) override;
 
   /// Returns "King".
   std::string name() const override;
 
-  private:
-
+private:
   /**
    Checks for king-specific moves and returns true if the supplied move
    is valid in the associated board, false otherwise.
@@ -32,8 +32,9 @@ class King: public Piece {
    responsible for it.
   */
   bool isMovePlausibleSpecific(Coordinates const& source,
-                           Coordinates const& destination) const override final;
+                           Coordinates const& destination) const override;
 };
+
 }
 
 #endif

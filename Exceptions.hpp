@@ -36,5 +36,6 @@ public:
 private:
   ErrorCode m_errorCode;
 };
+
 }
 #endif // CHESS_EXCEPTIONS

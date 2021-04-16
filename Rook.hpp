@@ -4,9 +4,10 @@
 #include "Piece.hpp"
 
 namespace Chess {
+
 /// Represents a rook.
-class Rook: public PromotionPiece {
-  public:
+class Rook final: public PromotionPiece {
+public:
   /**
    Defines the standard starting positions of the white rooks on a board.
    Each coordinate pair is given in order of increasing columns.
@@ -23,20 +24,21 @@ class Rook: public PromotionPiece {
   Rook(Colour colour, Board& board);
 
   //! @copydoc Board::move(Pawn&,Coordinates const&,Coordinates const&)
-  virtual MoveResult move(Coordinates const& source,
+  MoveResult move(Coordinates const& source,
                           Coordinates const& destination) override;
 
   /// Returns "Rook".
   std::string name() const override;
 
-  private:
+private:
   /**
    Checks for rook-specific moves and returns true if the supplied move
    is valid in the associated board, false otherwise.
   */
   bool isMovePlausibleSpecific(Coordinates const& source,
-                           Coordinates const& destination) const override final;
+                           Coordinates const& destination) const override;
 };
+
 }
 
 #endif

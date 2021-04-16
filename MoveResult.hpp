@@ -48,6 +48,7 @@ public:
   
   /// Returns the castling type, or an empty optional if no castling occurred.
   std::optional<CastlingType> castlingType() const;
+
 private:
   GameState m_gameState;
   std::optional<std::string> m_capturedPieceName;
