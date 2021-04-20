@@ -4,6 +4,8 @@
 #include "BoardHasher.hpp"
 #include <unordered_set>
 #include <vector>
+#include <array>
+#include "Board.hpp"
 
 namespace Chess {
 
@@ -11,15 +13,14 @@ namespace Chess {
 class ZobristHasher final: public BoardHasher {
 public:
   /*
-    Constructs a hasher for a board of the given size, considering all pieces
-    to be in their standard starting positions.
-    Throws in case of non-positive size dimensions.
+    Constructs a hasher for a chessboard, considering all pieces to be in their
+    standard starting positions.
   */
-  ZobristHasher(size_t width, size_t height);
+  ZobristHasher();
 
   /*
-   Constructs a hasher for a board of the given size, and considers the pieces
-   to be on the board following a custom configuration.
+   Constructs a hasher for a chessboard, and considers the pieces to be on the
+   board following a custom configuration.
 
    When a piece is initialised in a non-standard location, it is treated as if
    it had moved there. So, for instance, castling rights would not apply to a 
@@ -29,10 +30,8 @@ public:
    Throws in case of:
    1) invalid coordinates;
    2) multiple pieces sharing the same coordinates;
-   3) non-positive size dimensions.
   */
-  ZobristHasher(size_t width, size_t height,
-      std::vector<Coordinates> const& whitePawns,
+  ZobristHasher(std::vector<Coordinates> const& whitePawns,
       std::vector<Coordinates> const& whiteRooks,
       std::vector<Coordinates> const& whiteKnights,
       std::vector<Coordinates> const& whiteBishops,
@@ -73,6 +72,8 @@ public:
 
 private:
   static size_t constexpr PIECE_INDEXES_COUNT = 20;
+  static size_t constexpr CHESSBOARD_AREA = 
+                            (Board::MAX_COL_NUM + 1) * (Board::MAX_ROW_NUM + 1);
   static int constexpr EMPTY = -1;
   enum class PieceIndex;
   struct PastMove;
@@ -106,10 +107,8 @@ private:
       std::vector<Coordinates> const& blackQueens,
       Coordinates const& blackKing);
 
-  size_t CHESSBOARD_AREA;
-  int MAX_ROW_NUM, MAX_COL_NUM;
-  std::vector<std::vector<int>> table;
-  std::vector<int> board;
+  std::array<std::array<int, PIECE_INDEXES_COUNT>, CHESSBOARD_AREA> table;
+  std::array<int, CHESSBOARD_AREA> board;
   int currentHash = 0;
   int whitePlayerHash;
   std::unordered_map<int, PieceIndex> pawnsBeforeEnPassant;

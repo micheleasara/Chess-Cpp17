@@ -1,4 +1,5 @@
 #include "Board.hpp"
+#include "Zobrist.hpp"
 #include "Rook.hpp"
 #include "Bishop.hpp"
 #include "Queen.hpp"
@@ -120,8 +121,7 @@ bool Board::isGameOver() const {
   return m_isGameOver;
 }
 
-Board::Board(): Board(std::make_unique<ZobristHasher>(Board::MAX_COL_NUM+1,
-                                                      Board::MAX_ROW_NUM+1)) {}
+Board::Board(): Board(std::make_unique<ZobristHasher>()) {}
 
 Board::Board(std::unique_ptr<BoardHasher> hasher): hasher(std::move(hasher)) {
   if (this->hasher == nullptr) {
@@ -142,9 +142,7 @@ Board::Board(std::vector<Coordinates> const& whitePawns,
              std::vector<Coordinates> const& blackBishops,
              std::vector<Coordinates> const& blackQueens,
              Coordinates const& blackKing):
-             hasher(std::make_unique<ZobristHasher>(Board::MAX_COL_NUM+1,
-                                                    Board::MAX_ROW_NUM+1,
-                                                     whitePawns, whiteRooks,
+             hasher(std::make_unique<ZobristHasher>(whitePawns, whiteRooks,
                                                      whiteKnights, whiteBishops,
                                                      whiteQueens, whiteKing,
                                                      blackPawns, blackRooks,

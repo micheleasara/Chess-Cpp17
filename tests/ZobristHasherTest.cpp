@@ -6,14 +6,8 @@ using Chess::ZobristHasher;
 
 class ZobristHasherTest : public ::testing::Test {
 protected:
-    ZobristHasher hasher = ZobristHasher(8, 8);
+    ZobristHasher hasher = ZobristHasher();
 };
-
-TEST_F(ZobristHasherTest, throwsIfWidthOrHeightAreNotPositive) {
-  EXPECT_THROW(ZobristHasher(0, 1), std::invalid_argument);
-  EXPECT_THROW(ZobristHasher(1, 0), std::invalid_argument);
-  EXPECT_THROW(ZobristHasher(0, 0), std::invalid_argument);
-}
 
 TEST_F(ZobristHasherTest, hashChangesIfBoardStateChanges) {
     auto initial = hasher.hash();
@@ -223,8 +217,7 @@ TEST_F(ZobristHasherTest, deletingNonEmptySquareChangesHash) {
 }
 
 TEST_F(ZobristHasherTest, canBeInstantiatedWithANonStandardInitialConfiguration) {
-  auto hasher = ZobristHasher(8, 8,
-    {}, {Coordinates(2, 3), Coordinates(1, 2),
+  auto hasher = ZobristHasher({}, {Coordinates(2, 3), Coordinates(1, 2),
     Coordinates(2, 2)}, {}, {}, {}, Coordinates(1,1), {}, {}, {}, {},
     {}, Coordinates(7,7));
   auto oldHash = hasher.hash();
@@ -237,41 +230,41 @@ TEST_F(ZobristHasherTest, canBeInstantiatedWithANonStandardInitialConfiguration)
 }
 
 TEST_F(ZobristHasherTest, throwsIfNonStandardInitialisationHasRepeatedCoordinates) {
-  EXPECT_THROW(auto hasher = ZobristHasher(8, 8, {},
+  EXPECT_THROW(auto hasher = ZobristHasher({},
     {Coordinates(2, 3), Coordinates(2, 3), Coordinates(2, 2)}, {}, {}, {},
     Coordinates(1,1), {}, {}, {}, {}, {},
     Coordinates(7,7));, std::invalid_argument);
 
-  EXPECT_THROW(auto hasher = ZobristHasher(8, 8, {},
+  EXPECT_THROW(auto hasher = ZobristHasher({},
     {Coordinates(2, 3), Coordinates(1, 2), Coordinates(2, 2)}, {}, {}, {},
     Coordinates(1,1), {}, {}, {}, {}, {}, 
     Coordinates(1,2));, std::invalid_argument);
 }
 
 TEST_F(ZobristHasherTest, throwsIfNonStandardInitialisationHasInvalidCoordinates) {
-  EXPECT_THROW(auto hasher = ZobristHasher(8, 8, {},
+  EXPECT_THROW(auto hasher = ZobristHasher({},
     {Coordinates(-2, 3), Coordinates(2, 3),
     Coordinates(2, 2)}, {}, {}, {}, Coordinates(1,1), {}, {}, {}, {},
     {}, Coordinates(7,7));, std::invalid_argument);
 
-  EXPECT_THROW(auto hasher = ZobristHasher(8, 8, {},
+  EXPECT_THROW(auto hasher = ZobristHasher({},
     {Coordinates(2, -3), Coordinates(2, 3),
     Coordinates(2, 2)}, {}, {}, {}, Coordinates(1,1), {}, {}, {}, {},
     {}, Coordinates(7,7));, std::invalid_argument);
 
-  EXPECT_THROW(auto hasher = ZobristHasher(8, 8, {},
+  EXPECT_THROW(auto hasher = ZobristHasher({},
     {Coordinates(2, 9), Coordinates(1, 2), Coordinates(2, 2)}, {}, {}, {},
     Coordinates(1,1), {}, {}, {}, {}, {},
     Coordinates(1,2));, std::invalid_argument);
 
-  EXPECT_THROW(auto hasher = ZobristHasher(8, 8, {},
+  EXPECT_THROW(auto hasher = ZobristHasher({},
     {Coordinates(9, 3), Coordinates(1, 2), Coordinates(2, 2)}, {}, {}, {},
     Coordinates(1,1), {}, {}, {}, {}, {},
     Coordinates(1,2));, std::invalid_argument);
 }
 
 TEST_F(ZobristHasherTest, rooksInitialisedInNonStandardPositionHaveMoved) {
-  auto hasher = ZobristHasher(8, 8, {}, {Coordinates(2, 3)},
+  auto hasher = ZobristHasher({}, {Coordinates(2, 3)},
     {}, {}, {}, Coordinates(1,1), {}, {Coordinates(6,6)}, {}, {},
     {}, Coordinates(7,7));
   auto oldHash = hasher.hash();
@@ -286,7 +279,7 @@ TEST_F(ZobristHasherTest, rooksInitialisedInNonStandardPositionHaveMoved) {
 }
 
 TEST_F(ZobristHasherTest, pawnsInitialisedInNonStandardPositionHaveMoved) {
-  auto hasher = ZobristHasher(8, 8, {Coordinates(5,5)}, {},
+  auto hasher = ZobristHasher({Coordinates(5,5)}, {},
     {}, {}, {}, Coordinates(1,1), {Coordinates(3,3)}, {}, {}, {},
     {}, Coordinates(7,7));
   auto oldHash = hasher.hash();
@@ -301,7 +294,7 @@ TEST_F(ZobristHasherTest, pawnsInitialisedInNonStandardPositionHaveMoved) {
 }
 
 TEST_F(ZobristHasherTest, kingsInitialisedInNonStandardPositionHaveMoved) {
-  auto hasher = ZobristHasher(8, 8, {}, {}, {}, {}, {}, Coordinates(1,1),
+  auto hasher = ZobristHasher({}, {}, {}, {}, {}, Coordinates(1,1),
     {}, {}, {}, {}, {}, Coordinates(7,7));
   auto oldHash = hasher.hash();
   hasher.pieceMoved(Coordinates(1,1), Coordinates(1,2));
@@ -312,4 +305,12 @@ TEST_F(ZobristHasherTest, kingsInitialisedInNonStandardPositionHaveMoved) {
   hasher.pieceMoved(Coordinates(7,7), Coordinates(7,6));
   hasher.pieceMoved(Coordinates(7,6), Coordinates(7,7));
   EXPECT_EQ(hasher.hash(), oldHash);
+}
+
+TEST_F(ZobristHasherTest, hashIsTheSameAfterReset) {
+  hasher.pieceMoved(Coordinates(1,2), Coordinates(2,2));
+  auto originalHash = hasher.hash();
+  hasher.reset();
+  hasher.pieceMoved(Coordinates(1,2), Coordinates(2,2));
+  EXPECT_EQ(hasher.hash(), originalHash);
 }

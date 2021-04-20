@@ -1,6 +1,7 @@
 #ifndef CHESSBOARD_H
 #define CHESSBOARD_H
 #include <unordered_map>
+#include <unordered_set>
 #include <string>
 #include <vector>
 #include "Exceptions.hpp"
@@ -11,11 +12,11 @@
 #include "Piece.hpp"
 #include <string_view>
 #include "Utils.hpp"
-#include "Zobrist.hpp"
+#include "BoardHasher.hpp"
 
 namespace Chess {
 
-class King; class Pawn; class Queen; class Knight; class Rook; class Bishop;
+class King; class Pawn; 
 
 /**
   Represents a chessboard. It is responsible for executing moves while

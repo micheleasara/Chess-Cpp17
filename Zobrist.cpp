@@ -9,7 +9,6 @@
 #include <ctime>
 
 namespace Chess {
-
 enum class ZobristHasher::PieceIndex : int {
   WhitePawn = 0, WhitePawnMoved, WhitePawnCanEnPassant,
   BlackPawn, BlackPawnMoved, BlackPawnCanEnPassant,
@@ -50,17 +49,12 @@ struct ZobristHasher::PastMove {
   int hashBeforeMove = 0;
 };
 
-ZobristHasher::ZobristHasher(size_t width, size_t height):
-    CHESSBOARD_AREA(width*height), MAX_ROW_NUM(height-1), MAX_COL_NUM(width-1),
-    table(CHESSBOARD_AREA, std::vector<int>(PIECE_INDEXES_COUNT, EMPTY)) {
-  if (width <= 0 || height <= 0) {
-    throw std::invalid_argument("Width and height must be positive");
-  }
+ZobristHasher::ZobristHasher() {
+  initializeTableAndWhitePlayer();
   reset();
 }
 
-ZobristHasher::ZobristHasher(size_t width, size_t height,
-        std::vector<Coordinates> const& whitePawns,
+ZobristHasher::ZobristHasher(std::vector<Coordinates> const& whitePawns,
         std::vector<Coordinates> const& whiteRooks,
         std::vector<Coordinates> const& whiteKnights,
         std::vector<Coordinates> const& whiteBishops,
@@ -71,19 +65,16 @@ ZobristHasher::ZobristHasher(size_t width, size_t height,
         std::vector<Coordinates> const& blackKnights,
         std::vector<Coordinates> const& blackBishops,
         std::vector<Coordinates> const& blackQueens,
-        Coordinates const& blackKing):
-          CHESSBOARD_AREA(width*height),
-          MAX_ROW_NUM(height-1), MAX_COL_NUM(width-1),
-          table(CHESSBOARD_AREA, std::vector<int>(PIECE_INDEXES_COUNT, EMPTY)) {
+        Coordinates const& blackKing) {
   initializeTableAndWhitePlayer();
   initializePieces(whitePawns, whiteRooks, whiteKnights, whiteBishops,
                   whiteQueens, whiteKing, blackPawns, blackRooks, blackKnights,
                   blackBishops, blackQueens, blackKing);
+  currentHash = computeHashFromBoard();
 }
 
 void ZobristHasher::reset() {
   movesHistory.clear();
-  initializeTableAndWhitePlayer();
   standardInitBoard();
   currentHash = computeHashFromBoard();
 }
@@ -200,9 +191,9 @@ void ZobristHasher::initializePieces(std::vector<Coordinates> const& coords,
 
 void ZobristHasher::standardInitBoard() {
   std::vector<Coordinates> whitePawns, blackPawns;
-  for (int i = 0; i <= MAX_COL_NUM; i++) {
+  for (int i = 0; i <= Board::MAX_COL_NUM; i++) {
     whitePawns.emplace_back(i, 1);
-    blackPawns.emplace_back(i, MAX_ROW_NUM - 1);
+    blackPawns.emplace_back(i, Board::MAX_ROW_NUM - 1);
   }
   initializePieces(whitePawns, Rook::WHITE_STD_INIT, Knight::WHITE_STD_INIT,
     Bishop::WHITE_STD_INIT, {Queen::WHITE_STD_INIT}, King::WHITE_STD_INIT,
@@ -214,12 +205,12 @@ int ZobristHasher::to1D(Coordinates const& coords) {
   if (!areWithinLimits(coords)) {
     throw std::out_of_range("Coordinates beyond hasher board limits");
   }
-  return ((MAX_ROW_NUM + 1) * coords.row) + coords.column;
+  return ((Board::MAX_ROW_NUM + 1) * coords.row) + coords.column;
 }
 
 bool ZobristHasher::areWithinLimits(Coordinates const& coords) {
-  return (coords.column <= MAX_COL_NUM && coords.column >= 0 &&
-    coords.row <= MAX_ROW_NUM && coords.row >= 0);
+  return (coords.column <= Board::MAX_COL_NUM && coords.column >= 0 &&
+    coords.row <= Board::MAX_ROW_NUM && coords.row >= 0);
 }
 
 int ZobristHasher::computeHashFromBoard() {
@@ -233,7 +224,7 @@ int ZobristHasher::computeHashFromBoard() {
 }
 
 bool ZobristHasher::isEnPassantRow(int row) {
-  return row == MAX_ROW_NUM - 3 || row == 3;
+  return row == Board::MAX_ROW_NUM - 3 || row == 3;
 }
 
 void ZobristHasher::replace(int coor1D, ZobristHasher::PieceIndex replacement) {
@@ -316,10 +307,10 @@ void ZobristHasher::initializePieces(std::vector<Coordinates> const& whitePawns,
                                   std::vector<Coordinates> const& blackBishops,
                                   std::vector<Coordinates> const& blackQueens,
                                   Coordinates const& blackKing) {
-  board.assign(CHESSBOARD_AREA, EMPTY);
+  board.fill(EMPTY);
 
   initializePieces(whitePawns, PieceIndex::WhitePawn,
-    [=](Coordinates const& c) {return c.row == 1 && c.column <= MAX_COL_NUM; });
+    [=](Coordinates const& c) {return c.row == 1 && c.column <= Board::MAX_COL_NUM; });
 
   initializePieces(whiteRooks, PieceIndex::WhiteRook,
     [](Coordinates const& c) {
@@ -342,7 +333,7 @@ void ZobristHasher::initializePieces(std::vector<Coordinates> const& whitePawns,
   
   initializePieces(blackPawns, PieceIndex::BlackPawn,
     [=](Coordinates const& c) {
-      return c.row == (MAX_ROW_NUM - 1) && c.column <= MAX_COL_NUM;
+      return c.row == (Board::MAX_ROW_NUM - 1) && c.column <= Board::MAX_COL_NUM;
     });
   
   initializePieces(blackRooks, PieceIndex::BlackRook,
