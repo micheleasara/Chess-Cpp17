@@ -4,7 +4,7 @@
 
 namespace Chess {
 
-Piece::Piece(Colour colour, Board& board): m_colour(colour), m_board(board) {};
+Piece::Piece(Colour colour, Board& board): m_colour(colour), m_board(board) {}
 
 Colour Piece::getColour() const {
   return m_colour;
