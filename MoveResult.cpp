@@ -4,9 +4,8 @@ namespace Chess {
 
 MoveResult::MoveResult(GameState state): m_gameState(state) {}
 
-MoveResult::MoveResult(GameState gameState,
-                       std::string const& capturedPieceName):
-   m_gameState(gameState), m_capturedPieceName(capturedPieceName) {}
+MoveResult::MoveResult(GameState gameState, std::string capturedPieceName):
+   m_gameState(gameState), m_capturedPieceName(std::move(capturedPieceName)) {}
 
 MoveResult::MoveResult(GameState state, CastlingType castlingType) :
   m_gameState(state), m_castlingType(castlingType) {}

@@ -33,7 +33,7 @@ public:
   /// Constructs a move result with the given state.
   MoveResult(GameState state);
   /// Constructs a move result with a state and the name of a captured piece.
-  MoveResult(GameState state, std::string const& capturedPieceName);
+  MoveResult(GameState state, std::string capturedPieceName);
   /// Constructs a move result with a state and a castling type.
   MoveResult(GameState state, CastlingType castlingType);
 
