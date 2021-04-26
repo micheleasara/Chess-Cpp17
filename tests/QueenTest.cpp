@@ -16,9 +16,8 @@ protected:
   Piece const* queen = nullptr;
 
   void SetUp() {
-    auto queenOpt = board.at(QUEEN_COORD);
-    ASSERT_TRUE(queenOpt.has_value());
-    queen = &(queenOpt->get());
+    queen = board.at(QUEEN_COORD);
+    ASSERT_FALSE(queen == nullptr);
     ASSERT_FALSE(board.isGameOver());
   }
 };

@@ -16,9 +16,8 @@ protected:
   Piece const* knight = nullptr;
 
   void SetUp() {
-    auto knightOpt = board.at(KNIGHT_COORD);
-    ASSERT_TRUE(knightOpt.has_value());
-    knight = &(knightOpt->get());
+    knight = board.at(KNIGHT_COORD);
+    ASSERT_FALSE(knight == nullptr);
     ASSERT_FALSE(board.isGameOver());
   }
 };
@@ -79,11 +78,11 @@ TEST_F(KnightTest, cannotMoveInStraightLines) {
 
 TEST_F(KnightTest, canMoveInLShapeWhileSteppingOverOtherPieces) {
   board = Board();
-  auto& wKnight = board.at(Coordinates(1, 0))->get();
-  EXPECT_TRUE(wKnight.isMovePlausible(Coordinates(1, 0), Coordinates(2, 2)));
-  EXPECT_TRUE(wKnight.isMovePlausible(Coordinates(1, 0), Coordinates(0, 2)));
+  auto wKnight = board.at(Coordinates(1, 0));
+  EXPECT_TRUE(wKnight->isMovePlausible(Coordinates(1, 0), Coordinates(2, 2)));
+  EXPECT_TRUE(wKnight->isMovePlausible(Coordinates(1, 0), Coordinates(0, 2)));
 
   board.move("B1", "C3");
-  EXPECT_TRUE(wKnight.isMovePlausible(Coordinates(2, 2), Coordinates(4, 3)));
-  EXPECT_TRUE(wKnight.isMovePlausible(Coordinates(2, 2), Coordinates(0, 3)));
+  EXPECT_TRUE(wKnight->isMovePlausible(Coordinates(2, 2), Coordinates(4, 3)));
+  EXPECT_TRUE(wKnight->isMovePlausible(Coordinates(2, 2), Coordinates(0, 3)));
 }

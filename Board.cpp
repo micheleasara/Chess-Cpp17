@@ -380,20 +380,9 @@ MoveResult Board::move(Coordinates const& src, Coordinates const& destination) {
   return board[src]->move(src, destination);
 }
 
-bool Board::isPieceAtSource(Piece const& piece,
-                                  Coordinates const& source) const {
-  if (auto pieceOpt = at(source)) {
-    auto& pieceAtSrc = pieceOpt->get();
-    if (&piece == &pieceAtSrc) {
-      return true;
-    }
-  }
-  return false;
-}
-
 void Board::ensurePieceIsAtSource(Piece const& piece,
                                   Coordinates const& source) const {
-  if (!isPieceAtSource(piece, source)) {
+  if (&piece != at(source)) {
     throw std::logic_error("Piece is not at the specified source coordinates");
   }
 }
@@ -768,11 +757,11 @@ bool Board::isDiagonalFree(Coordinates const& source,
   return true;
 }
 
-OptionalRef<Piece const> Board::at(Coordinates const& coord) const {
+Piece const* Board::at(Coordinates const& coord) const {
   if (board.count(coord) > 0) {
-    return *(board.at(coord).get());
+    return board.at(coord).get();
   }
-  return std::nullopt;
+  return nullptr;
 }
 
 std::optional<Coordinates> Board::getPieceCoordinates(Piece const& piece) const {
@@ -909,7 +898,7 @@ void Board::revertLastPieceMovement() {
 
 bool Board::isValidEnPassant(Pawn const& pawn, Coordinates const& source,
                                          Coordinates const& destination) const {
-  if (!isPieceAtSource(pawn, source) || movesHistory.empty()) {
+  if (&pawn != at(source) || movesHistory.empty()) {
     return false;
   }
   auto& lastMove = movesHistory.back();
@@ -1018,10 +1007,10 @@ std::ostream& operator<<(std::ostream& out, Board const& board) {
 
     for (int c = 0; c <= board.MAX_ROW_NUM; c++) {
       Coordinates iterCoord(c, r);
-      if (auto pieceOptional = board.at(iterCoord)) {
+      if (auto piece = board.at(iterCoord)) {
         out << std::right;
         out << std::setw((std::streamsize)H_PRINT_SIZE - 1);
-        out << *pieceOptional << '|';
+        out << *piece << '|';
       } else {
         out << std::setw(H_PRINT_SIZE) << "|";
       }

@@ -12,10 +12,6 @@ class Piece;
 /// Defines the typical chess colours.
 enum class Colour:int { White = 0, Black };
 
-/// An optional that can contain a reference type.
-template <typename T>
-using OptionalRef = std::optional<std::reference_wrapper<T>>;
-
 /// Represents a pair of coordinates.
 struct Coordinates {
   int column = 0;

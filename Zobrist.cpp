@@ -320,7 +320,7 @@ void ZobristHasher::initializePieces(std::vector<Coordinates> const& whitePawns,
 
   // not all pieces have a moved equivalent in the hasher
   // return true for them as to avoid useless branching
-  auto returnTrue = [](Coordinates const&) { return true; };
+  auto const returnTrue = [](Coordinates const&) { return true; };
   initializePieces(whiteKnights, PieceIndex::WhiteKnight, returnTrue);
   initializePieces(whiteBishops, PieceIndex::WhiteBishop, returnTrue);
   initializePieces(whiteQueens, PieceIndex::WhiteQueen, returnTrue);

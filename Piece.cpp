@@ -30,12 +30,12 @@ bool Piece::isMovePlausible(Coordinates const& source,
   }
 
   auto target = getBoard().at(destination);
-  if (target && target->get().getColour() == getColour()) {
+  if (target && target->getColour() == getColour()) {
     return false;
   }
 
   auto thisPiece = getBoard().at(source);
-  if (!thisPiece || &(thisPiece->get()) != this) {
+  if (!thisPiece || thisPiece != this) {
     return false;
   }
 

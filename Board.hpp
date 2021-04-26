@@ -147,9 +147,9 @@ public:
 
   /**
     Retrieves the piece corresponding to the coordinates given.
-    Returns an empty optional if no piece is found at those coordinates.
+    Returns a nullptr if no piece is found at those coordinates.
   */
-  OptionalRef<Piece const> at(Coordinates const& coord) const;
+  Piece const* at(Coordinates const& coord) const;
 
   /**
     Retrieves the coordinates corresponding to the piece given.
@@ -235,7 +235,6 @@ private:
   void togglePlayer();
   std::unique_ptr<PromotionPiece> buildPromotionPiece(PromotionOption piece);
   bool isMaterialSufficient() const;
-  bool isPieceAtSource(Piece const& piece, Coordinates const& source) const;
   void ensurePieceIsAtSource(Piece const& piece,
                               Coordinates const& source) const;
 

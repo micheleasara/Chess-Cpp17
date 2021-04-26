@@ -16,9 +16,8 @@ protected:
   Piece const* bishop = nullptr;
 
   void SetUp() {
-    auto bishopOpt = board.at(BISHOP_COORD);
-    ASSERT_TRUE(bishopOpt.has_value());
-    bishop = &(bishopOpt->get());
+    bishop = board.at(BISHOP_COORD);
+    ASSERT_FALSE(bishop == nullptr);
     ASSERT_FALSE(board.isGameOver());
   }
 };
