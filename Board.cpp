@@ -12,6 +12,11 @@
 #include <sstream>
 #include <array>
 
+/**
+ Defines the maximum number of pieces a player can have at any given time.
+ This corresponds to all squares on the board, minus one for the enemy's king.
+*/
+int constexpr MAX_PIECES_PER_PLAYER = Chess::Board::AREA - 1;
 /// Defines the number of squares the king travels to castle.
 int constexpr CASTLE_DISTANCE = 2;
 /// Defines the horizontal printing space used for a square of the board.
@@ -792,16 +797,19 @@ bool Board::isKingInCheck(Colour kingColour) const {
 
 bool Board::hasMovesLeft(Colour colour) {
   // copy keys as we need to edit the board in the loop
-  std::vector<Coordinates> keys;
-  for (auto const& keyVal : board) {
-    keys.push_back(keyVal.first);
+  std::array<Coordinates, MAX_PIECES_PER_PLAYER> enemySourceCoords;
+  int sourceCount = 0;
+  for (auto const& [coord, piece] : board) {
+    if (piece->getColour() == colour) {
+      enemySourceCoords[sourceCount++] = coord;
+      if (sourceCount >= enemySourceCoords.size()) {
+        break;
+      }
+    }
   }
 
-  for (auto const& sourceCoord : keys) {
-    if (board[sourceCoord]->getColour() != colour) {
-      continue;
-    }
-
+  for (int i = 0; i < sourceCount; i++) {
+    auto const& sourceCoord = enemySourceCoords[i];
     for (int r = 0; r <= MAX_ROW_NUM; r++) {
       for (int c = 0; c <= MAX_COL_NUM; c++) {
         Coordinates targetCoord(c,r);
@@ -819,14 +827,7 @@ bool Board::hasMovesLeft(Colour colour) {
 
 void Board::recordAndMove(Coordinates const& source,
                                Coordinates const& destination) {
-  if (board.count(source) <= 0) {
-    throw std::logic_error("No piece in source coordinates");
-  }
-  if (!areWithinLimits(destination)) {
-    throw std::invalid_argument("The destination is beyond the board limits");
-  }
-
-   if (board.count(destination) > 0) {
+  if (board.count(destination) > 0) {
      movesHistory.emplace_back(*this, source, destination,
                           board[source]->getMovedStatus(),
                           std::move(board[destination]));

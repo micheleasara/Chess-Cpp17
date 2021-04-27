@@ -32,10 +32,12 @@ public:
   static char constexpr MAX_COLUMN = 'H';
   /// Defines the maximum row in a human readable format.
   static char constexpr MAX_ROW = '8';
-  /// The maximum row number starting to count from 0.
+  /// Defines the maximum row number starting to count from 0.
   static int constexpr MAX_ROW_NUM = static_cast<int>(MAX_ROW - MIN_ROW);
-  /// The maximum column number starting to count from 0.
+  /// Defines the maximum column number starting to count from 0.
   static int constexpr MAX_COL_NUM = static_cast<int>(MAX_COLUMN - MIN_COLUMN);
+  /// Defines the number of squares on the board.
+  static int constexpr AREA = (MAX_COL_NUM + 1) * (MAX_ROW_NUM + 1);
 
   /// Checks if the coordinates are within a chessboard.
   static bool areWithinLimits(Coordinates const& coord);
@@ -148,6 +150,7 @@ public:
   /**
     Retrieves the piece corresponding to the coordinates given.
     Returns a nullptr if no piece is found at those coordinates.
+    The pointer returned is non-owning.
   */
   Piece const* at(Coordinates const& coord) const;
 

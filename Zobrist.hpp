@@ -72,8 +72,6 @@ public:
 
 private:
   static size_t constexpr PIECE_INDEXES_COUNT = 20;
-  static size_t constexpr CHESSBOARD_AREA = 
-                            (Board::MAX_COL_NUM + 1) * (Board::MAX_ROW_NUM + 1);
   static int constexpr EMPTY = -1;
   enum class PieceIndex;
   struct PastMove;
@@ -107,8 +105,8 @@ private:
       std::vector<Coordinates> const& blackQueens,
       Coordinates const& blackKing);
 
-  std::array<std::array<int, PIECE_INDEXES_COUNT>, CHESSBOARD_AREA> table;
-  std::array<int, CHESSBOARD_AREA> board;
+  std::array<std::array<int, PIECE_INDEXES_COUNT>, Board::AREA> table;
+  std::array<int, Board::AREA> board;
   int currentHash = 0;
   int whitePlayerHash;
   std::unordered_map<int, PieceIndex> pawnsBeforeEnPassant;
