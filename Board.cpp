@@ -798,7 +798,7 @@ bool Board::isKingInCheck(Colour kingColour) const {
 bool Board::hasMovesLeft(Colour colour) {
   // copy keys as we need to edit the board in the loop
   std::array<Coordinates, MAX_PIECES_PER_PLAYER> enemySourceCoords;
-  int sourceCount = 0;
+  size_t sourceCount = 0;
   for (auto const& [coord, piece] : board) {
     if (piece->getColour() == colour) {
       enemySourceCoords[sourceCount++] = coord;
@@ -808,7 +808,7 @@ bool Board::hasMovesLeft(Colour colour) {
     }
   }
 
-  for (int i = 0; i < sourceCount; i++) {
+  for (size_t i = 0; i < sourceCount; i++) {
     auto const& sourceCoord = enemySourceCoords[i];
     for (int r = 0; r <= MAX_ROW_NUM; r++) {
       for (int c = 0; c <= MAX_COL_NUM; c++) {

@@ -111,8 +111,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="separator:adea6dd792b3e271f8758b45404b11a13"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aecf7269d1c6a4d4c964389c82f27ffc7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classChess_1_1MoveResult.html">MoveResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Board.html#aecf7269d1c6a4d4c964389c82f27ffc7">move</a> (<a class="el" href="classChess_1_1King.html">King</a> &amp;piece, <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;source, <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;destination)</td></tr>
 <tr class="separator:aecf7269d1c6a4d4c964389c82f27ffc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5a1061a6081bee1702cc985762529ff4"><td class="memItemLeft" align="right" valign="top">OptionalRef&lt; <a class="el" href="classChess_1_1Piece.html">Piece</a> const  &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Board.html#a5a1061a6081bee1702cc985762529ff4">at</a> (<a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;coord) const</td></tr>
-<tr class="separator:a5a1061a6081bee1702cc985762529ff4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62f2efc00beb2920968ec0a137bae3d2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classChess_1_1Piece.html">Piece</a> const  *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Board.html#a62f2efc00beb2920968ec0a137bae3d2">at</a> (<a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;coord) const</td></tr>
+<tr class="separator:a62f2efc00beb2920968ec0a137bae3d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6f8ad674bac5f20284babd6c01fd32e7"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Board.html#a6f8ad674bac5f20284babd6c01fd32e7">getPieceCoordinates</a> (<a class="el" href="classChess_1_1Piece.html">Piece</a> const &amp;piece) const</td></tr>
 <tr class="separator:a6f8ad674bac5f20284babd6c01fd32e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0a80af29195e5aaf88e113e6642c3c55"><td class="memItemLeft" align="right" valign="top"><a id="a0a80af29195e5aaf88e113e6642c3c55"></a>
@@ -195,12 +195,16 @@ static constexpr char&#160;</td><td class="memItemRight" valign="bottom"><a clas
 <tr class="separator:afe19fb094fd903e396ec3706d389f838"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeec21894c968ad9e7220da264dd3ec15"><td class="memItemLeft" align="right" valign="top"><a id="aeec21894c968ad9e7220da264dd3ec15"></a>
 static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Board.html#aeec21894c968ad9e7220da264dd3ec15">MAX_ROW_NUM</a> = static_cast&lt;int&gt;(<a class="el" href="classChess_1_1Board.html#afe19fb094fd903e396ec3706d389f838">MAX_ROW</a> - <a class="el" href="classChess_1_1Board.html#aa3027584a94ec3b646217566353bca3d">MIN_ROW</a>)</td></tr>
-<tr class="memdesc:aeec21894c968ad9e7220da264dd3ec15"><td class="mdescLeft">&#160;</td><td class="mdescRight">The maximum row number starting to count from 0. <br /></td></tr>
+<tr class="memdesc:aeec21894c968ad9e7220da264dd3ec15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the maximum row number starting to count from 0. <br /></td></tr>
 <tr class="separator:aeec21894c968ad9e7220da264dd3ec15"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6cee4fb673b3f5dd42b510cc48192a00"><td class="memItemLeft" align="right" valign="top"><a id="a6cee4fb673b3f5dd42b510cc48192a00"></a>
 static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Board.html#a6cee4fb673b3f5dd42b510cc48192a00">MAX_COL_NUM</a> = static_cast&lt;int&gt;(<a class="el" href="classChess_1_1Board.html#af412bfedd2d88f3df86ca238ba99d6ec">MAX_COLUMN</a> - <a class="el" href="classChess_1_1Board.html#a2c9488cdf97ffba1ed9b3b4b1dee98e1">MIN_COLUMN</a>)</td></tr>
-<tr class="memdesc:a6cee4fb673b3f5dd42b510cc48192a00"><td class="mdescLeft">&#160;</td><td class="mdescRight">The maximum column number starting to count from 0. <br /></td></tr>
+<tr class="memdesc:a6cee4fb673b3f5dd42b510cc48192a00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the maximum column number starting to count from 0. <br /></td></tr>
 <tr class="separator:a6cee4fb673b3f5dd42b510cc48192a00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acddbef0cd637042cfcf95dcfc19526ae"><td class="memItemLeft" align="right" valign="top"><a id="acddbef0cd637042cfcf95dcfc19526ae"></a>
+static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Board.html#acddbef0cd637042cfcf95dcfc19526ae">AREA</a> = (<a class="el" href="classChess_1_1Board.html#a6cee4fb673b3f5dd42b510cc48192a00">MAX_COL_NUM</a> + 1) * (<a class="el" href="classChess_1_1Board.html#aeec21894c968ad9e7220da264dd3ec15">MAX_ROW_NUM</a> + 1)</td></tr>
+<tr class="memdesc:acddbef0cd637042cfcf95dcfc19526ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the number of squares on the board. <br /></td></tr>
+<tr class="separator:acddbef0cd637042cfcf95dcfc19526ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
@@ -277,14 +281,14 @@ std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a5a1061a6081bee1702cc985762529ff4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5a1061a6081bee1702cc985762529ff4">&#9670;&nbsp;</a></span>at()</h2>
+<a id="a62f2efc00beb2920968ec0a137bae3d2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a62f2efc00beb2920968ec0a137bae3d2">&#9670;&nbsp;</a></span>at()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">OptionalRef&lt; <a class="el" href="classChess_1_1Piece.html">Piece</a> const  &gt; Chess::Board::at </td>
+          <td class="memname"><a class="el" href="classChess_1_1Piece.html">Piece</a> const  * Chess::Board::at </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;&#160;</td>
           <td class="paramname"><em>coord</em></td><td>)</td>
@@ -292,7 +296,7 @@ std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Retrieves the piece corresponding to the coordinates given. Returns an empty optional if no piece is found at those coordinates. </p>
+<p>Retrieves the piece corresponding to the coordinates given. Returns a nullptr if no piece is found at those coordinates. The pointer returned is non-owning. </p>
 
 </div>
 </div>
