@@ -10,13 +10,7 @@
 #include <stdexcept>
 #include <iomanip>
 #include <sstream>
-#include <array>
 
-/**
- Defines the maximum number of pieces a player can have at any given time.
- This corresponds to all squares on the board, minus one for the enemy's king.
-*/
-int constexpr MAX_PIECES_PER_PLAYER = Chess::Board::AREA - 1;
 /// Defines the number of squares the king travels to castle.
 int constexpr CASTLE_DISTANCE = 2;
 /// Defines the horizontal printing space used for a square of the board.
@@ -182,10 +176,12 @@ Board& Board::operator=(Board&& other) noexcept {
   insufficientMaterial = std::move(other.insufficientMaterial);
   movesHistory = std::move(other.movesHistory);
 
-  for (auto& coordPiece : board) {
-    if (coordPiece.second) {
-      // assign existing pieces to the current Board object
-      coordPiece.second->setBoard(*this);
+  for (auto& column: board) {
+    for (auto& piece: column) {
+      if (piece != nullptr) {
+        // assign existing pieces to the current Board object
+        piece->setBoard(*this);
+      }
     }
   }
 
@@ -291,7 +287,7 @@ void Board::initializePieces(std::vector<Coordinates> const& coords,
     if (!areWithinLimits(coord)) {
       throw std::invalid_argument("Coordinates go beyond the board limits");
     }
-    if (board.count(coord)) {
+    if (at(coord) != nullptr) {
       throw std::invalid_argument("Cannot initialize board with two or more"
                                   " pieces in the same coordinates");
     }
@@ -301,7 +297,7 @@ void Board::initializePieces(std::vector<Coordinates> const& coords,
       chessman->setMovedStatus(true);
     }
     finalActions(*chessman);
-    board.emplace(coord, std::move(chessman));
+    board[coord.column][coord.row] = std::move(chessman);
   }
 }
 
@@ -348,7 +344,11 @@ void Board::reset() {
   isWhiteTurn = true;
   m_isGameOver = false;
   threeFoldRepetition = false;
-  board.clear();
+  for (auto& column : board) {
+    for (auto& piece : column) {
+      piece.reset();
+    }
+  }
   kings.clear();
   movesHistory.clear();
   insufficientMaterial.clear();
@@ -369,7 +369,7 @@ MoveResult Board::move(std::string_view src, std::string_view destination) {
 }
 
 MoveResult Board::move(Coordinates const& src, Coordinates const& destination) {
-  if (board.count(src) <= 0) {
+  if (at(src) == nullptr) {
     std::string sourceStr;
     try {
       sourceStr = Board::coordinatesToString(src);
@@ -382,7 +382,7 @@ MoveResult Board::move(Coordinates const& src, Coordinates const& destination) {
     throw InvalidMove(ss.str(), InvalidMove::ErrorCode::NO_SOURCE_PIECE);
   }
 
-  return board[src]->move(src, destination);
+  return board[src.column][src.row]->move(src, destination);
 }
 
 void Board::ensurePieceIsAtSource(Piece const& piece,
@@ -400,13 +400,13 @@ MoveResult Board::move(Pawn& piece, Coordinates const& source,
       if (isValidEnPassant(piece, source, destination)) {
           auto toCaptureRow = (destination.row == 2) ? 3 : MAX_ROW_NUM - 3;
           Coordinates toCapture(destination.column, toCaptureRow);
+          auto& srcPiecePtr = board[source.column][source.row];
           movesHistory.emplace_back(*this, source, destination,
-                               board[source]->getMovedStatus(),
-                               std::move(board[toCapture]), toCapture);
-          board.erase(toCapture);
-          board[source]->setMovedStatus(true);
-          board[destination] = std::move(board[source]);
-          board.erase(source);
+                             srcPiecePtr->getMovedStatus(),
+                             std::move(board[toCapture.column][toCapture.row]),
+                             toCapture);
+          srcPiecePtr->setMovedStatus(true);
+          board[destination.column][destination.row] = std::move(srcPiecePtr);
       } else {
         recordAndMove(source, destination);
       }
@@ -446,7 +446,7 @@ MoveResult Board::move(Coordinates const& source,
                        Coordinates const& destination, Callable&& mover) {
   ensureGameNotOver();
   ensureNoPromotionNeeded();
-  auto& piece = *(board.at(source));
+  auto& piece = *(board[source.column][source.row]);
   ensurePlayerCanMovePiece(piece);
   auto gameState = MoveResult::GameState::NORMAL;
 
@@ -618,16 +618,16 @@ std::optional<CastlingType> Board::tryCastling(Coordinates const& source,
     dir = -1;
   }
 
-  if (board.count(rookSource) <= 0 || board.count(source) <= 0)
+  if (at(rookSource) == nullptr || at(source) == nullptr)
     return std::nullopt;
 
-  if (!isRowFree(source, target.column) || board.count(target) > 0)
+  if (!isRowFree(source, target.column) || at(target) != nullptr)
     return std::nullopt;
 
-  if (board[rookSource]->getMovedStatus() || board[source]->getMovedStatus())
+  if (at(rookSource)->getMovedStatus() || at(source)->getMovedStatus())
     return std::nullopt;
 
-  if (isKingInCheck(board[source]->getColour()))
+  if (isKingInCheck(at(source)->getColour()))
     throw std::logic_error("Cannot castle as king is in check");
 
   // check if king's path is under attack
@@ -642,7 +642,7 @@ std::optional<CastlingType> Board::tryCastling(Coordinates const& source,
   // simulate castling and abort if it ends up in a check
   recordAndMove(rookSource, rookTarget);
   recordAndMove(source, target);
-  if (isKingInCheck(board[target]->getColour())) {
+  if (isKingInCheck(at(target)->getColour())) {
     revertLastPieceMovement();
     movesHistory.pop_back();
     revertLastPieceMovement();
@@ -658,21 +658,17 @@ std::optional<CastlingType> Board::tryCastling(Coordinates const& source,
 }
 
 bool Board::isMaterialSufficient() const {
-  if (board.size() <= 2) {
-    return false;
-  }
-  if (board.size() > 4) {
-    return true;
-  }
-
   std::vector<std::reference_wrapper<Piece>> whites;
   std::vector<std::reference_wrapper<Piece>> blacks;
-  for (auto const& coordPiece : board) {
-    auto& piece = *(coordPiece.second);
-    if (piece.getColour() == Colour::White) {
-      whites.emplace_back(piece);
-    } else {
-      blacks.emplace_back(piece);
+  for (auto& column: board) {
+    for (auto& piecePtr: column) {
+      if (piecePtr != nullptr) {
+        if (piecePtr->getColour() == Colour::White) {
+          whites.emplace_back(*piecePtr);
+        } else {
+          blacks.emplace_back(*piecePtr);
+        }
+      }
     }
   }
 
@@ -763,29 +759,32 @@ bool Board::isDiagonalFree(Coordinates const& source,
 }
 
 Piece const* Board::at(Coordinates const& coord) const {
-  if (board.count(coord) > 0) {
-    return board.at(coord).get();
-  }
-  return nullptr;
+  return board.at(coord.column).at(coord.row).get();
 }
 
 std::optional<Coordinates> Board::getPieceCoordinates(Piece const& piece) const {
-  for (auto const& [coord, otherPiece] : board) {
-    if (otherPiece.get() == &piece) {
-      return coord;
+  for (size_t i = 0; i < board.size(); i++) {
+    for (size_t j = 0; j < board[i].size(); j++) {
+      if (board[i][j].get() == &piece) {
+        return Coordinates(i, j);
+      }
     }
   }
+
   return std::nullopt;
 }
 
-
 bool Board::isKingInCheck(Colour kingColour) const {
   if (auto kingCoord = getPieceCoordinates(kings.at(kingColour))) {
-    for (auto const& [coord, piece] : board) {
-      // check if an enemy piece can move where the king is
-      if (piece->getColour() != kingColour &&
-                                piece->isMovePlausible(coord, *kingCoord)) {
-        return true;
+    for (size_t i = 0; i < board.size(); i++) {
+      for (size_t j = 0; j < board[i].size(); j++) {
+        auto& piece = board[i][j]; 
+        // check if an enemy piece can move where the king is
+        if (piece != nullptr &&
+            piece->getColour() != kingColour &&
+            piece->isMovePlausible(Coordinates(i,j), *kingCoord)) {
+          return true;
+        }
       }
     }
     return false;
@@ -796,26 +795,19 @@ bool Board::isKingInCheck(Colour kingColour) const {
 }
 
 bool Board::hasMovesLeft(Colour colour) {
-  // copy keys as we need to edit the board in the loop
-  std::array<Coordinates, MAX_PIECES_PER_PLAYER> enemySourceCoords;
-  size_t sourceCount = 0;
-  for (auto const& [coord, piece] : board) {
-    if (piece->getColour() == colour) {
-      enemySourceCoords[sourceCount++] = coord;
-      if (sourceCount >= enemySourceCoords.size()) {
-        break;
+  for (size_t i = 0; i < board.size(); i++) {
+    for (size_t j = 0; j < board[i].size(); j++) {
+      if (board[i][j] == nullptr || board[i][j]->getColour() != colour) {
+        continue;
       }
-    }
-  }
-
-  for (size_t i = 0; i < sourceCount; i++) {
-    auto const& sourceCoord = enemySourceCoords[i];
-    for (int r = 0; r <= MAX_ROW_NUM; r++) {
-      for (int c = 0; c <= MAX_COL_NUM; c++) {
-        Coordinates targetCoord(c,r);
-        if (board[sourceCoord]->isMovePlausible(sourceCoord, targetCoord) &&
-            !isMoveSuicide(sourceCoord, targetCoord)) {
-           return true;
+      auto srcCoord = Coordinates(i, j);
+      for (int r = 0; r <= MAX_ROW_NUM; r++) {
+        for (int c = 0; c <= MAX_COL_NUM; c++) {
+          Coordinates targetCoord(c,r);
+          if (board[i][j]->isMovePlausible(srcCoord, targetCoord) &&
+              !isMoveSuicide(srcCoord, targetCoord)) {
+             return true;
+          }
         }
       }
     }
@@ -827,23 +819,24 @@ bool Board::hasMovesLeft(Colour colour) {
 
 void Board::recordAndMove(Coordinates const& source,
                                Coordinates const& destination) {
-  if (board.count(destination) > 0) {
+  auto& pieceDest = board[destination.column][destination.row];
+  auto& pieceSrc = board[source.column][source.row];
+  if (pieceDest != nullptr) {
      movesHistory.emplace_back(*this, source, destination,
-                          board[source]->getMovedStatus(),
-                          std::move(board[destination]));
+                          pieceSrc->getMovedStatus(),
+                          std::move(pieceDest));
   } else {
      movesHistory.emplace_back(*this, source, destination,
-                          board[source]->getMovedStatus());
+                          pieceSrc->getMovedStatus());
    }
-   board[source]->setMovedStatus(true);
-   board[destination] = std::move(board[source]);
-   board.erase(source);
+   pieceSrc->setMovedStatus(true);
+   pieceDest = std::move(pieceSrc);
 }
 
 bool Board::isMoveSuicide(Coordinates const& source,
                           Coordinates const& destination) {
   recordAndMove(source, destination);
-  bool check = isKingInCheck(board[destination]->getColour());
+  bool check = isKingInCheck(at(destination)->getColour());
   revertLastPieceMovement();
   movesHistory.pop_back();
   return check;
@@ -883,16 +876,15 @@ void Board::revertLastPieceMovement() {
   auto& source = lastMove.source;
   auto& dest = lastMove.destination;
 
-  board[source] = std::move(board[dest]);
-  board[source]->setMovedStatus(lastMove.sourceMovedStatus);
-  board.erase(dest);
+  board[source.column][source.row] = std::move(board[dest.column][dest.row]);
+  board[source.column][source.row] ->setMovedStatus(lastMove.sourceMovedStatus);
 
   if (lastMove.removedPiece != nullptr) {
     Coordinates target = dest;
     if (lastMove.removedPieceCoords != lastMove.destination) { // en passant
       target = lastMove.removedPieceCoords;
     }
-    board[target] = std::move(lastMove.removedPiece);
+    board[target.column][target.row] = std::move(lastMove.removedPiece);
   }
 
 }
@@ -940,12 +932,13 @@ std::optional<MoveResult> Board::promote(PromotionOption piece) {
   }
 
   auto& source = *promotionSource;
-  auto moved = board[source]->getMovedStatus();
+  auto& piecePtr = board[source.column][source.row];
+  auto moved = piecePtr->getMovedStatus();
   movesHistory.emplace_back(*this, source, source,
-                            moved, std::move(board[source]));
-  board[source] = std::move(buildPromotionPiece(piece));
+                            moved, std::move(piecePtr));
+  piecePtr = std::move(buildPromotionPiece(piece));
   if (piece == PromotionOption::Knight || piece == PromotionOption::Bishop) {
-    insufficientMaterial.emplace(*board[source]);
+    insufficientMaterial.emplace(*piecePtr);
   }
 
   promotionSource.reset();

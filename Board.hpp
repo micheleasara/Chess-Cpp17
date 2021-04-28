@@ -13,6 +13,7 @@
 #include <string_view>
 #include "Utils.hpp"
 #include "BoardHasher.hpp"
+#include <array>
 
 namespace Chess {
 
@@ -267,8 +268,8 @@ private:
   bool m_isGameOver = false;
   bool isWhiteTurn = true;
   std::optional<Coordinates> promotionSource;
-  std::unordered_map<Coordinates, std::unique_ptr<Piece>,
-                                                      CoordinatesHasher> board;
+  std::array<std::array<std::unique_ptr<Piece>, MAX_ROW_NUM+1>,
+                                                           MAX_COL_NUM+1> board;
   std::unordered_map<Colour, King&> kings;
   std::unique_ptr<BoardHasher> hasher;
   std::unordered_map<int, size_t> boardHashCount;
