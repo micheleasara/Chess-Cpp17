@@ -26,11 +26,6 @@ struct Coordinates {
   bool operator!= (Coordinates const& other) const;
 };
 
-/// Performs hashing of coordinates.
-struct CoordinatesHasher {
-  std::size_t operator()(Coordinates const& coord) const;
-};
-
 /// Performs hashing of a reference wrapper containing a Piece.
 struct PieceRefHasher {
   std::size_t operator()(std::reference_wrapper<Piece> const& p) const;

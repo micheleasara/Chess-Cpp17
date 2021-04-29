@@ -227,6 +227,7 @@ private:
   std::optional<CastlingType> tryCastling(Coordinates const& source,
                                           Coordinates const& target);
   bool hasMovesLeft(Colour colour);
+  bool pieceHasMovesLeft(Coordinates const& srcCoord);
   bool isKingInCheck(Colour kingColour) const;
   bool isMoveSuicide(Coordinates const& sourceCoord,
                       Coordinates const& targetCoord);

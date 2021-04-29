@@ -618,17 +618,21 @@ std::optional<CastlingType> Board::tryCastling(Coordinates const& source,
     dir = -1;
   }
 
-  if (at(rookSource) == nullptr || at(source) == nullptr)
+  if (at(rookSource) == nullptr || at(source) == nullptr) {
     return std::nullopt;
+  }
 
-  if (!isRowFree(source, target.column) || at(target) != nullptr)
+  if (!isRowFree(source, target.column) || at(target) != nullptr) {
     return std::nullopt;
+  }
 
-  if (at(rookSource)->getMovedStatus() || at(source)->getMovedStatus())
+  if (at(rookSource)->getMovedStatus() || at(source)->getMovedStatus()) {
     return std::nullopt;
+  }
 
-  if (isKingInCheck(at(source)->getColour()))
-    throw std::logic_error("Cannot castle as king is in check");
+  if (isKingInCheck(at(source)->getColour())) {
+    return std::nullopt;
+  }
 
   // check if king's path is under attack
   for (auto coord = Coordinates(source.column + dir, source.row);
@@ -662,12 +666,14 @@ bool Board::isMaterialSufficient() const {
   std::vector<std::reference_wrapper<Piece>> blacks;
   for (auto& column: board) {
     for (auto& piecePtr: column) {
-      if (piecePtr != nullptr) {
-        if (piecePtr->getColour() == Colour::White) {
-          whites.emplace_back(*piecePtr);
-        } else {
-          blacks.emplace_back(*piecePtr);
-        }
+      if (piecePtr == nullptr) {
+        continue;
+      }
+
+      if (piecePtr->getColour() == Colour::White) {
+        whites.emplace_back(*piecePtr);
+      } else {
+        blacks.emplace_back(*piecePtr);
       }
     }
   }
@@ -692,8 +698,9 @@ bool Board::isMaterialSufficient() const {
 }
 
 bool Board::isColumnFree(Coordinates const& source, int limitRow) const {
-  if (source.row == limitRow)
+  if (source.row == limitRow) {
     throw std::invalid_argument("source row and limitRow cannot be equal");
+  }
 
   // figure out directionality
   int dir = (source.row > limitRow) ? -1: 1;
@@ -712,8 +719,9 @@ bool Board::isColumnFree(Coordinates const& source, int limitRow) const {
 }
 
 bool Board::isRowFree(Coordinates const& source, int limitCol) const {
-  if (source.column == limitCol)
+  if (source.column == limitCol) {
     throw std::invalid_argument("source column and limitCol cannot be equal");
+  }
 
   // figure out directionality
   int dir = (source.column > limitCol) ? -1 : 1;
@@ -733,11 +741,13 @@ bool Board::isRowFree(Coordinates const& source, int limitCol) const {
 
 bool Board::isDiagonalFree(Coordinates const& source,
                                 Coordinates const& destination) const {
-  if (source == destination)
+  if (source == destination) {
     throw std::invalid_argument("source and destination cannot be equal");
-  if (!areInSameDiagonal(source, destination))
+  }
+  if (!areInSameDiagonal(source, destination)) {
       throw std::invalid_argument("source and destination are"
                                  " not in the same diagonal");
+  }
   // figure out directionality
   int rowAdd = (source.row > destination.row)? -1 : 1;
   int columnAdd = (source.column > destination.column)? -1 : 1;
@@ -801,19 +811,26 @@ bool Board::hasMovesLeft(Colour colour) {
         continue;
       }
       auto srcCoord = Coordinates(i, j);
-      for (int r = 0; r <= MAX_ROW_NUM; r++) {
-        for (int c = 0; c <= MAX_COL_NUM; c++) {
-          Coordinates targetCoord(c,r);
-          if (board[i][j]->isMovePlausible(srcCoord, targetCoord) &&
-              !isMoveSuicide(srcCoord, targetCoord)) {
-             return true;
-          }
-        }
+      if (pieceHasMovesLeft(srcCoord)) {
+        return true;
       }
     }
   }
 
   // tried all possible moves and check is unavoidable
+  return false;
+}
+
+bool Board::pieceHasMovesLeft(Coordinates const& srcCoord) {
+  for (size_t i = 0; i < board.size(); i++) {
+    for (size_t j = 0; j < board[i].size(); j++) {
+      Coordinates targetCoord(i, j);
+      if (at(srcCoord)->isMovePlausible(srcCoord, targetCoord) &&
+                                       !isMoveSuicide(srcCoord, targetCoord)) {
+        return true;
+      }
+    }
+  }
   return false;
 }
 
