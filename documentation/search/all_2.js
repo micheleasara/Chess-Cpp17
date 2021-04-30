@@ -5,7 +5,6 @@ var searchData=
   ['check_5ferror_13',['CHECK_ERROR',['../classChess_1_1InvalidMove.html#a330018ca5623a17e22397fd6d356dee3a89e3cb36b01eddef66ecf397fc65c43b',1,'Chess::InvalidMove']]],
   ['claimdraw_14',['claimDraw',['../classChess_1_1Board.html#add0b6ea5a68bbcccf7456aac5eb9a076',1,'Chess::Board']]],
   ['coordinates_15',['Coordinates',['../structChess_1_1Coordinates.html',1,'Chess']]],
-  ['coordinateshasher_16',['CoordinatesHasher',['../structChess_1_1CoordinatesHasher.html',1,'Chess']]],
-  ['coordinatestostring_17',['coordinatesToString',['../classChess_1_1Board.html#aa24cd237a53e2462b6d05106ca5f307b',1,'Chess::Board']]],
-  ['currentplayer_18',['currentPlayer',['../classChess_1_1Board.html#a5cc0fb35bbb0a107efb489227ddf8e06',1,'Chess::Board']]]
+  ['coordinatestostring_16',['coordinatesToString',['../classChess_1_1Board.html#aa24cd237a53e2462b6d05106ca5f307b',1,'Chess::Board']]],
+  ['currentplayer_17',['currentPlayer',['../classChess_1_1Board.html#a5cc0fb35bbb0a107efb489227ddf8e06',1,'Chess::Board']]]
 ];

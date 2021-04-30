@@ -100,8 +100,8 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Piece.html#a349d5ae518b3320e119f8da3a63f2e32">Piece</a> (Colour colour, <a class="el" href="classChess_1_1Board.html">Board</a> &amp;board)</td></tr>
 <tr class="memdesc:a349d5ae518b3320e119f8da3a63f2e32"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a chess piece of the given colour and associated with a board. <br /></td></tr>
 <tr class="separator:a349d5ae518b3320e119f8da3a63f2e32"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8782263c9f7c01837cf59a28c22b0782"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Piece.html#a8782263c9f7c01837cf59a28c22b0782">isMovePlausible</a> (<a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;source, <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;destination) const</td></tr>
-<tr class="separator:a8782263c9f7c01837cf59a28c22b0782"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c974724276cde93450a9c3c0405ceac"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Piece.html#a9c974724276cde93450a9c3c0405ceac">isNormalMove</a> (<a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;source, <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;destination) const</td></tr>
+<tr class="separator:a9c974724276cde93450a9c3c0405ceac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6a4a1123ceaa56b7563a724c8e008b0d"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classChess_1_1MoveResult.html">MoveResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Piece.html#a6a4a1123ceaa56b7563a724c8e008b0d">move</a> (<a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;source, <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;destination)=0</td></tr>
 <tr class="separator:a6a4a1123ceaa56b7563a724c8e008b0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a877ca50f2b17b5784899247fab8c003c"><td class="memItemLeft" align="right" valign="top"><a id="a877ca50f2b17b5784899247fab8c003c"></a>
@@ -147,14 +147,14 @@ Friends</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Represents a generic piece. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a8782263c9f7c01837cf59a28c22b0782"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8782263c9f7c01837cf59a28c22b0782">&#9670;&nbsp;</a></span>isMovePlausible()</h2>
+<a id="a9c974724276cde93450a9c3c0405ceac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c974724276cde93450a9c3c0405ceac">&#9670;&nbsp;</a></span>isNormalMove()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool Chess::Piece::isMovePlausible </td>
+          <td class="memname">bool Chess::Piece::isNormalMove </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> const &amp;&#160;</td>
           <td class="paramname"><em>source</em>, </td>
@@ -172,9 +172,9 @@ Friends</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Returns whether the piece would be able to move from the source to the destination according to its internal logic. Checks or castling are considered board-level moves, and are not taken into account.</p>
+<p>Returns whether moving from the source to the destination provided is a normal move according to the piece logic and patterns. Castling and checks are considered responsibilities of the board, and are ignored.</p>
 <p>Returns false if certain conditions common to all pieces are not satisfied. For example: coordinates must be within the board limits, a piece cannot move to a square taken by an ally, and source and destination cannot match.</p>
-<p>Returns the derived class' isMovePlausibleSpecific() to check the logic of each piece. </p>
+<p>In all other cases, it returns the derived class' isNormalMoveSpecific(). </p>
 
 </div>
 </div>

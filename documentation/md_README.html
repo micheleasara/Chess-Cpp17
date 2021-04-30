@@ -77,7 +77,7 @@ I want to use your chess engine on my chess application. What can I do?</h1>
 <p>If, on the other hand, you are interested in generating a game starting in a non-standard position, I provided a constructor which allows you to specify a custom initial configuration. This would be the right choice if one is interested in studying or simulating mid or end game situations. Please refer to the documentation for the details.</p>
 <h1><a class="anchor" id="autotoc_md3"></a>
 Potential improvements</h1>
-<p>1) There is high coupling between the pieces and the board, mostly to allow for en passant via a visitor pattern. 2) Only the hasher can be injected into the board. In other words, there is no dependency injection for the pieces and no straightforward way to mock them. 3) The Board class contains the game state. This may or may not be better suited to a dedicated Game object. </p>
+<p>1) There is high coupling between the pieces and the board, mostly to allow for en passant via a visitor pattern. 2) The Board class contains the game state. This may or may not be better suited to a dedicated Game object. </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- start footer part -->
