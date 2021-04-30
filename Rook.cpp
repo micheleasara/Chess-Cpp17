@@ -13,10 +13,10 @@ Rook::Rook(Colour colour, Board& board): PromotionPiece(colour, board) {}
 bool Rook::isNormalMoveSpecific(Coordinates const& source,
                                    Coordinates const& destination) const {
   if (Board::areInSameRow(source, destination)) {
-      return getBoard().isRowFree(source, destination.column);
+      return getBoard().isFreeRow(source, destination.column);
   }
   else if (Board::areInSameColumn(source, destination)) {
-      return getBoard().isColumnFree(source, destination.row);
+      return getBoard().isFreeColumn(source, destination.row);
   }
 
   return false;

@@ -87,7 +87,7 @@ int main() {
           }
         }
 
-        if (cb.isPromotionPending()) {
+        if (cb.promotionPending()) {
           if (auto promotionMoveResult = promptForPromotion(cb)) {
             result = *promotionMoveResult;
           } else {
@@ -118,7 +118,7 @@ void printUndoInstruction() {
 
 std::optional<MoveResult> promptForPromotion(Board& cb) {
   std::optional<MoveResult> result = std::nullopt;
-  while (cb.isPromotionPending()) {
+  while (cb.promotionPending()) {
     std::cout << cb;
     std::cout << "\nPlease enter a valid piece for pawn promotion.\n";
     std::cout << "Possible options: knight, rook, bishop, and queen.\n";

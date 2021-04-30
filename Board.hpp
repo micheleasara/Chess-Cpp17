@@ -169,13 +169,13 @@ public:
     Checks if there are no pieces from the source to the destination.
     The check is not inclusive of the start and end columns.
   */
-  bool isColumnFree(Coordinates const& source, int limitRow) const;
+  bool isFreeColumn(Coordinates const& source, int limitRow) const;
 
   /**
     Checks if there are no pieces from the source to the destination.
     The check is not inclusive of the start and end rows.
   */
-  bool isRowFree(Coordinates const& source, int limitCol) const;
+  bool isFreeRow(Coordinates const& source, int limitCol) const;
 
   /**
     Checks if there are no pieces from the source to the destination.
@@ -185,7 +185,7 @@ public:
                       Coordinates const& destination) const;
 
   /// Returns true is a player needs to promote a piece. False otherwise.
-  bool isPromotionPending() const;
+  bool promotionPending() const;
 
   /**
     If a promotion is pending, the piece is replaced with the given promotion
@@ -228,9 +228,8 @@ private:
                                           Coordinates const& target);
   bool hasMovesLeft(Colour colour);
   bool pieceHasMovesLeft(Coordinates const& srcCoord);
-  bool isKingInCheck(Colour kingColour) const;
-  bool isMoveSuicide(Coordinates const& sourceCoord,
-                      Coordinates const& targetCoord);
+  bool isInCheck(Colour kingColour) const;
+  bool isSuicide(Coordinates const& sourceCoord, Coordinates const& targetCoord);
   void recordAndMove(Coordinates const& source,
                       Coordinates const& destination);
   void ensureGameNotOver();
@@ -239,7 +238,7 @@ private:
   void ensureNoPromotionNeeded();
   void togglePlayer();
   std::unique_ptr<PromotionPiece> buildPromotionPiece(PromotionOption piece);
-  bool isMaterialSufficient() const;
+  bool sufficientMaterial() const;
   void ensurePieceIsAtSource(Piece const& piece,
                               Coordinates const& source) const;
 

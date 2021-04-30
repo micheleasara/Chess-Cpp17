@@ -13,10 +13,10 @@ bool Queen::isNormalMoveSpecific(Coordinates const& source,
                                Coordinates const& destination) const {
   // check for row and column
   if (Board::areInSameRow(source, destination)) {
-    return getBoard().isRowFree(source, destination.column);
+    return getBoard().isFreeRow(source, destination.column);
   }
   if (Board::areInSameColumn(source, destination)) {
-    return getBoard().isColumnFree(source, destination.row);
+    return getBoard().isFreeColumn(source, destination.row);
   }
 
   // check for diagonal

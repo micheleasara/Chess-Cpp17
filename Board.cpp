@@ -304,7 +304,7 @@ void Board::initializePieces(std::vector<Coordinates> const& coords,
 bool Board::drawCanBeClaimed() const {
   // 50 moves rule is to be intended as 50 by each player, so 100 in total here
   return (threeFoldRepetition || countSincePawnMoveOrCapture >= 100) &&
-                                                         !isPromotionPending();
+                                                         !promotionPending();
 }
 
 void Board::claimDraw() {
@@ -475,7 +475,7 @@ MoveResult Board::move(Coordinates const& source,
   auto tmpCount = countSincePawnMoveOrCapture;
   mover(source, destination);
 
-  if (isKingInCheck(currentPlayer())) {
+  if (isInCheck(currentPlayer())) {
     std::stringstream ss;
     promotionSource.reset();
     revertLastPieceMovement();
@@ -498,7 +498,7 @@ MoveResult Board::move(Coordinates const& source,
     capturedPieceName = lastMove.removedPiece->name();
   }
 
-  if (isPromotionPending()) {
+  if (promotionPending()) {
     gameState = MoveResult::GameState::AWAITING_PROMOTION;
   } else {
     hasher->togglePlayer();
@@ -535,12 +535,12 @@ void Board::ensurePlayerCanMovePiece(Piece const& piece) {
   }
 }
 
-bool Board::isPromotionPending() const {
+bool Board::promotionPending() const {
   return promotionSource.has_value();
 }
 
 void Board::ensureNoPromotionNeeded() {
-  if (isPromotionPending()) {
+  if (promotionPending()) {
     throw InvalidMove("Promote pawn before continuing",
                       InvalidMove::ErrorCode::PENDING_PROMOTION);
   }
@@ -550,7 +550,7 @@ MoveResult::GameState Board::checkGameState() {
   Colour enemyColour;
   enemyColour = isWhiteTurn ? Colour::Black : Colour::White;
 
-  bool inCheck = isKingInCheck(enemyColour);
+  bool inCheck = isInCheck(enemyColour);
   bool hasMoves = hasMovesLeft(enemyColour);
   if (inCheck && !hasMoves) {
     m_isGameOver = true;
@@ -565,7 +565,7 @@ MoveResult::GameState Board::checkGameState() {
                                       boardHashCount.at(hasher->hash()) >= 5) {
     m_isGameOver = true;
     return MoveResult::GameState::FIVEFOLD_REPETITION_DRAW;
-  } else if (!isMaterialSufficient()) {
+  } else if (!sufficientMaterial()) {
     m_isGameOver = true;
     return MoveResult::GameState::INSUFFICIENT_MATERIAL_DRAW;
   } else if (inCheck && hasMoves) {
@@ -622,7 +622,7 @@ std::optional<CastlingType> Board::tryCastling(Coordinates const& source,
     return std::nullopt;
   }
 
-  if (!isRowFree(source, target.column) || at(target) != nullptr) {
+  if (!isFreeRow(source, target.column) || at(target) != nullptr) {
     return std::nullopt;
   }
 
@@ -630,7 +630,7 @@ std::optional<CastlingType> Board::tryCastling(Coordinates const& source,
     return std::nullopt;
   }
 
-  if (isKingInCheck(at(source)->getColour())) {
+  if (isInCheck(at(source)->getColour())) {
     return std::nullopt;
   }
 
@@ -638,7 +638,7 @@ std::optional<CastlingType> Board::tryCastling(Coordinates const& source,
   for (auto coord = Coordinates(source.column + dir, source.row);
                            coord.column != target.column;
                            coord.column += dir) {
-    if (isMoveSuicide(source, coord)) {
+    if (isSuicide(source, coord)) {
       return std::nullopt;
     }
   }
@@ -646,7 +646,7 @@ std::optional<CastlingType> Board::tryCastling(Coordinates const& source,
   // simulate castling and abort if it ends up in a check
   recordAndMove(rookSource, rookTarget);
   recordAndMove(source, target);
-  if (isKingInCheck(at(target)->getColour())) {
+  if (isInCheck(at(target)->getColour())) {
     revertLastPieceMovement();
     movesHistory.pop_back();
     revertLastPieceMovement();
@@ -661,7 +661,7 @@ std::optional<CastlingType> Board::tryCastling(Coordinates const& source,
   return castlingType;
 }
 
-bool Board::isMaterialSufficient() const {
+bool Board::sufficientMaterial() const {
   std::vector<std::reference_wrapper<Piece>> whites;
   std::vector<std::reference_wrapper<Piece>> blacks;
   for (auto& column: board) {
@@ -697,7 +697,7 @@ bool Board::isMaterialSufficient() const {
   return false;
 }
 
-bool Board::isColumnFree(Coordinates const& source, int limitRow) const {
+bool Board::isFreeColumn(Coordinates const& source, int limitRow) const {
   if (source.row == limitRow) {
     throw std::invalid_argument("source row and limitRow cannot be equal");
   }
@@ -718,7 +718,7 @@ bool Board::isColumnFree(Coordinates const& source, int limitRow) const {
   return true;
 }
 
-bool Board::isRowFree(Coordinates const& source, int limitCol) const {
+bool Board::isFreeRow(Coordinates const& source, int limitCol) const {
   if (source.column == limitCol) {
     throw std::invalid_argument("source column and limitCol cannot be equal");
   }
@@ -784,7 +784,7 @@ std::optional<Coordinates> Board::getPieceCoordinates(Piece const& piece) const 
   return std::nullopt;
 }
 
-bool Board::isKingInCheck(Colour kingColour) const {
+bool Board::isInCheck(Colour kingColour) const {
   if (auto kingCoord = getPieceCoordinates(kings.at(kingColour))) {
     for (size_t i = 0; i < board.size(); i++) {
       for (size_t j = 0; j < board[i].size(); j++) {
@@ -826,7 +826,7 @@ bool Board::pieceHasMovesLeft(Coordinates const& srcCoord) {
     for (size_t j = 0; j < board[i].size(); j++) {
       Coordinates targetCoord(i, j);
       if (at(srcCoord)->isNormalMove(srcCoord, targetCoord) &&
-                                       !isMoveSuicide(srcCoord, targetCoord)) {
+                                       !isSuicide(srcCoord, targetCoord)) {
         return true;
       }
     }
@@ -850,10 +850,10 @@ void Board::recordAndMove(Coordinates const& source,
    pieceDest = std::move(pieceSrc);
 }
 
-bool Board::isMoveSuicide(Coordinates const& source,
+bool Board::isSuicide(Coordinates const& source,
                           Coordinates const& destination) {
   recordAndMove(source, destination);
-  bool check = isKingInCheck(at(destination)->getColour());
+  bool check = isInCheck(at(destination)->getColour());
   revertLastPieceMovement();
   movesHistory.pop_back();
   return check;

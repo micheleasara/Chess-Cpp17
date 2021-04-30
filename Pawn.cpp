@@ -33,7 +33,7 @@ bool Pawn::isNormalMoveSpecific(Coordinates const& source,
   }
   if (forwardSteps == 2 && horizontalSteps == 0 && !piece &&
                                                         !getMovedStatus()) {
-    return getBoard().isColumnFree(source, destination.row);
+    return getBoard().isFreeColumn(source, destination.row);
   }
   return false;
 }

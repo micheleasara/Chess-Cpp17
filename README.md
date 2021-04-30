@@ -13,5 +13,4 @@ If, on the other hand, you are interested in generating a game starting in a non
 
 ## Potential improvements
 1) There is high coupling between the pieces and the board, mostly to allow for en passant via a visitor pattern.
-2) Only the hasher can be injected into the board. In other words, there is no dependency injection for the pieces and no straightforward way to mock them. 
-3) The Board class contains the game state. This may or may not be better suited to a dedicated Game object.
+2) The Board class contains the game state. This may or may not be better suited to a dedicated Game object.

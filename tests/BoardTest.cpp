@@ -217,13 +217,13 @@ TEST_F(BoardTest, canPromoteWithoutCapturingInTheLastMove) {
   board.move("G1", "H3"); board.move("C8", "B7");
 
   auto result = board.move("C7", "C8");
-  EXPECT_TRUE(board.isPromotionPending());
+  EXPECT_TRUE(board.promotionPending());
   EXPECT_EQ(result.capturedPieceName(), std::nullopt);
   EXPECT_EQ(result.gameState(), MoveResult::GameState::AWAITING_PROMOTION);
   board.promote(PromotionOption::Queen);
 
   result = board.move("G2", "G1");
-  EXPECT_TRUE(board.isPromotionPending());
+  EXPECT_TRUE(board.promotionPending());
   EXPECT_EQ(result.capturedPieceName(), std::nullopt);
   EXPECT_EQ(result.gameState(), MoveResult::GameState::AWAITING_PROMOTION);
 }
@@ -231,13 +231,13 @@ TEST_F(BoardTest, canPromoteWithoutCapturingInTheLastMove) {
 TEST_F(BoardTest, canPromoteByCapturingInTheLastMove) {
   movePawnsForPromotion();
   auto result = board.move("C7", "B8");
-  EXPECT_TRUE(board.isPromotionPending());
+  EXPECT_TRUE(board.promotionPending());
   EXPECT_NE(result.capturedPieceName(), std::nullopt);
   EXPECT_EQ(result.gameState(), MoveResult::GameState::AWAITING_PROMOTION);
   board.promote(PromotionOption::Queen);
 
   result = board.move("G2", "F1");
-  EXPECT_TRUE(board.isPromotionPending());
+  EXPECT_TRUE(board.promotionPending());
   EXPECT_NE(result.capturedPieceName(), std::nullopt);
   EXPECT_EQ(result.gameState(), MoveResult::GameState::AWAITING_PROMOTION);
 }
@@ -246,7 +246,7 @@ TEST_F(BoardTest, afterPromotionIsDoneThereIsNoPromotionPending) {
   movePawnsForPromotion();
   board.move("C7", "B8");
   board.promote(PromotionOption::Queen);
-  EXPECT_FALSE(board.isPromotionPending());
+  EXPECT_FALSE(board.promotionPending());
 }
 
 TEST_F(BoardTest, whiteCanPromoteAndPutBlackInCheck) {
@@ -463,7 +463,7 @@ TEST_F(BoardTest, canUndoPromotion) {
   board.promote(PromotionOption::Queen);
 
   board.undoLastMove();
-  EXPECT_FALSE(board.isPromotionPending());
+  EXPECT_FALSE(board.promotionPending());
   auto expectedPawn = board.at(Coordinates(2, 6));
   ASSERT_FALSE(expectedPawn == nullptr);
   EXPECT_EQ(expectedPawn, pawn);
