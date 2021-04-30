@@ -19,7 +19,7 @@ std::ostream& operator<<(std::ostream& out, const Piece& piece) {
   return out << (owner + "'s " + piece.name());
 }
 
-bool Piece::isMovePlausible(Coordinates const& source,
+bool Piece::isNormalMove(Coordinates const& source,
                             Coordinates const& destination) const {
   if (!Board::areWithinLimits(source) || !Board::areWithinLimits(destination)) {
     return false;
@@ -39,7 +39,7 @@ bool Piece::isMovePlausible(Coordinates const& source,
     return false;
   }
 
-  return isMovePlausibleSpecific(source, destination);
+  return isNormalMoveSpecific(source, destination);
 }
 
 void Piece::setMovedStatus(bool moved) {

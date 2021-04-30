@@ -9,7 +9,7 @@ std::string Queen::name() const {
   return "Queen";
 }
 
-bool Queen::isMovePlausibleSpecific(Coordinates const& source,
+bool Queen::isNormalMoveSpecific(Coordinates const& source,
                                Coordinates const& destination) const {
   // check for row and column
   if (Board::areInSameRow(source, destination)) {

@@ -35,7 +35,7 @@ private:
    Checks for knight-specific moves and returns true if the given move
    is valid, false otherwise.
   */
-  bool isMovePlausibleSpecific(Coordinates const& source,
+  bool isNormalMoveSpecific(Coordinates const& source,
                            Coordinates const& destination) const override;
 };
 

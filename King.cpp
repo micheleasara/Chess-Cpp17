@@ -9,7 +9,7 @@ std::string King::name() const {
   return "King";
 }
 
-bool King::isMovePlausibleSpecific(Coordinates const& source,
+bool King::isNormalMoveSpecific(Coordinates const& source,
                                Coordinates const& destination) const {
   int colDiff = abs(source.column - destination.column);
   int rowDiff = abs(source.row - destination.row);

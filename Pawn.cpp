@@ -10,7 +10,7 @@ std::string Pawn::name() const {
   return "Pawn";
 }
 
-bool Pawn::isMovePlausibleSpecific(Coordinates const& source,
+bool Pawn::isNormalMoveSpecific(Coordinates const& source,
                                Coordinates const& destination) const {
   int forwardSteps = destination.row - source.row;
   int horizontalSteps = abs(destination.column - source.column);

@@ -15,19 +15,18 @@ public:
   Piece(Colour colour, Board& board);
 
   /**
-   Returns whether the piece would be able to move from the source to the
-   destination according to its internal logic. Checks or castling are
-   considered board-level moves, and are not taken into account.
+   Returns whether moving from the source to the destination provided is a 
+   normal move according to the piece logic and patterns. Castling and checks
+   are considered responsibilities of the board, and are ignored.
   
    Returns false if certain conditions common to all pieces are not satisfied.
    For example:
    coordinates must be within the board limits, a piece cannot move to a square
    taken by an ally, and source and destination cannot match.
 
-   Returns the derived class' isMovePlausibleSpecific() to check the logic of
-   each piece.
+   In all other cases, it returns the derived class' isNormalMoveSpecific().
   */
-  bool isMovePlausible(Coordinates const& source,
+  bool isNormalMove(Coordinates const& source,
                        Coordinates const& destination) const;
 
   //! @copydoc Board::move(Pawn&,Coordinates const&,Coordinates const&)
@@ -70,7 +69,7 @@ public:
 
 private:
   /// Checks if a piece can move according to its specific patterns.
-  virtual bool isMovePlausibleSpecific(Coordinates const& source,
+  virtual bool isNormalMoveSpecific(Coordinates const& source,
                                Coordinates const& destination) const = 0;
 
   Colour m_colour;

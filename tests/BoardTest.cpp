@@ -839,7 +839,7 @@ TEST_F(BoardTest, pawnsInitialisedInEnPassantCannotExecuteIt) {
   {Coordinates(3, 4)}, {}, {}, {}, {}, Coordinates(7, 7));
   auto whitePawn = board.at(Coordinates(2, 4));
   ASSERT_FALSE(whitePawn == nullptr);
-  EXPECT_FALSE(whitePawn->isMovePlausible(Coordinates(2,4), Coordinates(3,5)));
+  EXPECT_FALSE(whitePawn->isNormalMove(Coordinates(2,4), Coordinates(3,5)));
 }
 
 TEST_F(BoardTest, kingVsKingCausesDraw) {

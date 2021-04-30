@@ -18,7 +18,7 @@ public:
   std::string name() const { return ""; }
 
 private:
-  virtual bool isMovePlausibleSpecific(Coordinates const& source,
+  virtual bool isNormalMoveSpecific(Coordinates const& source,
                                        Coordinates const& destination) const {
     return true;
   }
@@ -31,31 +31,31 @@ protected:
 };
 
 TEST_F(PieceTest, cannotMoveFromOutOfBoundsCoordinates) {
-  EXPECT_FALSE(piece.isMovePlausible(Coordinates(-1, 0), Coordinates(0, 0)));
-  EXPECT_FALSE(piece.isMovePlausible(Coordinates(0, -1), Coordinates(0, 0)));
-  EXPECT_FALSE(piece.isMovePlausible(Coordinates(Board::MAX_COL_NUM+1, 0),
+  EXPECT_FALSE(piece.isNormalMove(Coordinates(-1, 0), Coordinates(0, 0)));
+  EXPECT_FALSE(piece.isNormalMove(Coordinates(0, -1), Coordinates(0, 0)));
+  EXPECT_FALSE(piece.isNormalMove(Coordinates(Board::MAX_COL_NUM+1, 0),
                                      Coordinates(0, 0)));
-  EXPECT_FALSE(piece.isMovePlausible(Coordinates(0, Board::MAX_ROW_NUM+1),
+  EXPECT_FALSE(piece.isNormalMove(Coordinates(0, Board::MAX_ROW_NUM+1),
                                      Coordinates(0, 0)));
 }
 
 TEST_F(PieceTest, cannotMoveToOutOfBoundsCoordinates) {
-  EXPECT_FALSE(piece.isMovePlausible(Coordinates(0, 0), Coordinates(-1, 0)));
-  EXPECT_FALSE(piece.isMovePlausible(Coordinates(0, 0), Coordinates(0, -1)));
-  EXPECT_FALSE(piece.isMovePlausible(Coordinates(0, 0),
+  EXPECT_FALSE(piece.isNormalMove(Coordinates(0, 0), Coordinates(-1, 0)));
+  EXPECT_FALSE(piece.isNormalMove(Coordinates(0, 0), Coordinates(0, -1)));
+  EXPECT_FALSE(piece.isNormalMove(Coordinates(0, 0),
                                   Coordinates(Board::MAX_COL_NUM + 1, 0)));
-  EXPECT_FALSE(piece.isMovePlausible(Coordinates(0, 0),
+  EXPECT_FALSE(piece.isNormalMove(Coordinates(0, 0),
                                   Coordinates(0, Board::MAX_ROW_NUM + 1)));
 }
 
 TEST_F(PieceTest, cannotMoveIfSourceAndDestinationAreEqual) {
-  EXPECT_FALSE(piece.isMovePlausible(Coordinates(1, 1), Coordinates(1, 1)));
+  EXPECT_FALSE(piece.isNormalMove(Coordinates(1, 1), Coordinates(1, 1)));
 }
 
 TEST_F(PieceTest, cannotMoveIfNotInChessboard) {
-  EXPECT_FALSE(piece.isMovePlausible(Coordinates(1, 1), Coordinates(1, 2)));
+  EXPECT_FALSE(piece.isNormalMove(Coordinates(1, 1), Coordinates(1, 2)));
 }
 
 TEST_F(PieceTest, cannotMoveIfDestinationIsOccupiedByAlly) {
-  EXPECT_FALSE(piece.isMovePlausible(Coordinates(0, 0), Coordinates(0, 1)));
+  EXPECT_FALSE(piece.isNormalMove(Coordinates(0, 0), Coordinates(0, 1)));
 }

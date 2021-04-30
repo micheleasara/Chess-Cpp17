@@ -457,7 +457,7 @@ MoveResult Board::move(Coordinates const& source,
     return MoveResult(gameState, *castlingType);
   }
 
-  if (!piece.isMovePlausible(source, destination)) {
+  if (!piece.isNormalMove(source, destination)) {
     std::string sourceStr, targetStr;
     try {
       sourceStr = coordinatesToString(source);
@@ -792,7 +792,7 @@ bool Board::isKingInCheck(Colour kingColour) const {
         // check if an enemy piece can move where the king is
         if (piece != nullptr &&
             piece->getColour() != kingColour &&
-            piece->isMovePlausible(Coordinates(i,j), *kingCoord)) {
+            piece->isNormalMove(Coordinates(i,j), *kingCoord)) {
           return true;
         }
       }
@@ -825,7 +825,7 @@ bool Board::pieceHasMovesLeft(Coordinates const& srcCoord) {
   for (size_t i = 0; i < board.size(); i++) {
     for (size_t j = 0; j < board[i].size(); j++) {
       Coordinates targetCoord(i, j);
-      if (at(srcCoord)->isMovePlausible(srcCoord, targetCoord) &&
+      if (at(srcCoord)->isNormalMove(srcCoord, targetCoord) &&
                                        !isMoveSuicide(srcCoord, targetCoord)) {
         return true;
       }

@@ -10,7 +10,7 @@ std::vector<Coordinates> const Rook::BLACK_STD_INIT =
 
 Rook::Rook(Colour colour, Board& board): PromotionPiece(colour, board) {}
 
-bool Rook::isMovePlausibleSpecific(Coordinates const& source,
+bool Rook::isNormalMoveSpecific(Coordinates const& source,
                                    Coordinates const& destination) const {
   if (Board::areInSameRow(source, destination)) {
       return getBoard().isRowFree(source, destination.column);

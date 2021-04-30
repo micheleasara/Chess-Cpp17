@@ -14,7 +14,7 @@ std::string Bishop::name() const {
   return "Bishop";
 }
 
-bool Bishop::isMovePlausibleSpecific(Coordinates const& source,
+bool Bishop::isNormalMoveSpecific(Coordinates const& source,
                                Coordinates const& destination) const {
   try {
     return getBoard().isDiagonalFree(source, destination);

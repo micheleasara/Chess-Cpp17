@@ -35,7 +35,7 @@ class Bishop final: public PromotionPiece {
    Checks for bishop-specific moves and returns true if the given move
    is valid in the associated board.
   */
-  bool isMovePlausibleSpecific(Coordinates const& source,
+  bool isNormalMoveSpecific(Coordinates const& source,
                            Coordinates const& destination) const override;
 };
 

@@ -35,7 +35,7 @@ private:
    Checks for rook-specific moves and returns true if the supplied move
    is valid in the associated board, false otherwise.
   */
-  bool isMovePlausibleSpecific(Coordinates const& source,
+  bool isNormalMoveSpecific(Coordinates const& source,
                            Coordinates const& destination) const override;
 };
 

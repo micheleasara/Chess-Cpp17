@@ -11,7 +11,7 @@ std::vector<Coordinates> const Knight::BLACK_STD_INIT =
 
 Knight::Knight(Colour colour, Board& board): PromotionPiece(colour, board) {}
 
-bool Knight::isMovePlausibleSpecific(Coordinates const& source,
+bool Knight::isNormalMoveSpecific(Coordinates const& source,
                                Coordinates const& destination) const {
   int rowDiff = abs(source.row - destination.row);
   int colDiff = abs(source.column - destination.column);

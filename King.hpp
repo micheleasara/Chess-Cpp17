@@ -31,7 +31,7 @@ private:
    This function does not handle castling, as the Board is considered
    responsible for it.
   */
-  bool isMovePlausibleSpecific(Coordinates const& source,
+  bool isNormalMoveSpecific(Coordinates const& source,
                            Coordinates const& destination) const override;
 };
 
