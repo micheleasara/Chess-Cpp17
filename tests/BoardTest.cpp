@@ -3,6 +3,7 @@
 #include "BoardHasherMock.hpp"
 #include "MoveResult.hpp"
 #include "Zobrist.hpp"
+#include "King.hpp"
 
 using Chess::InvalidMove;
 using Chess::Board;
@@ -369,6 +370,14 @@ TEST_F(BoardTest, cannotCastleIfRookHasMoved) {
   board.move("G1", "H1"); board.move("G8", "H8");
 
   moveAndTestThrow("E1", "G1", InvalidMove::ErrorCode::PIECE_LOGIC_ERROR);
+}
+
+TEST_F(BoardTest, cannotCastleIfPathIsUnderAttack) {
+  using Chess::King;
+  board = Board({}, {Coordinates(7, 0)}, {}, {}, {}, King::WHITE_STD_INIT,
+    {}, {Coordinates(6, 7)}, {}, {}, {}, King::BLACK_STD_INIT);
+  auto wKingCoord = Board::coordinatesToString(King::WHITE_STD_INIT);
+  moveAndTestThrow(wKingCoord, "G1", InvalidMove::ErrorCode::PIECE_LOGIC_ERROR);
 }
 
 TEST_F(BoardTest, undoingWithNoRecordedMovesDoesNothing) {
