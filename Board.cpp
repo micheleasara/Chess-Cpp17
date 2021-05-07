@@ -198,10 +198,11 @@ Board& Board::operator=(Board&& other) noexcept {
 void Board::initializePawns(std::vector<Coordinates> const& coords,
                             Colour colour) {
   initializePieces<Pawn>(coords, colour,
-              [&](Coordinates const& coord) {
-                auto row = (colour == Colour::White) ? 1 : MAX_COL_NUM - 1;
-                return coord.column <= Board::MAX_COL_NUM && coord.row == row;
-              });
+        [&](Coordinates const& coord) {
+          auto& coords = (colour == Colour::White ? Pawn::WHITE_STD_INIT :
+                                                    Pawn::BLACK_STD_INIT);
+          return std::find(coords.begin(), coords.end(), coord) != coords.end();
+        });
 
   auto promotionRow = (colour == Colour::White) ? MAX_ROW_NUM : 0;
   for (auto const& coord : coords) {
@@ -314,15 +315,10 @@ void Board::claimDraw() {
 }
 
 void Board::initializePiecesInStandardPos() {
-  std::vector<Coordinates> whitePawns, blackPawns;
-  for (int i = 0; i <= MAX_COL_NUM; i++) {
-    whitePawns.emplace_back(i, 1);
-    blackPawns.emplace_back(i, MAX_ROW_NUM - 1);
-  }
-
   std::array<Colour, 2> colours = {Colour::White, Colour::Black};
   for (auto const& colour : colours) {
-    initializePawns(colour == Colour::White ? whitePawns : blackPawns, colour);
+    initializePawns(colour == Colour::White ? 
+               Pawn::WHITE_STD_INIT : Pawn::BLACK_STD_INIT, colour);
     initializeRooks(colour == Colour::White ? 
                Rook::WHITE_STD_INIT : Rook::BLACK_STD_INIT, colour);
     initializeKnights(colour == Colour::White ? 
@@ -585,8 +581,9 @@ std::optional<CastlingType> getCastlingType(Coordinates const& source,
   }
 
   // in castling, row is always the king's
-  if (target.row != source.row)
+  if (target.row != source.row) {
     return std::nullopt;
+  }
 
   int colOffset = source.column - target.column;
   if (colOffset == -CASTLE_DISTANCE) {

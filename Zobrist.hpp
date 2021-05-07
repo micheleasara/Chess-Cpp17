@@ -13,8 +13,8 @@ namespace Chess {
 class ZobristHasher final: public BoardHasher {
 public:
   /*
-    Constructs a hasher for a chessboard, considering all pieces to be in their
-    standard starting positions.
+   Constructs a hasher for a chessboard, considering all pieces to be in their
+   standard starting positions.
   */
   ZobristHasher();
 

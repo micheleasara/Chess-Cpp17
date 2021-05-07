@@ -11,7 +11,6 @@ std::string Queen::name() const {
 
 bool Queen::isNormalMoveSpecific(Coordinates const& source,
                                Coordinates const& destination) const {
-  // check for row and column
   if (Board::areInSameRow(source, destination)) {
     return getBoard().isFreeRow(source, destination.column);
   }
@@ -19,11 +18,10 @@ bool Queen::isNormalMoveSpecific(Coordinates const& source,
     return getBoard().isFreeColumn(source, destination.row);
   }
 
-  // check for diagonal
   try {
     return getBoard().isDiagonalFree(source, destination);
   // exception means source and destination are not in the same diagonal
-  } catch (std::invalid_argument const&){
+  } catch (std::invalid_argument const&) {
     return false;
   }
 }

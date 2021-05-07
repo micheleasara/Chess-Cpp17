@@ -4,6 +4,7 @@
 #include "Queen.hpp"
 #include "Knight.hpp"
 #include "King.hpp"
+#include "Pawn.hpp"
 #include <cstdlib>
 #include <unordered_set>
 #include <ctime>
@@ -310,7 +311,10 @@ void ZobristHasher::initializePieces(std::vector<Coordinates> const& whitePawns,
   board.fill(EMPTY);
 
   initializePieces(whitePawns, PieceIndex::WhitePawn,
-    [=](Coordinates const& c) {return c.row == 1 && c.column <= Board::MAX_COL_NUM; });
+    [](Coordinates const& c) {
+        return std::find(Pawn::WHITE_STD_INIT.begin(),
+              Pawn::WHITE_STD_INIT.end(), c) != Pawn::WHITE_STD_INIT.end();
+    });
 
   initializePieces(whiteRooks, PieceIndex::WhiteRook,
     [](Coordinates const& c) {
@@ -332,8 +336,9 @@ void ZobristHasher::initializePieces(std::vector<Coordinates> const& whitePawns,
     [](Coordinates const& c) { return c == King::WHITE_STD_INIT; });
   
   initializePieces(blackPawns, PieceIndex::BlackPawn,
-    [=](Coordinates const& c) {
-      return c.row == (Board::MAX_ROW_NUM - 1) && c.column <= Board::MAX_COL_NUM;
+    [](Coordinates const& c) {
+       return std::find(Pawn::BLACK_STD_INIT.begin(),
+                   Pawn::BLACK_STD_INIT.end(), c) != Pawn::BLACK_STD_INIT.end();
     });
   
   initializePieces(blackRooks, PieceIndex::BlackRook,

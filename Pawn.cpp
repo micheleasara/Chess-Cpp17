@@ -43,4 +43,24 @@ MoveResult Pawn::move(Coordinates const& source,
   return getBoard().move(*this, source, destination);
 }
 
+std::vector<Coordinates> const Pawn::WHITE_STD_INIT = 
+                                         {Coordinates(0, 1),
+                                          Coordinates(1, 1),
+                                          Coordinates(2, 1),
+                                          Coordinates(3, 1),
+                                          Coordinates(4, 1),
+                                          Coordinates(5, 1),
+                                          Coordinates(6, 1),
+                                          Coordinates(7, 1)};
+
+std::vector<Coordinates> const Pawn::BLACK_STD_INIT = 
+                                         {Coordinates(0, 6),
+                                          Coordinates(1, 6),
+                                          Coordinates(2, 6),
+                                          Coordinates(3, 6),
+                                          Coordinates(4, 6),
+                                          Coordinates(5, 6),
+                                          Coordinates(6, 6),
+                                          Coordinates(7, 6)};
+
 }

@@ -184,7 +184,7 @@ public:
   bool isDiagonalFree(Coordinates const& source,
                       Coordinates const& destination) const;
 
-  /// Returns true is a player needs to promote a piece. False otherwise.
+  /// Returns true if a player needs to promote a piece, false otherwise.
   bool promotionPending() const;
 
   /**

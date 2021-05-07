@@ -38,8 +38,8 @@ public:
   MoveResult(GameState state, CastlingType castlingType);
 
   /**
-  Returns the name of the captured piece, or an empty optional if no piece
-  was captured.
+   Returns the name of the captured piece, or an empty optional if no piece
+   was captured.
   */
   std::optional<std::string> capturedPieceName() const;
 

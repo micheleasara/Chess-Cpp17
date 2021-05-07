@@ -8,6 +8,18 @@ namespace Chess {
 /// Represents a pawn.
 class Pawn final: public Piece {
 public:
+  /**
+   Defines the standard starting positions of the white pawns on a board.
+   Each coordinate pair is given in order of increasing columns.
+  */
+  static std::vector<Coordinates> const WHITE_STD_INIT;
+
+  /**
+   Defines the standard starting positions of the black pawns on a board.
+   Each coordinate pair is given in order of increasing columns.
+  */
+  static std::vector<Coordinates> const BLACK_STD_INIT;
+
   // Constructs a pawn of the specified colour and associated to a board.
   Pawn(Colour colour, Board& board);
 
