@@ -67,6 +67,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="classChess_1_1Pawn-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Chess::Pawn Class Reference<span class="mlabels"><span class="mlabel">final</span></span></div>  </div>
@@ -144,6 +145,13 @@ Colour&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 <tr class="memitem:aac36bffafc3f0a5d7cb3c09381b4c610 inherit pub_methods_classChess_1_1Piece"><td class="memItemLeft" align="right" valign="top"><a id="aac36bffafc3f0a5d7cb3c09381b4c610"></a>
 <a class="el" href="classChess_1_1Piece.html">Piece</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="classChess_1_1Piece.html">Piece</a> &amp;&amp;)=delete</td></tr>
 <tr class="separator:aac36bffafc3f0a5d7cb3c09381b4c610 inherit pub_methods_classChess_1_1Piece"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:a51a49654457d3cb7719d30134043caed"><td class="memItemLeft" align="right" valign="top">static const std::vector&lt; <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Pawn.html#a51a49654457d3cb7719d30134043caed">WHITE_STD_INIT</a></td></tr>
+<tr class="separator:a51a49654457d3cb7719d30134043caed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79faf93c20c0f245aa2802cffc42a3c4"><td class="memItemLeft" align="right" valign="top">static const std::vector&lt; <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classChess_1_1Pawn.html#a79faf93c20c0f245aa2802cffc42a3c4">BLACK_STD_INIT</a></td></tr>
+<tr class="separator:a79faf93c20c0f245aa2802cffc42a3c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Represents a pawn. </p>
@@ -186,6 +194,71 @@ Colour&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 <p>Moves the piece from the source to the destination provided, if the move is legitimate. </p>
 
 <p>Implements <a class="el" href="classChess_1_1Piece.html#a6a4a1123ceaa56b7563a724c8e008b0d">Chess::Piece</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a79faf93c20c0f245aa2802cffc42a3c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a79faf93c20c0f245aa2802cffc42a3c4">&#9670;&nbsp;</a></span>BLACK_STD_INIT</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::vector&lt; <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> &gt; Chess::Pawn::BLACK_STD_INIT</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= </div>
+<div class="line">                                         {Coordinates(0, 6),</div>
+<div class="line">                                          Coordinates(1, 6),</div>
+<div class="line">                                          Coordinates(2, 6),</div>
+<div class="line">                                          Coordinates(3, 6),</div>
+<div class="line">                                          Coordinates(4, 6),</div>
+<div class="line">                                          Coordinates(5, 6),</div>
+<div class="line">                                          Coordinates(6, 6),</div>
+<div class="line">                                          Coordinates(7, 6)}</div>
+</div><!-- fragment --><p>Defines the standard starting positions of the black pawns on a board. Each coordinate pair is given in order of increasing columns. </p>
+
+</div>
+</div>
+<a id="a51a49654457d3cb7719d30134043caed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a51a49654457d3cb7719d30134043caed">&#9670;&nbsp;</a></span>WHITE_STD_INIT</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::vector&lt; <a class="el" href="structChess_1_1Coordinates.html">Coordinates</a> &gt; Chess::Pawn::WHITE_STD_INIT</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= </div>
+<div class="line">                                         {Coordinates(0, 1),</div>
+<div class="line">                                          Coordinates(1, 1),</div>
+<div class="line">                                          Coordinates(2, 1),</div>
+<div class="line">                                          Coordinates(3, 1),</div>
+<div class="line">                                          Coordinates(4, 1),</div>
+<div class="line">                                          Coordinates(5, 1),</div>
+<div class="line">                                          Coordinates(6, 1),</div>
+<div class="line">                                          Coordinates(7, 1)}</div>
+</div><!-- fragment --><p>Defines the standard starting positions of the white pawns on a board. Each coordinate pair is given in order of increasing columns. </p>
 
 </div>
 </div>
