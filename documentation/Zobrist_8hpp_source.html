@@ -164,12 +164,12 @@ $(function() {
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;      std::vector&lt;Coordinates&gt; <span class="keyword">const</span>&amp; blackQueens,</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;      <a class="code" href="structChess_1_1Coordinates.html">Coordinates</a> <span class="keyword">const</span>&amp; blackKing);</div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160; </div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  std::array&lt;std::array&lt;int, PIECE_INDEXES_COUNT&gt;, <a class="code" href="classChess_1_1Board.html#acddbef0cd637042cfcf95dcfc19526ae">Board::AREA</a>&gt; table;</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;  std::array&lt;int, Board::AREA&gt; board;</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  <span class="keywordtype">int</span> currentHash = 0;</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  <span class="keywordtype">int</span> whitePlayerHash;</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;  std::unordered_map&lt;int, PieceIndex&gt; pawnsBeforeEnPassant;</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;  std::vector&lt;PastMove&gt; movesHistory;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  std::array&lt;std::array&lt;int, PIECE_INDEXES_COUNT&gt;, <a class="code" href="classChess_1_1Board.html#acddbef0cd637042cfcf95dcfc19526ae">Board::AREA</a>&gt; m_table;</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;  std::array&lt;int, Board::AREA&gt; m_board;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  <span class="keywordtype">int</span> m_currentHash = 0;</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  <span class="keywordtype">int</span> m_whitePlayerHash;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;  std::unordered_map&lt;int, PieceIndex&gt; m_pawnsBeforeEnPassant;</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;  std::vector&lt;PastMove&gt; m_movesHistory;</div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;};</div>
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160; </div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;}</div>
