@@ -34,11 +34,11 @@ struct ZobristHasher::PastMove {
             source(src1D),
             destination(dest1D),
             removedCoords(removedCoords),
-            sourceContent(hasher.board[src1D]),
-            destinationContent(hasher.board[dest1D]),
+            sourceContent(hasher.m_board[src1D]),
+            destinationContent(hasher.m_board[dest1D]),
             removedContent(removedContent),
-            pawnsBeforeEnPassant(hasher.pawnsBeforeEnPassant), 
-            hashBeforeMove(hasher.currentHash) {}
+            pawnsBeforeEnPassant(hasher.m_pawnsBeforeEnPassant), 
+            hashBeforeMove(hasher.m_currentHash) {}
 
   int source = 0;
   int destination = 0;
@@ -71,30 +71,30 @@ ZobristHasher::ZobristHasher(std::vector<Coordinates> const& whitePawns,
   initializePieces(whitePawns, whiteRooks, whiteKnights, whiteBishops,
                   whiteQueens, whiteKing, blackPawns, blackRooks, blackKnights,
                   blackBishops, blackQueens, blackKing);
-  currentHash = computeHashFromBoard();
+  m_currentHash = computeHashFromBoard();
 }
 
 void ZobristHasher::reset() {
-  movesHistory.clear();
+  m_movesHistory.clear();
   standardInitBoard();
-  currentHash = computeHashFromBoard();
+  m_currentHash = computeHashFromBoard();
 }
 
 void ZobristHasher::pieceMoved(Coordinates const& source,
                                   Coordinates const& destination) {
    auto src1D = to1D(source);
-   if (board[src1D] != EMPTY) {
+   if (m_board[src1D] != EMPTY) {
      auto dest1D = to1D(destination);
      auto movedVersion = movedEquivalent(
-                          static_cast<ZobristHasher::PieceIndex>(board[src1D]));
+                          static_cast<ZobristHasher::PieceIndex>(m_board[src1D]));
      auto stateBeforeMove = PastMove(*this, src1D, dest1D);
 
      // reset en passant piece to what it was before
      // regardless of the move, the right to en passant is gone
-     for (auto const& [coord, piece] : pawnsBeforeEnPassant) {
+     for (auto const& [coord, piece] : m_pawnsBeforeEnPassant) {
        replace(coord, piece);
      }
-     pawnsBeforeEnPassant.clear();
+     m_pawnsBeforeEnPassant.clear();
 
      if (isEnPassantRow(destination.row)) {
        auto left = Coordinates(destination.column-1, destination.row);
@@ -105,8 +105,8 @@ void ZobristHasher::pieceMoved(Coordinates const& source,
 
        if (auto enemyPawnOpt = getEnemyMovedPawn(movedVersion)) {
          for (auto const& coord1D : coords1D) {
-           if (board[coord1D] == static_cast<int>(*enemyPawnOpt)) {
-             pawnsBeforeEnPassant[coord1D] = *enemyPawnOpt;
+           if (m_board[coord1D] == static_cast<int>(*enemyPawnOpt)) {
+             m_pawnsBeforeEnPassant[coord1D] = *enemyPawnOpt;
              replace(coord1D, *getEnPassantPawn(*enemyPawnOpt));
            }
          }
@@ -114,20 +114,20 @@ void ZobristHasher::pieceMoved(Coordinates const& source,
      }
      replace(dest1D, movedVersion);
      remove(src1D);
-     movesHistory.push_back(std::move(stateBeforeMove));
+     m_movesHistory.push_back(std::move(stateBeforeMove));
    }
 }
 
 void ZobristHasher::removed(Coordinates const& coords) {
   auto coords1D = to1D(coords);
-  if (board[coords1D] != EMPTY) {
-    movesHistory.emplace_back(*this, coords1D, coords1D);
+  if (m_board[coords1D] != EMPTY) {
+    m_movesHistory.emplace_back(*this, coords1D, coords1D);
     remove(coords1D);
   }
 }
 
 int ZobristHasher::hash() {
-  return currentHash;
+  return m_currentHash;
 }
 
 void ZobristHasher::replacedWithPromotion(Coordinates const& source,
@@ -152,20 +152,20 @@ void ZobristHasher::replacedWithPromotion(Coordinates const& source,
   auto src1D = to1D(source);
   auto stateBeforeMove = PastMove(*this, src1D, src1D);
   replace(src1D, replacement);
-  movesHistory.push_back(std::move(stateBeforeMove));
+  m_movesHistory.push_back(std::move(stateBeforeMove));
 }
 
 void ZobristHasher::initializeTableAndWhitePlayer() {
   auto seed = time(NULL);
   srand(static_cast<unsigned int>(seed));
   std::unordered_set<int> seen; // ensure unique random values
-  for (auto& inner : table) {
+  for (auto& inner : m_table) {
     for (auto& bitstring : inner) {
       do { bitstring = rand(); } while (seen.count(bitstring) > 0);
       seen.insert(bitstring);
     }
   }
-  do { whitePlayerHash = rand(); } while (seen.count(whitePlayerHash) > 0);
+  do { m_whitePlayerHash = rand(); } while (seen.count(m_whitePlayerHash) > 0);
 }
 
 template <typename Predicate>
@@ -178,7 +178,7 @@ void ZobristHasher::initializePieces(std::vector<Coordinates> const& coords,
     }
 
     auto coord1D = to1D(coord);
-    if (board[coord1D] != EMPTY) {
+    if (m_board[coord1D] != EMPTY) {
       throw std::invalid_argument("Cannot initialize board with two or more"
                                   " pieces in the same coordinates");
     }
@@ -186,7 +186,7 @@ void ZobristHasher::initializePieces(std::vector<Coordinates> const& coords,
     if (!isNormalStartingCoord(coord)) {
      piece = movedEquivalent(piece);
     }
-    board[coord1D] = static_cast<int>(piece);
+    m_board[coord1D] = static_cast<int>(piece);
   }
 }
 
@@ -216,9 +216,9 @@ bool ZobristHasher::areWithinLimits(Coordinates const& coords) {
 
 int ZobristHasher::computeHashFromBoard() {
   int h = 0;
-  for (size_t i = 0; i < board.size(); i++) {
-    if (board[i] != EMPTY) {
-      h ^= table[i][board[i]];
+  for (size_t i = 0; i < m_board.size(); i++) {
+    if (m_board[i] != EMPTY) {
+      h ^= m_table[i][m_board[i]];
     }
   }
   return h;
@@ -229,24 +229,24 @@ bool ZobristHasher::isEnPassantRow(int row) {
 }
 
 void ZobristHasher::replace(int coor1D, ZobristHasher::PieceIndex replacement) {
-  if (board[coor1D] != EMPTY) {
-    currentHash ^= table[coor1D][board[coor1D]];
+  if (m_board[coor1D] != EMPTY) {
+    m_currentHash ^= m_table[coor1D][m_board[coor1D]];
   }
 
   auto replacementIdx = static_cast<int>(replacement);
-  board[coor1D] = replacementIdx;
-  currentHash ^= table[coor1D][replacementIdx];
+  m_board[coor1D] = replacementIdx;
+  m_currentHash ^= m_table[coor1D][replacementIdx];
 }
 
 void ZobristHasher::remove(int coord1D) {
-  if (board[coord1D] != EMPTY) {
-    currentHash ^= table[coord1D][board[coord1D]];
-    board[coord1D] = EMPTY;
+  if (m_board[coord1D] != EMPTY) {
+    m_currentHash ^= m_table[coord1D][m_board[coord1D]];
+    m_board[coord1D] = EMPTY;
   }
 }
 
 void ZobristHasher::togglePlayer() {
-  currentHash ^= whitePlayerHash;
+  m_currentHash ^= m_whitePlayerHash;
 }
 
 ZobristHasher::PieceIndex constexpr ZobristHasher::movedEquivalent(
@@ -308,7 +308,7 @@ void ZobristHasher::initializePieces(std::vector<Coordinates> const& whitePawns,
                                   std::vector<Coordinates> const& blackBishops,
                                   std::vector<Coordinates> const& blackQueens,
                                   Coordinates const& blackKing) {
-  board.fill(EMPTY);
+  m_board.fill(EMPTY);
 
   initializePieces(whitePawns, PieceIndex::WhitePawn,
     [](Coordinates const& c) {
@@ -352,8 +352,8 @@ void ZobristHasher::initializePieces(std::vector<Coordinates> const& whitePawns,
 }
 
 void ZobristHasher::restorePreviousHash() {
-  if (!movesHistory.empty()) {
-    auto& lastMove = movesHistory.back();
+  if (!m_movesHistory.empty()) {
+    auto& lastMove = m_movesHistory.back();
     auto piece = static_cast<PieceIndex>(lastMove.sourceContent);
     replace(lastMove.source, piece);
 
@@ -364,15 +364,15 @@ void ZobristHasher::restorePreviousHash() {
               static_cast<PieceIndex>(lastMove.destinationContent));
     }
 
-    pawnsBeforeEnPassant = lastMove.pawnsBeforeEnPassant;
+    m_pawnsBeforeEnPassant = lastMove.pawnsBeforeEnPassant;
     for (auto const& [coord, pawn] : lastMove.pawnsBeforeEnPassant) {
       if (auto pawnEnPassant = getEnPassantPawn(pawn)) {
         replace(coord, *pawnEnPassant);
       }
     }
-    currentHash = lastMove.hashBeforeMove;
+    m_currentHash = lastMove.hashBeforeMove;
     
-    movesHistory.pop_back();
+    m_movesHistory.pop_back();
   }
 }
 

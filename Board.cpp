@@ -38,12 +38,12 @@ struct Board::PastMove {
               sourceMovedStatus(sourceMoved),
               removedPieceCoords(capturedCoords),
               removedPiece(std::move(capturedPiece)),
-              isWhiteTurn(board.isWhiteTurn),
-              promotionSource(board.promotionSource),
-              boardHashCount(board.boardHashCount),
-              countSincePawnMoveOrCapture(board.countSincePawnMoveOrCapture),
-              threeFoldRepetition(board.threeFoldRepetition),
-              insufficientMaterial(board.insufficientMaterial) {}
+              isWhiteTurn(board.m_isWhiteTurn),
+              promotionSource(board.m_promotionSource),
+              boardHashCount(board.m_boardHashCount),
+              countSincePawnMoveOrCapture(board.m_countSincePawnMoveOrCapture),
+              threeFoldRepetition(board.m_threeFoldRepetition),
+              insufficientMaterial(board.m_insufficientMaterial) {}
 
   Coordinates source;
   Coordinates destination;
@@ -113,7 +113,7 @@ bool Board::areInSameDiagonal(Coordinates const& coord1,
 }
 
 Colour Board::currentPlayer() const {
-  return isWhiteTurn ? Colour::White : Colour::Black;
+  return m_isWhiteTurn ? Colour::White : Colour::Black;
 }
 
 bool Board::isGameOver() const {
@@ -122,8 +122,8 @@ bool Board::isGameOver() const {
 
 Board::Board(): Board(std::make_unique<ZobristHasher>()) {}
 
-Board::Board(std::unique_ptr<BoardHasher> hasher): hasher(std::move(hasher)) {
-  if (this->hasher == nullptr) {
+Board::Board(std::unique_ptr<BoardHasher> hasher): m_hasher(std::move(hasher)) {
+  if (this->m_hasher == nullptr) {
     throw std::invalid_argument("The board hasher cannot be null");
   }
   initializePiecesInStandardPos();
@@ -141,7 +141,7 @@ Board::Board(std::vector<Coordinates> const& whitePawns,
              std::vector<Coordinates> const& blackBishops,
              std::vector<Coordinates> const& blackQueens,
              Coordinates const& blackKing):
-             hasher(std::make_unique<ZobristHasher>(whitePawns, whiteRooks,
+             m_hasher(std::make_unique<ZobristHasher>(whitePawns, whiteRooks,
                                                      whiteKnights, whiteBishops,
                                                      whiteQueens, whiteKing,
                                                      blackPawns, blackRooks,
@@ -165,18 +165,18 @@ Board::Board(Board&& other) noexcept {
 
 Board& Board::operator=(Board&& other) noexcept {
   m_isGameOver = other.m_isGameOver;
-  isWhiteTurn = other.isWhiteTurn;
-  promotionSource = std::move(other.promotionSource);
-  board = std::move(other.board);
-  kings = std::move(other.kings);
-  hasher = std::move(other.hasher);
-  boardHashCount = std::move(other.boardHashCount);;
-  threeFoldRepetition = other.threeFoldRepetition;
-  countSincePawnMoveOrCapture = other.threeFoldRepetition;
-  insufficientMaterial = std::move(other.insufficientMaterial);
-  movesHistory = std::move(other.movesHistory);
+  m_isWhiteTurn = other.m_isWhiteTurn;
+  m_promotionSource = std::move(other.m_promotionSource);
+  m_board = std::move(other.m_board);
+  m_kings = std::move(other.m_kings);
+  m_hasher = std::move(other.m_hasher);
+  m_boardHashCount = std::move(other.m_boardHashCount);;
+  m_threeFoldRepetition = other.m_threeFoldRepetition;
+  m_countSincePawnMoveOrCapture = other.m_threeFoldRepetition;
+  m_insufficientMaterial = std::move(other.m_insufficientMaterial);
+  m_movesHistory = std::move(other.m_movesHistory);
 
-  for (auto& column: board) {
+  for (auto& column: m_board) {
     for (auto& piece: column) {
       if (piece != nullptr) {
         // assign existing pieces to the current Board object
@@ -185,7 +185,7 @@ Board& Board::operator=(Board&& other) noexcept {
     }
   }
 
-  for (auto& pastMove : movesHistory) {
+  for (auto& pastMove : m_movesHistory) {
     if (pastMove.removedPiece) {
       // assign removed pieces to the current Board object
       pastMove.removedPiece->setBoard(*this);
@@ -207,11 +207,11 @@ void Board::initializePawns(std::vector<Coordinates> const& coords,
   auto promotionRow = (colour == Colour::White) ? MAX_ROW_NUM : 0;
   for (auto const& coord : coords) {
     if (coord.row == promotionRow) {
-      if (promotionSource.has_value()) {
+      if (m_promotionSource.has_value()) {
         throw std::invalid_argument("Only one pawn can be positioned for "
                                     "promotion in any given turn");
       }
-      promotionSource = coord;
+      m_promotionSource = coord;
     }
   }
 }
@@ -234,7 +234,7 @@ void Board::initializeKnights(std::vector<Coordinates> const& coords,
                                                 Knight::BLACK_STD_INIT);
       return std::find(coords.begin(), coords.end(), coord) != coords.end();
     },
-    [this](auto& piece) { insufficientMaterial.emplace(piece); }
+    [this](auto& piece) { m_insufficientMaterial.emplace(piece); }
   );
 }
 
@@ -246,7 +246,7 @@ void Board::initializeBishops(std::vector<Coordinates> const& coords,
                                                   Bishop::BLACK_STD_INIT);
         return std::find(coords.begin(), coords.end(), coord) != coords.end();
     },
-    [this](auto& piece) { insufficientMaterial.emplace(piece); }
+    [this](auto& piece) { m_insufficientMaterial.emplace(piece); }
   );
 }
 
@@ -266,8 +266,8 @@ void Board::initializeKing(Coordinates const& coords, Colour colour) {
                                                        King::BLACK_STD_INIT);
         },
         [&](King& king) {
-            insufficientMaterial.emplace(king);
-            kings.emplace(colour, king);
+            m_insufficientMaterial.emplace(king);
+            m_kings.emplace(colour, king);
         });
 }
 
@@ -298,13 +298,13 @@ void Board::initializePieces(std::vector<Coordinates> const& coords,
       chessman->setMovedStatus(true);
     }
     finalActions(*chessman);
-    board[coord.column][coord.row] = std::move(chessman);
+    m_board[coord.column][coord.row] = std::move(chessman);
   }
 }
 
 bool Board::drawCanBeClaimed() const {
   // 50 moves rule is to be intended as 50 by each player, so 100 in total here
-  return (threeFoldRepetition || countSincePawnMoveOrCapture >= 100) &&
+  return (m_threeFoldRepetition || m_countSincePawnMoveOrCapture >= 100) &&
                                                          !promotionPending();
 }
 
@@ -333,21 +333,21 @@ void Board::initializePiecesInStandardPos() {
 }
 
 void Board::reset() {
-  countSincePawnMoveOrCapture = 0;
-  hasher->reset();
-  promotionSource.reset();
-  boardHashCount.clear();
-  isWhiteTurn = true;
+  m_countSincePawnMoveOrCapture = 0;
+  m_hasher->reset();
+  m_promotionSource.reset();
+  m_boardHashCount.clear();
+  m_isWhiteTurn = true;
   m_isGameOver = false;
-  threeFoldRepetition = false;
-  for (auto& column : board) {
+  m_threeFoldRepetition = false;
+  for (auto& column : m_board) {
     for (auto& piece : column) {
       piece.reset();
     }
   }
-  kings.clear();
-  movesHistory.clear();
-  insufficientMaterial.clear();
+  m_kings.clear();
+  m_movesHistory.clear();
+  m_insufficientMaterial.clear();
   initializePiecesInStandardPos();
 }
 
@@ -378,7 +378,7 @@ MoveResult Board::move(Coordinates const& src, Coordinates const& destination) {
     throw InvalidMove(ss.str(), InvalidMove::ErrorCode::NO_SOURCE_PIECE);
   }
 
-  return board[src.column][src.row]->move(src, destination);
+  return m_board[src.column][src.row]->move(src, destination);
 }
 
 void Board::ensurePieceIsAtSource(Piece const& piece,
@@ -396,13 +396,13 @@ MoveResult Board::move(Pawn& piece, Coordinates const& source,
       if (isValidEnPassant(piece, source, destination)) {
           auto toCaptureRow = (destination.row == 2) ? 3 : MAX_ROW_NUM - 3;
           Coordinates toCapture(destination.column, toCaptureRow);
-          auto& srcPiecePtr = board[source.column][source.row];
-          movesHistory.emplace_back(*this, source, destination,
+          auto& srcPiecePtr = m_board[source.column][source.row];
+          m_movesHistory.emplace_back(*this, source, destination,
                              srcPiecePtr->getMovedStatus(),
-                             std::move(board[toCapture.column][toCapture.row]),
+                             std::move(m_board[toCapture.column][toCapture.row]),
                              toCapture);
           srcPiecePtr->setMovedStatus(true);
-          board[destination.column][destination.row] = std::move(srcPiecePtr);
+          m_board[destination.column][destination.row] = std::move(srcPiecePtr);
       } else {
         recordAndMove(source, destination);
       }
@@ -411,9 +411,9 @@ MoveResult Board::move(Pawn& piece, Coordinates const& source,
                   destination.row == MAX_ROW_NUM) ||
           (piece.getColour() == Colour::Black &&
                               destination.row == 0)) {
-        promotionSource = destination;
+        m_promotionSource = destination;
       }
-      countSincePawnMoveOrCapture = 0;
+      m_countSincePawnMoveOrCapture = 0;
   });
 }
 
@@ -423,7 +423,7 @@ MoveResult Board::move(PromotionPiece& piece, Coordinates const& source,
   return move(source, destination,
     [this] (Coordinates const& source, Coordinates const& destination) {
       recordAndMove(source, destination);
-      countSincePawnMoveOrCapture++;
+      m_countSincePawnMoveOrCapture++;
     });
 }
 
@@ -433,7 +433,7 @@ MoveResult Board::move(King& piece, Coordinates const& source,
   return move(source, destination,
     [this] (Coordinates const& source, Coordinates const& destination) {
       recordAndMove(source, destination);
-      countSincePawnMoveOrCapture++;
+      m_countSincePawnMoveOrCapture++;
     });
 }
 
@@ -442,12 +442,12 @@ MoveResult Board::move(Coordinates const& source,
                        Coordinates const& destination, Callable&& mover) {
   ensureGameNotOver();
   ensureNoPromotionNeeded();
-  auto& piece = *(board[source.column][source.row]);
+  auto& piece = *(m_board[source.column][source.row]);
   ensurePlayerCanMovePiece(piece);
   auto gameState = MoveResult::GameState::NORMAL;
 
   if (auto castlingType = tryCastling(source, destination)) {
-    countSincePawnMoveOrCapture++;
+    m_countSincePawnMoveOrCapture++;
     gameState = checkGameState();
     togglePlayer();
     return MoveResult(gameState, *castlingType);
@@ -468,41 +468,41 @@ MoveResult Board::move(Coordinates const& source,
   }
 
   // may need to restore count if move causes self check
-  auto tmpCount = countSincePawnMoveOrCapture;
+  auto tmpCount = m_countSincePawnMoveOrCapture;
   mover(source, destination);
 
   if (isInCheck(currentPlayer())) {
     std::stringstream ss;
-    promotionSource.reset();
+    m_promotionSource.reset();
     revertLastPieceMovement();
-    movesHistory.pop_back();
-    countSincePawnMoveOrCapture = tmpCount;
-    ss << (isWhiteTurn? "White" : "Black") <<
+    m_movesHistory.pop_back();
+    m_countSincePawnMoveOrCapture = tmpCount;
+    ss << (m_isWhiteTurn? "White" : "Black") <<
             "'s move is invalid as they would be in check";
     throw InvalidMove(ss.str(), InvalidMove::ErrorCode::CHECK_ERROR);
   }
 
-  auto& lastMove = movesHistory.back();
+  auto& lastMove = m_movesHistory.back();
   if (lastMove.destination != lastMove.removedPieceCoords) { // en passant
-    hasher->removed(lastMove.removedPieceCoords);
+    m_hasher->removed(lastMove.removedPieceCoords);
   }
 
-  hasher->pieceMoved(source, destination);
+  m_hasher->pieceMoved(source, destination);
   std::optional<std::string> capturedPieceName;
   if (lastMove.removedPiece != nullptr) {
-    countSincePawnMoveOrCapture = 0;
+    m_countSincePawnMoveOrCapture = 0;
     capturedPieceName = lastMove.removedPiece->name();
   }
 
   if (promotionPending()) {
     gameState = MoveResult::GameState::AWAITING_PROMOTION;
   } else {
-    hasher->togglePlayer();
-    auto hash = hasher->hash();
-    boardHashCount[hash]++;
+    m_hasher->togglePlayer();
+    auto hash = m_hasher->hash();
+    m_boardHashCount[hash]++;
     gameState = checkGameState();
-    if (boardHashCount.at(hash) >= 3) {
-      threeFoldRepetition = true;
+    if (m_boardHashCount.at(hash) >= 3) {
+      m_threeFoldRepetition = true;
     }
     togglePlayer();
   }
@@ -522,17 +522,17 @@ void Board::ensureGameNotOver() {
 
 void Board::ensurePlayerCanMovePiece(Piece const& piece) {
   auto pieceColour = piece.getColour();
-  if ((pieceColour == Colour::Black && isWhiteTurn) ||
-    (pieceColour == Colour::White && !isWhiteTurn)) {
+  if ((pieceColour == Colour::Black && m_isWhiteTurn) ||
+    (pieceColour == Colour::White && !m_isWhiteTurn)) {
     std::stringstream ss;
-    ss << "It is not " << (isWhiteTurn ? "Black" : "White");
+    ss << "It is not " << (m_isWhiteTurn ? "Black" : "White");
     ss << "'s turn to move";
     throw InvalidMove(ss.str(), InvalidMove::ErrorCode::WRONG_TURN);
   }
 }
 
 bool Board::promotionPending() const {
-  return promotionSource.has_value();
+  return m_promotionSource.has_value();
 }
 
 void Board::ensureNoPromotionNeeded() {
@@ -544,7 +544,7 @@ void Board::ensureNoPromotionNeeded() {
 
 MoveResult::GameState Board::checkGameState() {
   Colour enemyColour;
-  enemyColour = isWhiteTurn ? Colour::Black : Colour::White;
+  enemyColour = m_isWhiteTurn ? Colour::Black : Colour::White;
 
   bool inCheck = isInCheck(enemyColour);
   bool hasMoves = hasMovesLeft(enemyColour);
@@ -554,11 +554,11 @@ MoveResult::GameState Board::checkGameState() {
   } else if (!inCheck && !hasMoves) {
     m_isGameOver = true;
     return MoveResult::GameState::STALEMATE;
-  } else if (countSincePawnMoveOrCapture >= 150) { // 75 by each player
+  } else if (m_countSincePawnMoveOrCapture >= 150) { // 75 by each player
     m_isGameOver = true;
     return MoveResult::GameState::SEVENTYFIVE_MOVES_DRAW;
-  } else if (boardHashCount.count(hasher->hash()) &&
-                                      boardHashCount.at(hasher->hash()) >= 5) {
+  } else if (m_boardHashCount.count(m_hasher->hash()) &&
+                                      m_boardHashCount.at(m_hasher->hash()) >= 5) {
     m_isGameOver = true;
     return MoveResult::GameState::FIVEFOLD_REPETITION_DRAW;
   } else if (!sufficientMaterial()) {
@@ -571,7 +571,7 @@ MoveResult::GameState Board::checkGameState() {
 }
 
 void Board::togglePlayer() {
-  isWhiteTurn = !isWhiteTurn;
+  m_isWhiteTurn = !m_isWhiteTurn;
 }
 
 std::optional<CastlingType> getCastlingType(Coordinates const& source,
@@ -645,23 +645,23 @@ std::optional<CastlingType> Board::tryCastling(Coordinates const& source,
   recordAndMove(source, target);
   if (isInCheck(at(target)->getColour())) {
     revertLastPieceMovement();
-    movesHistory.pop_back();
+    m_movesHistory.pop_back();
     revertLastPieceMovement();
-    movesHistory.pop_back();
+    m_movesHistory.pop_back();
     return std::nullopt;
   }
 
-  hasher->pieceMoved(rookSource, rookTarget);
-  hasher->pieceMoved(source, target);
-  hasher->togglePlayer();
-  boardHashCount[hasher->hash()]++;
+  m_hasher->pieceMoved(rookSource, rookTarget);
+  m_hasher->pieceMoved(source, target);
+  m_hasher->togglePlayer();
+  m_boardHashCount[m_hasher->hash()]++;
   return castlingType;
 }
 
 bool Board::sufficientMaterial() const {
   std::vector<std::reference_wrapper<Piece>> whites;
   std::vector<std::reference_wrapper<Piece>> blacks;
-  for (auto& column: board) {
+  for (auto& column: m_board) {
     for (auto& piecePtr: column) {
       if (piecePtr == nullptr) {
         continue;
@@ -680,13 +680,13 @@ bool Board::sufficientMaterial() const {
   }
 
   for (auto const& white : whites) {
-    if (insufficientMaterial.count(white) == 0) {
+    if (m_insufficientMaterial.count(white) == 0) {
       return true;
     }
   }
 
   for (auto const& black : blacks) {
-    if (insufficientMaterial.count(black) == 0) {
+    if (m_insufficientMaterial.count(black) == 0) {
       return true;
     }
   }
@@ -766,13 +766,13 @@ bool Board::isDiagonalFree(Coordinates const& source,
 }
 
 Piece const* Board::at(Coordinates const& coord) const {
-  return board.at(coord.column).at(coord.row).get();
+  return m_board.at(coord.column).at(coord.row).get();
 }
 
 std::optional<Coordinates> Board::getPieceCoordinates(Piece const& piece) const {
-  for (size_t i = 0; i < board.size(); i++) {
-    for (size_t j = 0; j < board[i].size(); j++) {
-      if (board[i][j].get() == &piece) {
+  for (size_t i = 0; i < m_board.size(); i++) {
+    for (size_t j = 0; j < m_board[i].size(); j++) {
+      if (m_board[i][j].get() == &piece) {
         return Coordinates(i, j);
       }
     }
@@ -782,10 +782,10 @@ std::optional<Coordinates> Board::getPieceCoordinates(Piece const& piece) const 
 }
 
 bool Board::isInCheck(Colour kingColour) const {
-  if (auto kingCoord = getPieceCoordinates(kings.at(kingColour))) {
-    for (size_t i = 0; i < board.size(); i++) {
-      for (size_t j = 0; j < board[i].size(); j++) {
-        auto& piece = board[i][j]; 
+  if (auto kingCoord = getPieceCoordinates(m_kings.at(kingColour))) {
+    for (size_t i = 0; i < m_board.size(); i++) {
+      for (size_t j = 0; j < m_board[i].size(); j++) {
+        auto& piece = m_board[i][j]; 
         // check if an enemy piece can move where the king is
         if (piece != nullptr &&
             piece->getColour() != kingColour &&
@@ -802,9 +802,9 @@ bool Board::isInCheck(Colour kingColour) const {
 }
 
 bool Board::hasMovesLeft(Colour colour) {
-  for (size_t i = 0; i < board.size(); i++) {
-    for (size_t j = 0; j < board[i].size(); j++) {
-      if (board[i][j] == nullptr || board[i][j]->getColour() != colour) {
+  for (size_t i = 0; i < m_board.size(); i++) {
+    for (size_t j = 0; j < m_board[i].size(); j++) {
+      if (m_board[i][j] == nullptr || m_board[i][j]->getColour() != colour) {
         continue;
       }
       auto srcCoord = Coordinates(i, j);
@@ -819,8 +819,8 @@ bool Board::hasMovesLeft(Colour colour) {
 }
 
 bool Board::pieceHasMovesLeft(Coordinates const& srcCoord) {
-  for (size_t i = 0; i < board.size(); i++) {
-    for (size_t j = 0; j < board[i].size(); j++) {
+  for (size_t i = 0; i < m_board.size(); i++) {
+    for (size_t j = 0; j < m_board[i].size(); j++) {
       Coordinates targetCoord(i, j);
       if (at(srcCoord)->isNormalMove(srcCoord, targetCoord) &&
                                        !isSuicide(srcCoord, targetCoord)) {
@@ -833,14 +833,14 @@ bool Board::pieceHasMovesLeft(Coordinates const& srcCoord) {
 
 void Board::recordAndMove(Coordinates const& source,
                                Coordinates const& destination) {
-  auto& pieceDest = board[destination.column][destination.row];
-  auto& pieceSrc = board[source.column][source.row];
+  auto& pieceDest = m_board[destination.column][destination.row];
+  auto& pieceSrc = m_board[source.column][source.row];
   if (pieceDest != nullptr) {
-     movesHistory.emplace_back(*this, source, destination,
+     m_movesHistory.emplace_back(*this, source, destination,
                           pieceSrc->getMovedStatus(),
                           std::move(pieceDest));
   } else {
-     movesHistory.emplace_back(*this, source, destination,
+     m_movesHistory.emplace_back(*this, source, destination,
                           pieceSrc->getMovedStatus());
    }
    pieceSrc->setMovedStatus(true);
@@ -852,63 +852,63 @@ bool Board::isSuicide(Coordinates const& source,
   recordAndMove(source, destination);
   bool check = isInCheck(at(destination)->getColour());
   revertLastPieceMovement();
-  movesHistory.pop_back();
+  m_movesHistory.pop_back();
   return check;
 }
 
 void Board::undoLastMove() {
-  if (movesHistory.size() > 0) {
-    auto srcMoved = movesHistory.back().sourceMovedStatus;
-    auto castling = getCastlingType(movesHistory.back().source,
-                                    movesHistory.back().destination);
+  if (m_movesHistory.size() > 0) {
+    auto srcMoved = m_movesHistory.back().sourceMovedStatus;
+    auto castling = getCastlingType(m_movesHistory.back().source,
+                                    m_movesHistory.back().destination);
 
     // castling and promotion are stored as 2 moves
     if ((castling.has_value() && !srcMoved) ||
-         movesHistory.back().source == movesHistory.back().destination) {
+         m_movesHistory.back().source == m_movesHistory.back().destination) {
       revertLastPieceMovement();
-      movesHistory.pop_back();
-      hasher->restorePreviousHash();
+      m_movesHistory.pop_back();
+      m_hasher->restorePreviousHash();
     }
     revertLastPieceMovement();
 
-    auto& lastMove = movesHistory.back();
+    auto& lastMove = m_movesHistory.back();
     m_isGameOver = false;
-    isWhiteTurn = lastMove.isWhiteTurn;
-    promotionSource = lastMove.promotionSource;
-    boardHashCount = lastMove.boardHashCount;
-    countSincePawnMoveOrCapture = lastMove.countSincePawnMoveOrCapture;
-    threeFoldRepetition = lastMove.threeFoldRepetition;
-    insufficientMaterial = lastMove.insufficientMaterial;
+    m_isWhiteTurn = lastMove.isWhiteTurn;
+    m_promotionSource = lastMove.promotionSource;
+    m_boardHashCount = lastMove.boardHashCount;
+    m_countSincePawnMoveOrCapture = lastMove.countSincePawnMoveOrCapture;
+    m_threeFoldRepetition = lastMove.threeFoldRepetition;
+    m_insufficientMaterial = lastMove.insufficientMaterial;
 
-    movesHistory.pop_back();
-    hasher->restorePreviousHash();
+    m_movesHistory.pop_back();
+    m_hasher->restorePreviousHash();
   }
 }
 
 void Board::revertLastPieceMovement() {
-  auto& lastMove = movesHistory.back();
+  auto& lastMove = m_movesHistory.back();
   auto& source = lastMove.source;
   auto& dest = lastMove.destination;
 
-  board[source.column][source.row] = std::move(board[dest.column][dest.row]);
-  board[source.column][source.row] ->setMovedStatus(lastMove.sourceMovedStatus);
+  m_board[source.column][source.row] = std::move(m_board[dest.column][dest.row]);
+  m_board[source.column][source.row] ->setMovedStatus(lastMove.sourceMovedStatus);
 
   if (lastMove.removedPiece != nullptr) {
     Coordinates target = dest;
     if (lastMove.removedPieceCoords != lastMove.destination) { // en passant
       target = lastMove.removedPieceCoords;
     }
-    board[target.column][target.row] = std::move(lastMove.removedPiece);
+    m_board[target.column][target.row] = std::move(lastMove.removedPiece);
   }
 
 }
 
 bool Board::isValidEnPassant(Pawn const& pawn, Coordinates const& source,
                                          Coordinates const& destination) const {
-  if (&pawn != at(source) || movesHistory.empty()) {
+  if (&pawn != at(source) || m_movesHistory.empty()) {
     return false;
   }
-  auto& lastMove = movesHistory.back();
+  auto& lastMove = m_movesHistory.back();
   auto lastMoveColour = lastMove.isWhiteTurn ?
                         Colour::White : Colour::Black;
   if (lastMove.sourceMovedStatus || pawn.getColour() == lastMoveColour) {
@@ -941,25 +941,25 @@ bool Board::isValidEnPassant(Pawn const& pawn, Coordinates const& source,
 }
 
 std::optional<MoveResult> Board::promote(PromotionOption piece) {
-  if (!promotionSource) {
+  if (!m_promotionSource) {
     return std::nullopt;
   }
 
-  auto& source = *promotionSource;
-  auto& piecePtr = board[source.column][source.row];
+  auto& source = *m_promotionSource;
+  auto& piecePtr = m_board[source.column][source.row];
   auto moved = piecePtr->getMovedStatus();
-  movesHistory.emplace_back(*this, source, source,
+  m_movesHistory.emplace_back(*this, source, source,
                             moved, std::move(piecePtr));
   piecePtr = std::move(buildPromotionPiece(piece));
   if (piece == PromotionOption::Knight || piece == PromotionOption::Bishop) {
-    insufficientMaterial.emplace(*piecePtr);
+    m_insufficientMaterial.emplace(*piecePtr);
   }
 
-  promotionSource.reset();
+  m_promotionSource.reset();
   auto state = checkGameState();
-  hasher->replacedWithPromotion(source, piece, currentPlayer());
+  m_hasher->replacedWithPromotion(source, piece, currentPlayer());
   togglePlayer();
-  hasher->togglePlayer();
+  m_hasher->togglePlayer();
   return MoveResult(state);
 }
 

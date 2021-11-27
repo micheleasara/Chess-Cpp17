@@ -266,19 +266,19 @@ private:
   void initializeKing(Coordinates const& coords, Colour colour);
 
   bool m_isGameOver = false;
-  bool isWhiteTurn = true;
-  std::optional<Coordinates> promotionSource;
+  bool m_isWhiteTurn = true;
+  std::optional<Coordinates> m_promotionSource;
   std::array<std::array<std::unique_ptr<Piece>, MAX_ROW_NUM+1>,
-                                                           MAX_COL_NUM+1> board;
-  std::unordered_map<Colour, King&> kings;
-  std::unique_ptr<BoardHasher> hasher;
-  std::unordered_map<int, size_t> boardHashCount;
-  bool threeFoldRepetition = false;
-  int countSincePawnMoveOrCapture = 0;
+                                                MAX_COL_NUM+1> m_board;
+  std::unordered_map<Colour, King&> m_kings;
+  std::unique_ptr<BoardHasher> m_hasher;
+  std::unordered_map<int, size_t> m_boardHashCount;
+  bool m_threeFoldRepetition = false;
+  int m_countSincePawnMoveOrCapture = 0;
   std::unordered_set<std::reference_wrapper<Piece>,
-                                        PieceRefHasher> insufficientMaterial;
+                                   PieceRefHasher> m_insufficientMaterial;
   struct PastMove;
-  std::vector<PastMove> movesHistory;
+  std::vector<PastMove> m_movesHistory;
 };
 
 }

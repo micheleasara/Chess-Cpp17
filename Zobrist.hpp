@@ -105,12 +105,12 @@ private:
       std::vector<Coordinates> const& blackQueens,
       Coordinates const& blackKing);
 
-  std::array<std::array<int, PIECE_INDEXES_COUNT>, Board::AREA> table;
-  std::array<int, Board::AREA> board;
-  int currentHash = 0;
-  int whitePlayerHash;
-  std::unordered_map<int, PieceIndex> pawnsBeforeEnPassant;
-  std::vector<PastMove> movesHistory;
+  std::array<std::array<int, PIECE_INDEXES_COUNT>, Board::AREA> m_table;
+  std::array<int, Board::AREA> m_board;
+  int m_currentHash = 0;
+  int m_whitePlayerHash;
+  std::unordered_map<int, PieceIndex> m_pawnsBeforeEnPassant;
+  std::vector<PastMove> m_movesHistory;
 };
 
 }
