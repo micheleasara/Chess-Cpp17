@@ -16,12 +16,10 @@ std::string Bishop::name() const {
 
 bool Bishop::isNormalMoveSpecific(Coordinates const& source,
                                Coordinates const& destination) const {
-  try {
+  if (getBoard().areInSameDiagonal(source, destination)) {
     return getBoard().isDiagonalFree(source, destination);
-  // exception means source and destination are not in the same diagonal
-  } catch (std::invalid_argument const&) {
-    return false;
   }
+  return false;
 }
 
 MoveResult Bishop::move(Coordinates const& source, 

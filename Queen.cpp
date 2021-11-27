@@ -14,16 +14,15 @@ bool Queen::isNormalMoveSpecific(Coordinates const& source,
   if (Board::areInSameRow(source, destination)) {
     return getBoard().isFreeRow(source, destination.column);
   }
+
   if (Board::areInSameColumn(source, destination)) {
     return getBoard().isFreeColumn(source, destination.row);
   }
 
-  try {
+  if (getBoard().areInSameDiagonal(source, destination)) {
     return getBoard().isDiagonalFree(source, destination);
-  // exception means source and destination are not in the same diagonal
-  } catch (std::invalid_argument const&) {
-    return false;
   }
+  return false;
 }
 
 MoveResult Queen::move(Coordinates const& source, 
