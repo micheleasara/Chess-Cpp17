@@ -192,7 +192,7 @@ void ZobristHasher::initializePieces(std::vector<Coordinates> const& coords,
 
 void ZobristHasher::standardInitBoard() {
   std::vector<Coordinates> whitePawns, blackPawns;
-  for (int i = 0; i <= Board::MAX_COL_NUM; i++) {
+  for (int i = 0; i <= Board::MAX_COL_NUM; ++i) {
     whitePawns.emplace_back(i, 1);
     blackPawns.emplace_back(i, Board::MAX_ROW_NUM - 1);
   }
@@ -216,7 +216,7 @@ bool ZobristHasher::areWithinLimits(Coordinates const& coords) {
 
 int ZobristHasher::computeHashFromBoard() {
   int h = 0;
-  for (size_t i = 0; i < m_board.size(); i++) {
+  for (size_t i = 0; i < m_board.size(); ++i) {
     if (m_board[i] != EMPTY) {
       h ^= m_table[i][m_board[i]];
     }

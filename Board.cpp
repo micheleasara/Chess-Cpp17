@@ -423,7 +423,7 @@ MoveResult Board::move(PromotionPiece& piece, Coordinates const& source,
   return move(source, destination,
     [this] (Coordinates const& source, Coordinates const& destination) {
       recordAndMove(source, destination);
-      m_countSincePawnMoveOrCapture++;
+      ++m_countSincePawnMoveOrCapture;
     });
 }
 
@@ -433,7 +433,7 @@ MoveResult Board::move(King& piece, Coordinates const& source,
   return move(source, destination,
     [this] (Coordinates const& source, Coordinates const& destination) {
       recordAndMove(source, destination);
-      m_countSincePawnMoveOrCapture++;
+      ++m_countSincePawnMoveOrCapture;
     });
 }
 
@@ -447,7 +447,7 @@ MoveResult Board::move(Coordinates const& source,
   auto gameState = MoveResult::GameState::NORMAL;
 
   if (auto castlingType = tryCastling(source, destination)) {
-    m_countSincePawnMoveOrCapture++;
+    ++m_countSincePawnMoveOrCapture;
     gameState = checkGameState();
     togglePlayer();
     return MoveResult(gameState, *castlingType);
@@ -499,7 +499,7 @@ MoveResult Board::move(Coordinates const& source,
   } else {
     m_hasher->togglePlayer();
     auto hash = m_hasher->hash();
-    m_boardHashCount[hash]++;
+    ++m_boardHashCount[hash];
     gameState = checkGameState();
     if (m_boardHashCount.at(hash) >= 3) {
       m_threeFoldRepetition = true;
@@ -654,7 +654,7 @@ std::optional<CastlingType> Board::tryCastling(Coordinates const& source,
   m_hasher->pieceMoved(rookSource, rookTarget);
   m_hasher->pieceMoved(source, target);
   m_hasher->togglePlayer();
-  m_boardHashCount[m_hasher->hash()]++;
+  ++m_boardHashCount[m_hasher->hash()];
   return castlingType;
 }
 
@@ -770,8 +770,8 @@ Piece const* Board::at(Coordinates const& coord) const {
 }
 
 std::optional<Coordinates> Board::getPieceCoordinates(Piece const& piece) const {
-  for (size_t i = 0; i < m_board.size(); i++) {
-    for (size_t j = 0; j < m_board[i].size(); j++) {
+  for (size_t i = 0; i < m_board.size(); ++i) {
+    for (size_t j = 0; j < m_board[i].size(); ++j) {
       if (m_board[i][j].get() == &piece) {
         return Coordinates(i, j);
       }
@@ -783,8 +783,8 @@ std::optional<Coordinates> Board::getPieceCoordinates(Piece const& piece) const 
 
 bool Board::isInCheck(Colour kingColour) const {
   if (auto kingCoord = getPieceCoordinates(m_kings.at(kingColour))) {
-    for (size_t i = 0; i < m_board.size(); i++) {
-      for (size_t j = 0; j < m_board[i].size(); j++) {
+    for (size_t i = 0; i < m_board.size(); ++i) {
+      for (size_t j = 0; j < m_board[i].size(); ++j) {
         auto& piece = m_board[i][j]; 
         // check if an enemy piece can move where the king is
         if (piece != nullptr &&
@@ -802,8 +802,8 @@ bool Board::isInCheck(Colour kingColour) const {
 }
 
 bool Board::hasMovesLeft(Colour colour) {
-  for (size_t i = 0; i < m_board.size(); i++) {
-    for (size_t j = 0; j < m_board[i].size(); j++) {
+  for (size_t i = 0; i < m_board.size(); ++i) {
+    for (size_t j = 0; j < m_board[i].size(); ++j) {
       if (m_board[i][j] == nullptr || m_board[i][j]->getColour() != colour) {
         continue;
       }
@@ -819,8 +819,8 @@ bool Board::hasMovesLeft(Colour colour) {
 }
 
 bool Board::pieceHasMovesLeft(Coordinates const& srcCoord) {
-  for (size_t i = 0; i < m_board.size(); i++) {
-    for (size_t j = 0; j < m_board[i].size(); j++) {
+  for (size_t i = 0; i < m_board.size(); ++i) {
+    for (size_t j = 0; j < m_board[i].size(); ++j) {
       Coordinates targetCoord(i, j);
       if (at(srcCoord)->isNormalMove(srcCoord, targetCoord) &&
                                        !isSuicide(srcCoord, targetCoord)) {
@@ -981,13 +981,13 @@ std::unique_ptr<PromotionPiece> Board::buildPromotionPiece(
 
 void printBottomLines(std::ostream& out) {
   out << "\n|";
-  for (int j = 0; j <= Board::MAX_COL_NUM; j++) {
+  for (int j = 0; j <= Board::MAX_COL_NUM; ++j) {
     out << std::setw(H_PRINT_SIZE) << "|";
   }
 
   out << "\n|";
-  for (int j = 0; j <= Board::MAX_COL_NUM; j++) {
-    for (int i = 0; i < H_PRINT_SIZE - 1; i++) {
+  for (int j = 0; j <= Board::MAX_COL_NUM; ++j) {
+    for (int i = 0; i < H_PRINT_SIZE - 1; ++i) {
       out << '-';
     }
     out << '|';
@@ -995,7 +995,7 @@ void printBottomLines(std::ostream& out) {
 }
 
 void printColumnLegend(std::ostream& out) {
-  for (char ch = Board::MIN_COLUMN; ch <= Board::MAX_COLUMN; ch++) {
+  for (char ch = Board::MIN_COLUMN; ch <= Board::MAX_COLUMN; ++ch) {
     out << std::setw((std::streamsize)H_PRINT_SIZE / 2 + 1) << ch;
     out << std::setw(H_PRINT_SIZE / 2) << " ";
   }
@@ -1003,7 +1003,7 @@ void printColumnLegend(std::ostream& out) {
 
 void printTopLine(std::ostream& out) {
   out << "\n|";
-  for (int j = 0; j <= Board::MAX_COL_NUM; j++) {
+  for (int j = 0; j <= Board::MAX_COL_NUM; ++j) {
     out << std::setw(H_PRINT_SIZE) << '|';
   }
   out << "\n|";
@@ -1013,7 +1013,7 @@ std::ostream& operator<<(std::ostream& out, Board const& board) {
   for (int r = board.MAX_ROW_NUM; r >= 0; r--) {
     printTopLine(out);
 
-    for (int c = 0; c <= board.MAX_ROW_NUM; c++) {
+    for (int c = 0; c <= board.MAX_ROW_NUM; ++c) {
       Coordinates iterCoord(c, r);
       if (auto piece = board.at(iterCoord)) {
         out << std::right;
