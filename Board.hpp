@@ -43,15 +43,7 @@ public:
 
   /// Checks if the coordinates are within a chessboard.
   static bool areWithinLimits(Coordinates const& coord);
-  /// Checks if the coordinates are in the same row.
-  static bool areInSameRow(Coordinates const& coord1,
-                            Coordinates const& coord2);
-  /// Checks if the coordinates are in the same column.
-  static bool areInSameColumn(Coordinates const& coord1,
-                              Coordinates const& coord2);
-  /// Checks if the coordinates are in the same diagonal.
-  static bool areInSameDiagonal(Coordinates const& coord1,
-                                Coordinates const& coord2);
+
   /**
     Converts string coordinates into a pair of integers (eg "A2" to 0,1).
     Throws if the format is incorrect, or the coordinates are out of bounds.

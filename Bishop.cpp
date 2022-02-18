@@ -17,7 +17,7 @@ std::string Bishop::name() const {
 
 bool Bishop::isNormalMoveSpecific(Coordinates const& source,
                                Coordinates const& destination) const {
-  if (Board::areInSameDiagonal(source, destination)) {
+  if (source.sameDiagonalAs(destination)) {
     return getBoard().isDiagonalFree(source, destination);
   }
   return false;

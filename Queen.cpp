@@ -12,15 +12,15 @@ std::string Queen::name() const {
 
 bool Queen::isNormalMoveSpecific(Coordinates const& source,
                                Coordinates const& destination) const {
-  if (Board::areInSameRow(source, destination)) {
+  if (source.sameRowAs(destination)) {
     return getBoard().isFreeRow(source, destination.column);
   }
 
-  if (Board::areInSameColumn(source, destination)) {
+  if (source.sameColumnAs(destination)) {
     return getBoard().isFreeColumn(source, destination.row);
   }
 
-  if (Board::areInSameDiagonal(source, destination)) {
+  if (source.sameDiagonalAs(destination)) {
     return getBoard().isDiagonalFree(source, destination);
   }
   return false;

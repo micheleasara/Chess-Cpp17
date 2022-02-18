@@ -13,10 +13,10 @@ Rook::Rook(Colour colour, AbstractBoard& board):
 
 bool Rook::isNormalMoveSpecific(Coordinates const& source,
                                    Coordinates const& destination) const {
-  if (Board::areInSameRow(source, destination)) {
+  if (source.sameRowAs(destination)) {
       return getBoard().isFreeRow(source, destination.column);
   }
-  else if (Board::areInSameColumn(source, destination)) {
+  else if (source.sameColumnAs(destination)) {
       return getBoard().isFreeColumn(source, destination.row);
   }
 

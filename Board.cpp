@@ -99,19 +99,6 @@ bool Board::areWithinLimits(Coordinates const& coord) {
           col >= MIN_COLUMN && col <= MAX_COLUMN);
 }
 
-bool Board::areInSameRow(Coordinates const& coord1,
-                              Coordinates const& coord2) {
-  return (coord1.row == coord2.row);
-}
-bool Board::areInSameColumn(Coordinates const& coord1,
-                                 Coordinates const& coord2) {
-  return (coord1.column == coord2.column);
-}
-bool Board::areInSameDiagonal(Coordinates const& coord1,
-                                   Coordinates const& coord2) {
-  return (abs(coord1.column - coord2.column) == abs(coord1.row - coord2.row));
-}
-
 Colour Board::currentPlayer() const {
   return m_isWhiteTurn ? Colour::White : Colour::Black;
 }
@@ -741,7 +728,7 @@ bool Board::isDiagonalFree(Coordinates const& source,
   if (source == destination) {
     throw std::invalid_argument("source and destination cannot be equal");
   }
-  if (!areInSameDiagonal(source, destination)) {
+  if (!source.sameDiagonalAs(destination)) {
       throw std::invalid_argument("source and destination are"
                                  " not in the same diagonal");
   }

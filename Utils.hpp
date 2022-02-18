@@ -24,6 +24,13 @@ struct Coordinates {
   bool operator== (Coordinates const& other) const;
   /// Returns true if column or row are different, false otherwise.
   bool operator!= (Coordinates const& other) const;
+
+  /// Checks if the coordinates are in the same row.
+  bool sameRowAs(Coordinates const& other) const;
+  /// Checks if the coordinates are in the same column.
+  bool sameColumnAs(Coordinates const& other) const;
+  /// Checks if the coordinates are in the same diagonal.
+  bool sameDiagonalAs(Coordinates const& other) const;
 };
 
 /// Performs hashing of a reference wrapper containing a Piece.
