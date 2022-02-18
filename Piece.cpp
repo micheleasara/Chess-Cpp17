@@ -4,13 +4,14 @@
 
 namespace Chess {
 
-Piece::Piece(Colour colour, Board& board): m_colour(colour), m_board(board) {}
+Piece::Piece(Colour colour, AbstractBoard& board): m_colour(colour), 
+                                                    m_board(board) {}
 
 Colour Piece::getColour() const {
   return m_colour;
 }
 
-void Piece::setBoard(Board& board) noexcept {
+void Piece::setBoard(AbstractBoard& board) noexcept {
   m_board = board;
 }
 
@@ -50,7 +51,7 @@ bool Piece::getMovedStatus() const {
   return m_moved;
 }
 
-Board& Piece::getBoard() const {
+AbstractBoard& Piece::getBoard() const {
   return m_board.get();
 }
 

@@ -6,13 +6,13 @@
 #include "MoveResult.hpp"
 
 namespace Chess {
-class Board;
+class AbstractBoard;
 
 /// Represents a generic piece.
 class Piece {
 public:
   /// Creates a chess piece of the given colour and associated with a board.
-  Piece(Colour colour, Board& board);
+  Piece(Colour colour, AbstractBoard& board);
 
   /**
    Returns whether moving from the source to the destination provided is a 
@@ -46,10 +46,10 @@ public:
    Performs one-sided assignment of the given board to this piece.
    In other words, the piece will act assuming it is contained in the board.
   */
-  void setBoard(Board& board) noexcept;
+  void setBoard(AbstractBoard& board) noexcept;
 
   /// Returns the board currently associated with this piece.
-  Board& getBoard() const;
+  AbstractBoard& getBoard() const;
 
   /// Returns the name of the piece (e.g. "Rook").
   virtual std::string name() const = 0;
@@ -74,13 +74,13 @@ private:
 
   Colour m_colour;
   bool m_moved = false;
-  std::reference_wrapper<Board> m_board;
+  std::reference_wrapper<AbstractBoard> m_board;
 };
 
 /// Represents a piece that can be used to promote a pawn.
 class PromotionPiece: public Piece {
 public:
-  PromotionPiece(Colour colour, Board& board): Piece(colour, board) {};
+  PromotionPiece(Colour colour, AbstractBoard& board): Piece(colour, board) {};
 };
 
 }

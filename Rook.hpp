@@ -21,7 +21,7 @@ public:
   static std::vector<Coordinates> const BLACK_STD_INIT;
 
   /// Constructs a rook of the given colour and associated to a board.
-  Rook(Colour colour, Board& board);
+  Rook(Colour colour, AbstractBoard& board);
 
   //! @copydoc Board::move(Pawn&,Coordinates const&,Coordinates const&)
   MoveResult move(Coordinates const& source,

@@ -13,6 +13,7 @@
 #include <string_view>
 #include "Utils.hpp"
 #include "BoardHasher.hpp"
+#include "AbstractBoard.hpp"
 #include <array>
 
 namespace Chess {
@@ -23,7 +24,7 @@ class King; class Pawn;
   Represents a chessboard. It is responsible for executing moves while
   containing the state of the game.
 */
-class Board {
+class Board final: public AbstractBoard {
 public:
   /// Defines the minimum column in a human readable format.
   static char constexpr MIN_COLUMN = 'A';
@@ -136,24 +137,11 @@ public:
   MoveResult move(Coordinates const& src, Coordinates const& dest);
 
   /**
-    Moves the piece from the source to the destination provided,
-    if the move is legitimate.
-  */
-  MoveResult move(Pawn& piece, Coordinates const& source,
-                                Coordinates const& destination);
-  //! @copydoc Board::move(Pawn&,Coordinates const&,Coordinates const&)
-  MoveResult move(PromotionPiece& piece, Coordinates const& source,
-                                          Coordinates const& destination);
-  //! @copydoc Board::move(Pawn&,Coordinates const&,Coordinates const&)
-  MoveResult move(King& piece, Coordinates const& source,
-                                Coordinates const& destination);
-
-  /**
     Retrieves the piece corresponding to the coordinates given.
     Returns a nullptr if no piece is found at those coordinates.
     The pointer returned is non-owning.
   */
-  Piece const* at(Coordinates const& coord) const;
+  Piece const* at(Coordinates const& coord) const override;
 
   /**
     Retrieves the coordinates corresponding to the piece given.
@@ -163,26 +151,26 @@ public:
 
   /// Determines if a pawn can do en passant from a source to a destination.
   bool isValidEnPassant(Pawn const& pawn, Coordinates const& source,
-                                        Coordinates const& destination) const;
+                                Coordinates const& destination) const override;
 
   /**
     Checks if there are no pieces from the source to the destination.
     The check is not inclusive of the start and end columns.
   */
-  bool isFreeColumn(Coordinates const& source, int limitRow) const;
+  bool isFreeColumn(Coordinates const& source, int limitRow) const override;
 
   /**
     Checks if there are no pieces from the source to the destination.
     The check is not inclusive of the start and end rows.
   */
-  bool isFreeRow(Coordinates const& source, int limitCol) const;
+  bool isFreeRow(Coordinates const& source, int limitCol) const override;
 
   /**
     Checks if there are no pieces from the source to the destination.
     The check is not inclusive of the start and end positions.
   */
   bool isDiagonalFree(Coordinates const& source,
-                      Coordinates const& destination) const;
+                      Coordinates const& destination) const override;
 
   /// Returns true if a player needs to promote a piece, false otherwise.
   bool promotionPending() const;
@@ -220,9 +208,17 @@ public:
 
 private:
   void initializePiecesInStandardPos();
+
   template <typename Callable>
   MoveResult move(Coordinates const& source, Coordinates const& destination,
                                                         Callable&& mover);
+  MoveResult move(Pawn& piece, Coordinates const& source,
+                                Coordinates const& destination) override;
+  MoveResult move(PromotionPiece& piece, Coordinates const& source,
+                                       Coordinates const& destination) override;
+  MoveResult move(King& piece, Coordinates const& source,
+                                Coordinates const& destination) override;
+
   void revertLastPieceMovement();
   std::optional<CastlingType> tryCastling(Coordinates const& source,
                                           Coordinates const& target);

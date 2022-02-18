@@ -15,7 +15,7 @@ public:
   static auto constexpr BLACK_STD_INIT = Coordinates(4, 7);
 
   /// Constructs a king of the given colour and associated to a board.
-  King(Colour colour, Board& board);
+  King(Colour colour, AbstractBoard& board);
 
   //! @copydoc Board::move(Pawn&,Coordinates const&,Coordinates const&)
   MoveResult move(Coordinates const& source, 

@@ -9,7 +9,8 @@ std::vector<Coordinates> const Knight::WHITE_STD_INIT =
 std::vector<Coordinates> const Knight::BLACK_STD_INIT = 
                                         {Coordinates(1, 7), Coordinates(6, 7)};
 
-Knight::Knight(Colour colour, Board& board): PromotionPiece(colour, board) {}
+Knight::Knight(Colour colour, AbstractBoard& board): 
+                                                PromotionPiece(colour, board) {}
 
 bool Knight::isNormalMoveSpecific(Coordinates const& source,
                                Coordinates const& destination) const {

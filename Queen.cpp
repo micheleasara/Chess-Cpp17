@@ -3,7 +3,8 @@
 
 namespace Chess {
 
-Queen::Queen(Colour colour, Board& board): PromotionPiece(colour, board) {}
+Queen::Queen(Colour colour, AbstractBoard& board):
+                                                PromotionPiece(colour, board) {}
 
 std::string Queen::name() const {
   return "Queen";
@@ -19,7 +20,7 @@ bool Queen::isNormalMoveSpecific(Coordinates const& source,
     return getBoard().isFreeColumn(source, destination.row);
   }
 
-  if (getBoard().areInSameDiagonal(source, destination)) {
+  if (Board::areInSameDiagonal(source, destination)) {
     return getBoard().isDiagonalFree(source, destination);
   }
   return false;

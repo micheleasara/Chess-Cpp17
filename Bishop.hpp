@@ -21,7 +21,7 @@ class Bishop final: public PromotionPiece {
   static std::vector<Coordinates> const BLACK_STD_INIT;
 
   /// Constructs a bishop of the given colour and associated to a board.
-  Bishop(Colour colour, Board& board);
+  Bishop(Colour colour, AbstractBoard& board);
 
   //! @copydoc Board::move(Pawn&,Coordinates const&,Coordinates const&)
   MoveResult move(Coordinates const& source, 

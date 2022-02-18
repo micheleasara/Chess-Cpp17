@@ -21,7 +21,7 @@ public:
   static std::vector<Coordinates> const BLACK_STD_INIT;
 
   // Constructs a pawn of the specified colour and associated to a board.
-  Pawn(Colour colour, Board& board);
+  Pawn(Colour colour, AbstractBoard& board);
 
   //! @copydoc Board::move(Pawn&,Coordinates const&,Coordinates const&)
   MoveResult move(Coordinates const& source,

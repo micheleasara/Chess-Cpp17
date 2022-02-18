@@ -8,7 +8,8 @@ std::vector<Coordinates> const Rook::WHITE_STD_INIT =
 std::vector<Coordinates> const Rook::BLACK_STD_INIT = 
                                          {Coordinates(0, 7), Coordinates(7, 7)};
 
-Rook::Rook(Colour colour, Board& board): PromotionPiece(colour, board) {}
+Rook::Rook(Colour colour, AbstractBoard& board): 
+                                                PromotionPiece(colour, board) {}
 
 bool Rook::isNormalMoveSpecific(Coordinates const& source,
                                    Coordinates const& destination) const {

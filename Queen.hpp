@@ -15,7 +15,7 @@ public:
   static auto constexpr BLACK_STD_INIT = Coordinates(3, 7);
 
   /// Constructs a queen of the given colour and associated to a board.
-  Queen(Colour colour, Board& board);
+  Queen(Colour colour, AbstractBoard& board);
 
   //! @copydoc Board::move(Pawn&,Coordinates const&,Coordinates const&)
   MoveResult move(Coordinates const& source,
