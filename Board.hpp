@@ -1,20 +1,21 @@
 #ifndef CHESSBOARD_H
 #define CHESSBOARD_H
-#include <unordered_map>
-#include <unordered_set>
-#include <string>
-#include <vector>
+
+#include "AbstractBoard.hpp"
+#include <array>
+#include "BoardHasher.hpp"
 #include "Exceptions.hpp"
 #include <memory>
 #include "MoveResult.hpp"
 #include <optional>
 #include <ostream>
 #include "Piece.hpp"
+#include <string>
 #include <string_view>
+#include <unordered_map>
+#include <unordered_set>
 #include "Utils.hpp"
-#include "BoardHasher.hpp"
-#include "AbstractBoard.hpp"
-#include <array>
+#include <vector>
 
 namespace Chess {
 

@@ -1,13 +1,12 @@
-#include "Zobrist.hpp"
-#include "Rook.hpp"
 #include "Bishop.hpp"
-#include "Queen.hpp"
-#include "Knight.hpp"
-#include "King.hpp"
-#include "Pawn.hpp"
-#include <cstdlib>
-#include <unordered_set>
 #include <ctime>
+#include <cstdlib>
+#include "King.hpp"
+#include "Knight.hpp"
+#include "Pawn.hpp"
+#include "Queen.hpp"
+#include "Rook.hpp"
+#include "Zobrist.hpp"
 
 namespace Chess {
 enum class ZobristHasher::PieceIndex : int {

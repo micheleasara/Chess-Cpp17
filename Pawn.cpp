@@ -1,6 +1,6 @@
-#include "Pawn.hpp"
-#include "Board.hpp"
+#include "AbstractBoard.hpp"
 #include <iostream>
+#include "Pawn.hpp"
 
 namespace Chess {
 

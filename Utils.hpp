@@ -1,9 +1,9 @@
 #ifndef CHESS_UTILS
 #define CHESS_UTILS
 
-#include <utility>
-#include <optional>
 #include <functional>
+#include <optional>
+#include <utility>
 
 namespace Chess {
 

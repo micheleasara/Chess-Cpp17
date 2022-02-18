@@ -1,9 +1,9 @@
 #ifndef PIECE_H
 #define PIECE_H
 
+#include "MoveResult.hpp"
 #include <ostream>
 #include "Utils.hpp"
-#include "MoveResult.hpp"
 
 namespace Chess {
 class AbstractBoard;

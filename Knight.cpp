@@ -1,6 +1,6 @@
-#include "Knight.hpp"
-#include "Board.hpp"
+#include "AbstractBoard.hpp"
 #include <cmath>
+#include "Knight.hpp"
 
 namespace Chess {
 

@@ -1,15 +1,15 @@
-#include "Board.hpp"
-#include "Zobrist.hpp"
-#include "Rook.hpp"
 #include "Bishop.hpp"
-#include "Queen.hpp"
-#include "Knight.hpp"
-#include "King.hpp"
-#include "Pawn.hpp"
-#include <iostream>
-#include <stdexcept>
+#include "Board.hpp"
 #include <iomanip>
+#include <iostream>
+#include "King.hpp"
+#include "Knight.hpp"
+#include "Pawn.hpp"
+#include "Queen.hpp"
+#include "Rook.hpp"
+#include <stdexcept>
 #include <sstream>
+#include "Zobrist.hpp"
 
 /// Defines the number of squares the king travels to castle.
 int constexpr CASTLE_DISTANCE = 2;

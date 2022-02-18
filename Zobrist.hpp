@@ -1,11 +1,11 @@
 #ifndef ZOBRIST_H
 #define ZOBRIST_H
 
+#include <array>
 #include "BoardHasher.hpp"
+#include "Board.hpp"
 #include <unordered_set>
 #include <vector>
-#include <array>
-#include "Board.hpp"
 
 namespace Chess {
 

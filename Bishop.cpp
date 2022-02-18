@@ -1,5 +1,5 @@
+#include "AbstractBoard.hpp"
 #include "Bishop.hpp"
-#include "Board.hpp"
 
 namespace Chess {
 
