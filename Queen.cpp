@@ -21,7 +21,7 @@ bool Queen::isNormalMoveSpecific(Coordinates const& source,
   }
 
   if (source.sameDiagonalAs(destination)) {
-    return getBoard().isDiagonalFree(source, destination);
+    return getBoard().isFreeDiagonal(source, destination);
   }
   return false;
 }

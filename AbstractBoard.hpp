@@ -39,8 +39,8 @@ public:
   virtual bool isFreeColumn(Coordinates const& source, int limitRow) const = 0;
   //! @copydoc Board::isFreeRow(Coordinates const&,int)
   virtual bool isFreeRow(Coordinates const& source, int limitCol) const = 0;
-  //! @copydoc Board::isDiagonalFree(Coordinates const&,Coordinates const&)
-  virtual bool isDiagonalFree(Coordinates const& source,
+  //! @copydoc Board::isFreeDiagonal(Coordinates const&,Coordinates const&)
+  virtual bool isFreeDiagonal(Coordinates const& source,
                                      Coordinates const& destination) const = 0;
   //! @copydoc Board::isValidEnPassant(Pawn const&,Coordinates const&,Coordinates const&)
   virtual bool isValidEnPassant(Pawn const& pawn, Coordinates const& source,

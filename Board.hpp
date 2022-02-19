@@ -162,7 +162,7 @@ public:
     Checks if there are no pieces from the source to the destination.
     The check is not inclusive of the start and end positions.
   */
-  bool isDiagonalFree(Coordinates const& source,
+  bool isFreeDiagonal(Coordinates const& source,
                       Coordinates const& destination) const override;
 
   /// Returns true if a player needs to promote a piece, false otherwise.

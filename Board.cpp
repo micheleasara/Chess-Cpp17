@@ -723,7 +723,7 @@ bool Board::isFreeRow(Coordinates const& source, int limitCol) const {
   return true;
 }
 
-bool Board::isDiagonalFree(Coordinates const& source,
+bool Board::isFreeDiagonal(Coordinates const& source,
                                 Coordinates const& destination) const {
   if (source == destination) {
     throw std::invalid_argument("source and destination cannot be equal");
