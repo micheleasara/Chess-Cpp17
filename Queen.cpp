@@ -28,7 +28,7 @@ bool Queen::isNormalMoveSpecific(Coordinates const& source,
 
 MoveResult Queen::move(Coordinates const& source, 
                        Coordinates const& destination) {
-  return getBoard().move(*this, source, destination);
+  return getMutableBoard().move(*this, source, destination);
 }
 
 }

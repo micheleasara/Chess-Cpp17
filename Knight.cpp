@@ -27,7 +27,7 @@ std::string Knight::name() const {
 
 MoveResult Knight::move(Coordinates const& source,
                         Coordinates const& destination) {
-  return getBoard().move(*this, source, destination);
+  return getMutableBoard().move(*this, source, destination);
 }
 
 }

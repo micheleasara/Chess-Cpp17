@@ -40,7 +40,7 @@ bool Pawn::isNormalMoveSpecific(Coordinates const& source,
 
 MoveResult Pawn::move(Coordinates const& source,
                       Coordinates const& destination) {
-  return getBoard().move(*this, source, destination);
+  return getMutableBoard().move(*this, source, destination);
 }
 
 std::vector<Coordinates> const Pawn::WHITE_STD_INIT = 

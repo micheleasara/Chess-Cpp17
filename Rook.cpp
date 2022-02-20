@@ -29,6 +29,6 @@ std::string Rook::name() const {
 
 MoveResult Rook::move(Coordinates const& source, 
                       Coordinates const& destination) {
-  return getBoard().move(*this, source, destination);
+  return getMutableBoard().move(*this, source, destination);
 }
 }

@@ -49,7 +49,7 @@ public:
   void setBoard(AbstractBoard& board) noexcept;
 
   /// Returns the board currently associated with this piece.
-  AbstractBoard& getBoard() const;
+  AbstractBoard const& getBoard() const;
 
   /// Returns the name of the piece (e.g. "Rook").
   virtual std::string name() const = 0;
@@ -64,6 +64,10 @@ public:
 
   Piece& operator=(Piece const&) = delete;
   Piece& operator=(Piece&&) = delete;
+
+protected:
+  /// Returns the non-const board currently associated with this piece.
+  AbstractBoard& getMutableBoard();
 
 private:
   /// Checks if a piece can move according to its specific patterns.

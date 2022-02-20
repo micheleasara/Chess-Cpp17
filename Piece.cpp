@@ -15,6 +15,10 @@ void Piece::setBoard(AbstractBoard& board) noexcept {
   m_board = board;
 }
 
+AbstractBoard const& Piece::getBoard() const {
+  return m_board.get();
+}
+
 std::ostream& operator<<(std::ostream& out, const Piece& piece) {
   std::string owner = (piece.m_colour == Colour::White)? "White" : "Black";
   return out << (owner + "'s " + piece.name());
@@ -51,7 +55,7 @@ bool Piece::getMovedStatus() const {
   return m_moved;
 }
 
-AbstractBoard& Piece::getBoard() const {
+AbstractBoard& Piece::getMutableBoard() {
   return m_board.get();
 }
 
