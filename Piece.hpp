@@ -63,8 +63,6 @@ public:
   virtual ~Piece() = default;
 
   Piece& operator=(Piece const&) = delete;
-  Piece(Piece const&) = delete;
-  Piece(Piece&&) = delete;
   Piece& operator=(Piece&&) = delete;
 
 private:
