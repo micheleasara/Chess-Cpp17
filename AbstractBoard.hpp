@@ -47,6 +47,9 @@ public:
                                      Coordinates const& destination) const = 0;
 
   virtual ~AbstractBoard() = default;
+
+  AbstractBoard& operator=(AbstractBoard const&) = delete;
+  AbstractBoard& operator=(AbstractBoard&&) = delete;
 };
 
 }

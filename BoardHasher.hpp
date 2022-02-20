@@ -49,6 +49,9 @@ public:
   virtual void togglePlayer() = 0;
 
   virtual ~BoardHasher() = default;
+
+  BoardHasher& operator=(BoardHasher const&) = delete;
+  BoardHasher& operator=(BoardHasher&&) = delete;
 };
 
 }
