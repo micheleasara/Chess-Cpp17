@@ -23,7 +23,7 @@ public:
   // Constructs a pawn of the specified colour and associated to a board.
   Pawn(Colour colour, AbstractBoard& board);
 
-  //! @copydoc Board::move(Pawn&,Coordinates const&,Coordinates const&)
+  //! @copydoc AbstractBoard::move(Pawn&,Coordinates const&,Coordinates const&)
   MoveResult move(Coordinates const& source,
                           Coordinates const& destination) override;
 

@@ -23,7 +23,7 @@ class Bishop final: public PromotionPiece {
   /// Constructs a bishop of the given colour and associated to a board.
   Bishop(Colour colour, AbstractBoard& board);
 
-  //! @copydoc Board::move(Pawn&,Coordinates const&,Coordinates const&)
+  //! @copydoc AbstractBoard::move(Pawn&,Coordinates const&,Coordinates const&)
   MoveResult move(Coordinates const& source, 
                           Coordinates const& destination) override;
 

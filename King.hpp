@@ -17,7 +17,7 @@ public:
   /// Constructs a king of the given colour and associated to a board.
   King(Colour colour, AbstractBoard& board);
 
-  //! @copydoc Board::move(Pawn&,Coordinates const&,Coordinates const&)
+  //! @copydoc AbstractBoard::move(Pawn&,Coordinates const&,Coordinates const&)
   MoveResult move(Coordinates const& source, 
                           Coordinates const& destination) override;
 

@@ -29,7 +29,7 @@ public:
   bool isNormalMove(Coordinates const& source,
                        Coordinates const& destination) const;
 
-  //! @copydoc Board::move(Pawn&,Coordinates const&,Coordinates const&)
+  //! @copydoc AbstractBoard::move(Pawn&,Coordinates const&,Coordinates const&)
   virtual MoveResult move(Coordinates const& source, 
                           Coordinates const& destination) = 0;
 
