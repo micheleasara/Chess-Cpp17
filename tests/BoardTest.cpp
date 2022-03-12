@@ -286,6 +286,13 @@ TEST_F(BoardTest, claimingDrawWhenNotAppropriateDoesNothing) {
   EXPECT_FALSE(board.isGameOver());
 }
 
+TEST_F(BoardTest, aDrawCannotBeClaimedAfterTheGameHasFinished) {
+  doThreeFoldRepetition();
+  board.claimDraw();
+  ASSERT_TRUE(board.isGameOver());
+  EXPECT_FALSE(board.drawCanBeClaimed());
+}
+
 TEST_F(BoardTest, fiveFoldRepetitionForcesDraw) {
   doThreeFoldRepetition();
   board.move("D1", "D2"); board.move("D8", "D7");

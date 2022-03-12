@@ -292,7 +292,7 @@ void Board::initializePieces(std::vector<Coordinates> const& coords,
 bool Board::drawCanBeClaimed() const {
   // 50 moves rule is to be intended as 50 by each player, so 100 in total here
   return (m_threeFoldRepetition || m_countSincePawnMoveOrCapture >= 100) &&
-                                                         !promotionPending();
+                                           !promotionPending() && !isGameOver();
 }
 
 void Board::claimDraw() {
