@@ -1,4 +1,0 @@
-<map id="Chess::King" name="Chess::King">
-<area shape="rect" id="node1" title="Represents a king." alt="" coords="8,80,107,107"/>
-<area shape="rect" id="node2" href="$classChess_1_1Piece.html" title="Represents a generic piece." alt="" coords="5,5,109,32"/>
-</map>

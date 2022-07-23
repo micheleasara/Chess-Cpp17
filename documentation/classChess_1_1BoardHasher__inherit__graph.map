@@ -1,4 +1,0 @@
-<map id="Chess::BoardHasher" name="Chess::BoardHasher">
-<area shape="rect" id="node1" title="An object capable of hashing a chessboard configuration." alt="" coords="9,5,163,32"/>
-<area shape="rect" id="node2" href="$classChess_1_1ZobristHasher.html" title="An implementation of Zobrist hashing for a chessboard." alt="" coords="5,80,167,107"/>
-</map>
