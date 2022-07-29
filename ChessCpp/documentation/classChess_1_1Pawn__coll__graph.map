@@ -1,0 +1,4 @@
+<map id="Chess::Pawn" name="Chess::Pawn">
+<area shape="rect" id="node1" title="Represents a pawn." alt="" coords="6,80,109,107"/>
+<area shape="rect" id="node2" href="$classChess_1_1Piece.html" title="Represents a generic piece." alt="" coords="5,5,109,32"/>
+</map>

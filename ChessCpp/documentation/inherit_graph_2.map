@@ -1,0 +1,4 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$classChess_1_1BoardHasher.html" title="An object capable of hashing a chessboard configuration." alt="" coords="5,5,159,32"/>
+<area shape="rect" id="node2" href="$classChess_1_1ZobristHasher.html" title="An implementation of Zobrist hashing for a chessboard." alt="" coords="207,5,368,32"/>
+</map>
