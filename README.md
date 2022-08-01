@@ -10,7 +10,7 @@ To build the driver program:
 1) navigate to the _driver_ subdirectory;
 2) create a folder that will contain the build (e.g. name it _build_);
 3) navigate to the newly created folder;
-4) enter ```cmake ..``` in your terminal (or ```cmake -DTESTS=ON ..``` to also build the tests);
+4) enter ```cmake ..``` in your terminal (use ```cmake -DTESTS=OFF ..``` instead to avoid building the tests);
 5) type ```cmake --build .```;
 6) the executable _driver_ will be available in the build folder, whereas the library will be in _driver/lib_ and the tests in _driver/lib/tests_.
 
@@ -18,7 +18,7 @@ To run all the tests, simply navigate to their folder after building and type ``
 
 To only build the library, repeat the steps above but:
 1) navigate to the _ChessCpp_ subfolder instead of _driver_;
-2) tests will be enabled by default, and you need to set the flag to ```OFF``` to disable this behaviour;
+2) tests will be disabled by default, and you need to set the flag to ```ON``` to enable them;
 3) remember you can use CMake's ```--config``` parameter if you wish to change the build mode to Release or similar.
 
 ## I want to use your chess engine on my chess application. What can I do?

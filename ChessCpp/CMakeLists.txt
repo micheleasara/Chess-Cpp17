@@ -3,7 +3,7 @@ project(ChessCppBuild)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
-option(TESTS "Build unit tests" ON)
+option(TESTS "Build tests" OFF)
 
 add_subdirectory(src)
 include_directories(src)

@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CHESSCPP_PATH ../ChessCpp)
 set(CHESSCPP_BUILD_PATH lib)
-option(TESTS "Build ChessCpp's unit tests" OFF)
+option(TESTS "Build tests" ON)
 
 add_subdirectory(${CHESSCPP_PATH} ${CHESSCPP_BUILD_PATH})
 
