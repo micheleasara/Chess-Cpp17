@@ -74,7 +74,7 @@ $(function() {
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;array&gt;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;BoardHasher.hpp&quot;</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;Board.hpp&quot;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;AbstractBoard.hpp&quot;</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &lt;unordered_set&gt;</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
@@ -168,8 +168,8 @@ $(function() {
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;      std::vector&lt;Coordinates&gt; <span class="keyword">const</span>&amp; blackQueens,</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;      <a class="code" href="structChess_1_1Coordinates.html">Coordinates</a> <span class="keyword">const</span>&amp; blackKing);</div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160; </div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  std::array&lt;std::array&lt;int, PIECE_INDEXES_COUNT&gt;, <a class="code" href="classChess_1_1Board.html#acddbef0cd637042cfcf95dcfc19526ae">Board::AREA</a>&gt; m_table;</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;  std::array&lt;int, Board::AREA&gt; m_board;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  std::array&lt;std::array&lt;int, PIECE_INDEXES_COUNT&gt;, <a class="code" href="classChess_1_1AbstractBoard.html#a1dc001ee1925b4fa0ff435f99fe4c8be">AbstractBoard::AREA</a>&gt; m_table;</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;  std::array&lt;int, AbstractBoard::AREA&gt; m_board;</div>
 <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  <span class="keywordtype">int</span> m_currentHash = 0;</div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  <span class="keywordtype">int</span> m_whitePlayerHash;</div>
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;  std::unordered_map&lt;int, PieceIndex&gt; m_pawnsBeforeEnPassant;</div>
@@ -179,8 +179,8 @@ $(function() {
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;}</div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160; </div>
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// ZOBRIST_H</span></div>
+<div class="ttc" id="aclassChess_1_1AbstractBoard_html_a1dc001ee1925b4fa0ff435f99fe4c8be"><div class="ttname"><a href="classChess_1_1AbstractBoard.html#a1dc001ee1925b4fa0ff435f99fe4c8be">Chess::AbstractBoard::AREA</a></div><div class="ttdeci">static constexpr int AREA</div><div class="ttdoc">Defines the number of squares on the board.</div><div class="ttdef"><b>Definition:</b> AbstractBoard.hpp:29</div></div>
 <div class="ttc" id="aclassChess_1_1BoardHasher_html"><div class="ttname"><a href="classChess_1_1BoardHasher.html">Chess::BoardHasher</a></div><div class="ttdoc">An object capable of hashing a chessboard configuration.</div><div class="ttdef"><b>Definition:</b> BoardHasher.hpp:10</div></div>
-<div class="ttc" id="aclassChess_1_1Board_html_acddbef0cd637042cfcf95dcfc19526ae"><div class="ttname"><a href="classChess_1_1Board.html#acddbef0cd637042cfcf95dcfc19526ae">Chess::Board::AREA</a></div><div class="ttdeci">static constexpr int AREA</div><div class="ttdoc">Defines the number of squares on the board.</div><div class="ttdef"><b>Definition:</b> Board.hpp:43</div></div>
 <div class="ttc" id="aclassChess_1_1ZobristHasher_html"><div class="ttname"><a href="classChess_1_1ZobristHasher.html">Chess::ZobristHasher</a></div><div class="ttdoc">An implementation of Zobrist hashing for a chessboard.</div><div class="ttdef"><b>Definition:</b> Zobrist.hpp:13</div></div>
 <div class="ttc" id="aclassChess_1_1ZobristHasher_html_a6d44cc51a886ad25139bf646e7371207"><div class="ttname"><a href="classChess_1_1ZobristHasher.html#a6d44cc51a886ad25139bf646e7371207">Chess::ZobristHasher::togglePlayer</a></div><div class="ttdeci">void togglePlayer() override</div><div class="ttdoc">Changes the hash by toggling the current player. White always starts.</div><div class="ttdef"><b>Definition:</b> Zobrist.cpp:247</div></div>
 <div class="ttc" id="aclassChess_1_1ZobristHasher_html_a7f88bdb701b16f699e20a97548bc7597"><div class="ttname"><a href="classChess_1_1ZobristHasher.html#a7f88bdb701b16f699e20a97548bc7597">Chess::ZobristHasher::removed</a></div><div class="ttdeci">void removed(Coordinates const &amp;coords) override</div><div class="ttdef"><b>Definition:</b> Zobrist.cpp:120</div></div>

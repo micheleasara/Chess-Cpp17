@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['area_156',['AREA',['../classChess_1_1Board.html#acddbef0cd637042cfcf95dcfc19526ae',1,'Chess::Board']]]
+  ['area_156',['AREA',['../classChess_1_1AbstractBoard.html#a1dc001ee1925b4fa0ff435f99fe4c8be',1,'Chess::AbstractBoard']]]
 ];
