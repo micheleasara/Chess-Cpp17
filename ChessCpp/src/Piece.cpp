@@ -1,4 +1,4 @@
-#include "Board.hpp"
+#include "AbstractBoard.hpp"
 #include <iostream>
 #include "Piece.hpp"
 
@@ -26,7 +26,7 @@ std::ostream& operator<<(std::ostream& out, const Piece& piece) {
 
 bool Piece::isNormalMove(Coordinates const& source,
                             Coordinates const& destination) const {
-  if (!Board::areWithinLimits(source) || !Board::areWithinLimits(destination)) {
+  if (!AbstractBoard::areWithinLimits(source) || !AbstractBoard::areWithinLimits(destination)) {
     return false;
   }
 

@@ -92,13 +92,6 @@ std::string Board::coordinatesToString(Coordinates const& coord) {
          std::string(1, static_cast<char>(coord.row + MIN_ROW));
 }
 
-bool Board::areWithinLimits(Coordinates const& coord) {
-  char row = static_cast<char>(coord.row) + MIN_ROW;
-  char col = static_cast<char>(coord.column) + MIN_COLUMN;
-  return (row >= MIN_ROW && row <= MAX_ROW &&
-          col >= MIN_COLUMN && col <= MAX_COLUMN);
-}
-
 Colour Board::currentPlayer() const {
   return m_isWhiteTurn ? Colour::White : Colour::Black;
 }
@@ -982,7 +975,7 @@ void printBottomLines(std::ostream& out) {
 }
 
 void printColumnLegend(std::ostream& out) {
-  for (char ch = Board::MIN_COLUMN; ch <= Board::MAX_COLUMN; ++ch) {
+  for (char ch = AbstractBoard::MIN_COLUMN; ch <= AbstractBoard::MAX_COLUMN; ++ch) {
     out << std::setw((std::streamsize)H_PRINT_SIZE / 2 + 1) << ch;
     out << std::setw(H_PRINT_SIZE / 2) << " ";
   }
@@ -990,7 +983,7 @@ void printColumnLegend(std::ostream& out) {
 
 void printTopLine(std::ostream& out) {
   out << "\n|";
-  for (int j = 0; j <= Board::MAX_COL_NUM; ++j) {
+  for (int j = 0; j <= AbstractBoard::MAX_COL_NUM; ++j) {
     out << std::setw(H_PRINT_SIZE) << '|';
   }
   out << "\n|";

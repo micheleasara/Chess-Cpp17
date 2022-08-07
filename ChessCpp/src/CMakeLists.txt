@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.22)
 
-set(headers Bishop.hpp Board.hpp BoardHasher.hpp Exceptions.hpp
+set(headers AbstractBoard.hpp Bishop.hpp Board.hpp BoardHasher.hpp Exceptions.hpp
             King.hpp Knight.hpp MoveResult.hpp Pawn.hpp Piece.cpp
             Queen.hpp Rook.hpp Utils.hpp Zobrist.hpp)
-add_library(ChessCpp ${headers} Bishop.cpp Board.cpp Exceptions.cpp King.cpp
+add_library(ChessCpp ${headers} AbstractBoard.cpp Bishop.cpp Board.cpp Exceptions.cpp King.cpp
                                 Knight.cpp MoveResult.cpp Pawn.cpp Piece.cpp
                                 Queen.cpp Rook.cpp Utils.cpp Zobrist.cpp)
 

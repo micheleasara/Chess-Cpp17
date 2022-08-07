@@ -27,24 +27,6 @@ class King; class Pawn;
 */
 class Board final: public AbstractBoard {
 public:
-  /// Defines the minimum column in a human readable format.
-  static char constexpr MIN_COLUMN = 'A';
-  /// Defines the minimum row in a human readable format.
-  static char constexpr MIN_ROW = '1';
-  /// Defines the maximum column in a human readable format.
-  static char constexpr MAX_COLUMN = 'H';
-  /// Defines the maximum row in a human readable format.
-  static char constexpr MAX_ROW = '8';
-  /// Defines the maximum row number starting to count from 0.
-  static int constexpr MAX_ROW_NUM = static_cast<int>(MAX_ROW - MIN_ROW);
-  /// Defines the maximum column number starting to count from 0.
-  static int constexpr MAX_COL_NUM = static_cast<int>(MAX_COLUMN - MIN_COLUMN);
-  /// Defines the number of squares on the board.
-  static int constexpr AREA = (MAX_COL_NUM + 1) * (MAX_ROW_NUM + 1);
-
-  /// Checks if the coordinates are within a chessboard.
-  static bool areWithinLimits(Coordinates const& coord);
-
   /**
     Converts string coordinates into a pair of integers (eg "A2" to 0,1).
     Throws if the format is incorrect, or the coordinates are out of bounds.

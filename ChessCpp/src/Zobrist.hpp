@@ -3,7 +3,7 @@
 
 #include <array>
 #include "BoardHasher.hpp"
-#include "Board.hpp"
+#include "AbstractBoard.hpp"
 #include <unordered_set>
 #include <vector>
 
@@ -105,8 +105,8 @@ private:
       std::vector<Coordinates> const& blackQueens,
       Coordinates const& blackKing);
 
-  std::array<std::array<int, PIECE_INDEXES_COUNT>, Board::AREA> m_table;
-  std::array<int, Board::AREA> m_board;
+  std::array<std::array<int, PIECE_INDEXES_COUNT>, AbstractBoard::AREA> m_table;
+  std::array<int, AbstractBoard::AREA> m_board;
   int m_currentHash = 0;
   int m_whitePlayerHash;
   std::unordered_map<int, PieceIndex> m_pawnsBeforeEnPassant;
